@@ -1,4 +1,3 @@
-# Minimal working Makefile for input_test.c + libft
 NAME = input_test
 LIBFT = ./libft/libft.a
 
@@ -6,7 +5,7 @@ all: $(NAME)
 
 $(NAME): input_test.c $(LIBFT)
 	@gcc -Wall -Wextra -I./libft $< -L./libft -lreadline -o $@
-	@echo "Compiled successfully!"
+	echo "compilation reussie !"
 
 $(LIBFT):
 	@make -C ./libft
