@@ -1,0 +1,34 @@
+Tokenizer
+Lire et tokenizer chaque "mot" de la commande en fonction du type 
+(commande, infile <, outfile >, << heredoc, >> outfile in append, pipe |, commande de shell,
+variable environements (de Bash pas de minishell), arguments == le reste)
+commandes de shell :
+◦echo with option -n
+◦cd with only a relative or absolute path
+◦pwd with no options
+◦export with no options
+◦unset with no options (supprime une variable)
+◦env with no options or arguments
+◦exit with no options
+-l -rf == Arguments
+Assigner a chaque token un index de priorite 
+
+
+Parser
+
+Creer le job
+
+
+Executer
+
+Executer le job et le piper au job suivant jusquau dernier
+
+
+echo "some text" <bonjour.txt
+si il ya un infile, faut le lire avant pour pouvoir le piper
+
+Gerer les signaux
+In interactive mode:
+◦ ctrl-C displays a new prompt on a new line.
+◦ ctrl-D exits the shell.
+◦ ctrl-\ does nothing.

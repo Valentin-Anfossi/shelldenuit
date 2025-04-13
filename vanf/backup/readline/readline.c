@@ -1,39 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/05 19:11:29 by vanfossi          #+#    #+#             */
-/*   Updated: 2024/11/08 13:25:04 by vanfossi         ###   ########.fr       */
+/*   Created: 2025/04/10 08:30:02 by vanfossi          #+#    #+#             */
+/*   Updated: 2025/04/10 17:45:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Test fails when nmenb == 0 and size is neg
-
+#include <stdio.h>
 #include <stdlib.h>
-#include "libft.h"
+#include <string.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
-void	*ft_calloc(size_t nmemb, size_t size)
+int main(void)
 {
-	void				*r;
-	unsigned long int	s;
-
-	s = nmemb * size;
-	if (nmemb != 0 && SIZE_MAX / nmemb < size)
+	char *line;
+	
+	while(1)
 	{
-		return (0);
+		line = readline("$:");
+		add_history(line);
+		if(line[0] == '/')
+		{
+			printf("History cleared.\n");
+			rl_clear_history();
+		}
+		if(line[0] == '.')
+		{
+			printf("Exiting.\n");
+			free(line);
+			exit(1);
+		}
+		rl_replace_line("replaced text", 0);
+		printf("%s\n",line);
+		rl_redisplay();
 	}
-	r = (void *)malloc(s);
-	if (r == 0)
-		return (r);
-	ft_bzero(r, s);
-	return (r);
 }
-
-// int main (void)
-// {
-// 	void *test = calloc(0,0);
-// 	free(test);
-// }

@@ -6,12 +6,13 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 17:41:51 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/13 20:26:22 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/13 21:49:54 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//Return last token from lst
 s_token	*token_last(s_token *lst)
 {
 	s_token	*list;
@@ -24,6 +25,7 @@ s_token	*token_last(s_token *lst)
 	return (list);
 }
 
+//Add token to the back of lst
 void	token_add_back(s_token **lst, s_token *token)
 {
 	s_token	*last;
@@ -39,6 +41,7 @@ void	token_add_back(s_token **lst, s_token *token)
 	}
 }
 
+//Compare 2 strings, return 1 if theyre the same
 int	ms_strcmp(char *str1, char *str2)
 {
 	int i;

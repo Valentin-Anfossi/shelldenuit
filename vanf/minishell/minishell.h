@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/13 20:31:17 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/13 23:34:00 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct t_shell
 	char *line;
 	char **envs_id;
 	char **envs;
-	char **shell_cmds;
 } s_shell;
 
 typedef struct t_job
@@ -72,6 +71,9 @@ typedef struct t_token
 } s_token;
 
 s_token **tokenizer_start(char *line);
+int tokenizer(char *line, s_token **tokens, int i);
+int tokenizer_helper(char *line, int i, s_token **tokens);
+int replace_env(char *line, int i, s_token **tokens);
 int token_exec(char *line, int i, s_token **tokens);
 int token_append(char *line, int i, s_token **tokens);
 int token_heredoc(char *line, int i, s_token **tokens);

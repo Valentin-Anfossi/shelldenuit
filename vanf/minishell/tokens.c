@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 16:39:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/13 20:30:42 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/14 00:44:02 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,39 +26,68 @@ s_token *create_token(void)
 	s_token *new_token;
 
 	new_token = (s_token *)malloc(sizeof(s_token));
-	new_token->next = NULL;
+	new_token->type = 0;
 	new_token->now = NULL;
 	new_token->next = NULL;
 	return (new_token);
 }
 
+
 s_token **tokenizer_start(char *line)
 {
-	int i;
 	s_token **tokens;
+	int i;
 	
 	tokens = create_tokenlst();
 	i = 0;
 	while(line[i])
 	{
-		if(line[i] == '.' && line[i+1] && line[i+1] == '/')
-			i = token_exec(line,i,tokens);
-		else if(line[i] == '>' && line[i+1] && line[i+1] == '>')
-			i = token_append(line,i,tokens);
-		else if(line[i] == '<' && line[i+1] && line[i+1] == '<')
-			i = token_heredoc(line,i,tokens);
-		else if(line[i] == '>')
-			i = token_outfile(line,i,tokens);
-		else if(line[i] == '<')
-			i = token_infile(line,i,tokens);
-		else if(line[i] == '|')
-			i = token_pipe(line,i,tokens);
-		else if(line[i] && line[i] != ' ')
-			i = token_char(line,i,tokens);
+		if(line[i] == '$' && line[i+1] && line[i+1] != '?')
+		i = replace_env(line, i, tokens);
+		else if(check_quotes(line,i))
+			i = token_char(line, i ,tokens);
 		else
-			i ++;
+		i = tokenizer(line,tokens,i);
 	}
 	return (tokens);
+}
+
+int replace_env(char *line, int i, s_token **tokens)
+{
+	
+}
+
+int check_quotes(char *line, int i)
+{
+	
+}
+
+int tokenizer(char *line, s_token **tokens, int i)
+{
+	if(line[i] == '.' && line[i+1] && line[i+1] == '/')
+		i = token_exec(line,i,tokens);
+	else if(line[i] == '>' && line[i+1] && line[i+1] == '>')
+		i = token_append(line,i,tokens);
+	else if(line[i] == '<' && line[i+1] && line[i+1] == '<')
+		i = token_heredoc(line,i,tokens);
+	else if(line[i] == '>')
+		i = token_outfile(line,i,tokens);
+	else if(line[i] == '<')
+		i = token_infile(line,i,tokens);
+	else if(line[i] == '|')
+		i = token_pipe(line,i,tokens);
+	else
+		i = tokenizer_helper(line, i, tokens);
+	return (i);
+}
+
+int tokenizer_helper(char *line, int i, s_token **tokens)
+{
+	if(line[i] && line[i] != ' ')
+		i = token_char(line,i,tokens);
+	else
+		i++;
+	return (i);
 }
 
 //Create a Executable token containing path and adds it to the list
@@ -72,7 +101,10 @@ int token_exec(char *line, int i, s_token **tokens)
 		end ++;
 	new_token = create_token();
 	new_token->type = CMD;
-	new_token->now = ft_substr(line,i,end-i);
+	if(end - i == 0)
+		new_token->now = NULL;
+	else
+		new_token->now = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
 }
@@ -91,7 +123,10 @@ int token_append(char *line, int i, s_token **tokens)
 		end ++;
 	new_token = create_token();
 	new_token->type = APPEND;
-	new_token->now = ft_substr(line,i,end-i);
+	if(end - i == 0)
+		new_token->now = NULL;
+	else
+		new_token->now = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
 }
@@ -110,7 +145,10 @@ int token_heredoc(char *line, int i, s_token **tokens)
 		end ++;
 	new_token = create_token();
 	new_token->type = HEREDOC;
-	new_token->now = ft_substr(line,i,end-i);
+	if(end - i == 0)
+		new_token->now = NULL;
+	else
+		new_token->now = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
 }
@@ -129,7 +167,10 @@ int token_outfile(char *line, int i, s_token **tokens)
 		end ++;
 	new_token = create_token();
 	new_token->type = REDIR_OUT;
-	new_token->now = ft_substr(line,i,end-i);
+	if(end - i == 0)
+		new_token->now = NULL;
+	else
+		new_token->now = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
 }
@@ -148,7 +189,10 @@ int token_infile(char *line, int i, s_token **tokens)
 		end ++;
 	new_token = create_token();
 	new_token->type = REDIR_IN;
-	new_token->now = ft_substr(line,i,end-i);
+	if(end - i == 0)
+		new_token->now = NULL;
+	else
+		new_token->now = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
 }
@@ -165,6 +209,11 @@ int token_pipe(char *line, int i, s_token **tokens)
 	new_token->now = NULL;
 	token_add_back(tokens, new_token);
 	return (i);
+}
+
+int token_env(char *line, int i, s_token **tokens)
+{
+	
 }
 
 //Checks if token is a Shell command then create a arg token if not
@@ -184,7 +233,10 @@ int token_char(char *line, int i, s_token **tokens)
 	else
 	{
 		new_token->type = ARG;
-		new_token->now = ft_substr(line, i, end - i);
+		if(end - i == 0)
+			new_token->now = NULL;
+		else
+			new_token->now = ft_substr(line, i, end - i);
 	}
 	token_add_back(tokens, new_token);
 	return (end);
