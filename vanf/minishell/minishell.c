@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:00 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/11 16:39:50 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/13 15:10:33 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,28 +95,160 @@ int shell_testoutfile(char *path)
 	}
 }
 
-int shell_cd(char *path)
+int job_exec(char *line, s_job *job, int i)
 {
+	int end;
+	
+	end = i;
+	while(line[end] != ' ')
+		end ++;
+	if(job->command)
+		return (end);
+	job->command = EXEC;
+	job->exec_path = ft_substr(line,i,end-i);
+	return (end);
+}
+
+int job_infile(char *line, s_job *job, int i)
+{
+	int end;
+
+	i ++;
+	while(line[i] == ' ')
+		i++;
+	end = i;
+	while(line[end] != ' ')
+		end++;
+	if(job->infile_path)
+		return(end);
+	job->infile_path = ft_substr(line,i,end-i);
+	return (end);
+}
+int job_outfile(char *line, s_job *job, int i)
+{
+	int end;
+
+	i ++;
+	while(line[i] == ' ')
+		i++;
+	end = i;
+	while(line[end] != ' ')
+		end++;
+	if(job->outfile_path)
+		return(end);
+	job->outfile_path = ft_substr(line,i,end-i);
+	return (end);
+}
+
+int job_append(char *line, s_job *job, int i)
+{
+	return(i);
 	
 }
 
-int parse_shell(char *line)
+int job_heredoc(char *line, s_job *job, int i)
+{
+	return(i);
+	
+}
+
+int job_pipe(char *line, s_job *job, int i)
+{
+	return(i);
+	
+}
+
+int job_env(char *line, s_job *job, int i)
+{
+	return(i);	
+}
+int job_arg(char *line, s_job *job, int i)
+{
+	return(i);
+}
+//< << ca va pas bou
+int create_job(char *line, int i, s_job *job)
+{
+	if(line[i] == '.' && line[i+1] == '/' && line[i+1])
+		i = job_exec(line, job, i);
+	else if(line[i] == '<' && line[i+1] && line[i+1] == '<')
+		i = job_heredoc(line, job,i);
+	else if(line[i] == '>' && line[i+1] && line[i+1] == '>')
+		i = job_append(line, job,i);
+	else if(line[i] == '<')
+		i = job_infile(line, job,i);
+	else if(line[i] == '>')
+		i = job_outfile(line, job,i);
+	else if(line[i] == '|')
+	{
+		i = job_pipe(line, job,i);
+		return (i);
+	}
+	else if(line[i] == '$')
+		i = job_env(line, job,i);
+	else
+	{
+		if(line[i])
+			i = job_arg(line,job,i);
+		if(!line[i])
+			return(-1);
+	}
+	return (i);
+}
+
+void delete_job(s_job *job)
+{
+	// job->args = NULL;
+	// job->command = NULL;
+	// job->envs = NULL;
+	// job->envs_id = NULL;
+	// job->exec_path = NULL;
+	// job->infile_path = NULL;
+	// job->outfile_path = NULL;
+	free(job);
+}
+
+void print_job(s_job *job)
+{
+	int i;
+	i = 0;
+	printf("Job #%d\nCommande : %i\nExec Path : %s\nInfile : %s\nOutfile : %s\n",job->id,
+		job->command,job->exec_path,job->infile_path,job->outfile_path);
+	printf("Args : %s\n", job->args);
+	printf("Pipe :\n");
+}
+
+void init_job(s_job *job)
+{
+	job->args = NULL;
+	job->command = NULL;
+	job->exec_path = NULL;
+	job->id = NULL;
+	job->infile_path = NULL;
+	job->outfile_path = NULL;
+}
+
+int start_jobs(char *line)
 {
 	int i = 0;
+	s_job *job = (s_job *)malloc(sizeof(s_job));
 	if(!line)
 	{
-		printf("Ctrl+D Exiting...\n");
+		printf("Exiting minishell...\n");
 		rl_clear_history();
 		exit(0);
 	}
+	init_job(job);
 	while(line[i])
 	{
-		if(line[i] == '.' && line[i+1] == '/')
-			shell_testoutfile(line);
-		if(line[i] == 'c' && line[i+1] == 'd')
-			shell_cd(line);
-		i ++;
+		while(line[i] ==  ' ')
+			i ++;
+		i = create_job(line, i, job);
+		i++;
 	}
+	print_job(job);
+	delete_job(job);
+	//job_print(job);
 }
 
 int main(void)
@@ -134,12 +266,10 @@ int main(void)
 	{
 		line = readline("minishell $ ");
 		if(line)
-		{
 			add_history(line);
-			//printf("%s\n",line);
-		}
-		parse_shell(line);
+		start_jobs(line);
 	}
+	clear_history();
 	printf("\nEnd.\n");
 }
 
@@ -188,19 +318,19 @@ int main(void)
 // job 1 
 // token 1 = ls token2 = -l
 // 1 = commande 2 = arg
-#define $LS ls
+// #define $LS ls
 
-minishell struct 
-{
-	job* toutlesjobs;
-}
+// minishell struct 
+// {
+// 	job* toutlesjobs;
+// }
 
-token struct
-{
+// token struct
+// {
 	
-}
+// }
 
-job struct 
-{
-	int *pipe_exit = pipedes[0];
-}
+// job struct 
+// {
+// 	int *pipe_exit = pipedes[0];
+// }
