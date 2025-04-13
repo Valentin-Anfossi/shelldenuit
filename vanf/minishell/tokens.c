@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 16:39:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/14 00:44:02 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/14 01:25:35 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,26 @@ s_token **tokenizer_start(char *line)
 	while(line[i])
 	{
 		if(line[i] == '$' && line[i+1] && line[i+1] != '?')
-		i = replace_env(line, i, tokens);
+			i = replace_env(line, i, tokens);
 		else if(check_quotes(line,i))
 			i = token_char(line, i ,tokens);
 		else
-		i = tokenizer(line,tokens,i);
+			i = tokenizer(line,tokens,i);
 	}
 	return (tokens);
 }
 
 int replace_env(char *line, int i, s_token **tokens)
 {
-	
+	int length;
+	char *env;
+
+	length = i;
+	while(line[length] != ' ' && line[length])
+		length ++;
+	env = getenv(ft_substr(line,i,length-1));
+	tokenizer(env,tokens,0);
+	return (length);
 }
 
 int check_quotes(char *line, int i)
