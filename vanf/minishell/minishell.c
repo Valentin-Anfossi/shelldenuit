@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:00 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/13 19:24:27 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/13 20:26:59 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int main(void)
 			add_history(line);
 		tokens = tokenizer_start(line);
 		debug_print_tokens(tokens);
+		delete_tokens(tokens);
 	}
 	clear_history();
 	printf("\nEnd.\n");

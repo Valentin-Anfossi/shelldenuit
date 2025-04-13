@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/13 20:06:18 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/13 20:31:17 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int token_char(char *line, int i, s_token **tokens);
 void	token_add_back(s_token **lst, s_token *new);
 s_token	*token_last(s_token *lst);
 int check_for_commands(char *line, int i);
+void delete_tokens(s_token **tokens);
 
 int	ms_strcmp(char *str1, char *str2);
 

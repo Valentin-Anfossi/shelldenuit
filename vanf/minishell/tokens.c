@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 16:39:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/13 20:11:16 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/13 20:30:42 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ int check_for_commands(char *line, int i)
 	while(line[end] != ' ')
 		end++;
 	substr = ft_substr(line,i,end-i);
-	if (ft_strncmp("echo",substr,end - i) == 4)
+	if (ms_strcmp("echo",substr))
 		return (10);
 	else if(ms_strcmp("cd",substr))
 		return (11);
@@ -216,4 +216,19 @@ int check_for_commands(char *line, int i)
 		return (16);
 	else
 		return (0);
+}
+
+void delete_tokens(s_token **tokens)
+{
+	s_token *current;
+	s_token *next;
+
+	current = *tokens;
+	while(current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	return ;
 }
