@@ -3,8 +3,8 @@ LIBFT = ./libft/libft.a
 
 all: $(NAME)
 
-$(NAME): minishell.c $(LIBFT)
-	@gcc -Wall -Wextra -I./libft $< -L./libft -lft -lreadline -o $@
+$(NAME): minishell.c tokens.c utils.c debug_tools.c $(LIBFT)
+	@gcc -Wall -Wextra -I./libft $^ -L./libft -lft -lreadline -o $@
 	echo "compilation reussie !"
 
 $(LIBFT):

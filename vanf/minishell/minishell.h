@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/13 14:18:11 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/13 20:06:18 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,21 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define EXEC 1
+#define CMD 1;
+#define ARG 2;
+#define REDIR_IN 3;
+#define REDIR_OUT 4;
+#define HEREDOC 5;
+#define APPEND 6;
+#define PIPE 7;
+#define ECHO 10;
+#define CD 11;
+#define PWD 12;
+#define EXPORT 13;
+#define UNSET 14;
+#define ENV 15;
+#define EXIT 16;
  
-
 typedef struct t_token s_token;
 
 typedef struct t_shell
@@ -38,14 +50,8 @@ typedef struct t_shell
 	char *line;
 	char **envs_id;
 	char **envs;
+	char **shell_cmds;
 } s_shell;
-
-typedef struct t_input
-{
-	int type;
-	char *path;
-	
-} s_input;
 
 typedef struct t_job
 {
@@ -55,15 +61,29 @@ typedef struct t_job
 	char *infile_path;
 	char *outfile_path;
 	char *args;
+	s_token *tokens;
 } s_job;
 
-struct t_token
+typedef struct t_token
 {
-	int type;
-	char *content;
-	s_token *next;
-};
+    char        *now;
+    int        type;
+    s_token    *next;
+} s_token;
 
-//Token types
-// 1 = exec, 2 = infile, 3 = outfile, 4 = heredoc
-// 5 = outfileappend, 6 = pipe, 7 env variables, 8 = args
+s_token **tokenizer_start(char *line);
+int token_exec(char *line, int i, s_token **tokens);
+int token_append(char *line, int i, s_token **tokens);
+int token_heredoc(char *line, int i, s_token **tokens);
+int token_outfile(char *line, int i, s_token **tokens);
+int token_infile(char *line, int i, s_token **tokens);
+int token_pipe(char *line, int i, s_token **tokens);
+int token_char(char *line, int i, s_token **tokens);
+void	token_add_back(s_token **lst, s_token *new);
+s_token	*token_last(s_token *lst);
+int check_for_commands(char *line, int i);
+
+int	ms_strcmp(char *str1, char *str2);
+
+
+void debug_print_tokens(s_token **tokens);
