@@ -27,11 +27,10 @@ s_token *create_token(void)
 
 	new_token = (s_token *)malloc(sizeof(s_token));
 	new_token->type = 0;
-	new_token->now = NULL;
+	new_token->content = NULL;
 	new_token->next = NULL;
 	return (new_token);
 }
-
 
 s_token **tokenizer_start(char *line)
 {
@@ -40,34 +39,24 @@ s_token **tokenizer_start(char *line)
 	
 	tokens = create_tokenlst();
 	i = 0;
+	// line = create_input_line(line);
 	while(line[i])
 	{
-		if(line[i] == '$' && line[i+1] && line[i+1] != '?')
-			i = replace_env(line, i, tokens);
-		else if(check_quotes(line,i))
-			i = token_char(line, i ,tokens);
-		else
-			i = tokenizer(line,tokens,i);
+		i = tokenizer(line,tokens,i);
+		if(i < 0)
+			{
+				delete_tokens(tokens);
+				break;
+			}
 	}
 	return (tokens);
 }
 
-int replace_env(char *line, int i, s_token **tokens)
-{
-	int length;
-	char *env;
 
-	length = i;
-	while(line[length] != ' ' && line[length])
-		length ++;
-	env = getenv(ft_substr(line,i,length-1));
-	tokenizer(env,tokens,0);
-	return (length);
-}
 
 int check_quotes(char *line, int i)
 {
-	
+	return(i++);
 }
 
 int tokenizer(char *line, s_token **tokens, int i)
@@ -84,18 +73,72 @@ int tokenizer(char *line, s_token **tokens, int i)
 		i = token_infile(line,i,tokens);
 	else if(line[i] == '|')
 		i = token_pipe(line,i,tokens);
+	else if(line[i] == '"' && line[i] == '\'')
+		i = token_quotes(line,i,tokens);
 	else
 		i = tokenizer_helper(line, i, tokens);
 	return (i);
 }
 
+int token_quotes(char *line, int i, s_token **tokens)
+{
+	if(line[i] == '"')
+	{
+		while(line[++i])
+			if(line[i] == '"')
+
+			
+			else
+				i++;
+	}
+}
+
+
+
+
+
+"asd $TEST asd" 
+'asd $TEST asd' 
+
+
 int tokenizer_helper(char *line, int i, s_token **tokens)
 {
-	if(line[i] && line[i] != ' ')
+	if(line[i] == '$' && line[i+1] && line[i+1] != '?' && line[i+1] != ' ')
+		i = token_env(line,i,tokens);
+	else if(line[i] && line[i] != ' ')
 		i = token_char(line,i,tokens);
 	else
-		i++;
+	{
+		token_space(tokens);
+		i ++;
+	}
 	return (i);
+}
+
+int token_env(char *line, int i, s_token **tokens)
+{
+	s_token *new_token;
+	int end;
+
+	end = i;
+	while(line[end] && line[end] != ' ')
+		end ++;
+	new_token = create_token();
+	new_token->type = ENV;
+	if(end - i == 0)
+		new_token->content = NULL;
+	else
+		new_token->content = ft_substr(line,i,end-i);
+	token_add_back(tokens, new_token);
+	return (end);
+}
+
+void token_space(s_token **tokens)
+{
+	s_token *new_token;
+	new_token = create_token();
+	new_token->type = SPC;
+	token_add_back(tokens, new_token);
 }
 
 //Create a Executable token containing path and adds it to the list
@@ -110,9 +153,9 @@ int token_exec(char *line, int i, s_token **tokens)
 	new_token = create_token();
 	new_token->type = CMD;
 	if(end - i == 0)
-		new_token->now = NULL;
+		new_token->content = NULL;
 	else
-		new_token->now = ft_substr(line,i,end-i);
+		new_token->content = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
 }
@@ -124,17 +167,17 @@ int token_append(char *line, int i, s_token **tokens)
 	int end;
 
 	i += 2;
-	while(line[i] == ' ')
+	while(line[i] && line[i] == ' ')
 		i ++;
 	end = i;
-	while(line[end] && line[end] != ' ')
+	while(line[end] && line[end] != ' ' && check_les_chevrons(line, end))
 		end ++;
 	new_token = create_token();
 	new_token->type = APPEND;
 	if(end - i == 0)
-		new_token->now = NULL;
+		new_token->content = NULL;
 	else
-		new_token->now = ft_substr(line,i,end-i);
+		new_token->content = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
 }
@@ -149,14 +192,14 @@ int token_heredoc(char *line, int i, s_token **tokens)
 	while(line[i] && line[i] == ' ')
 		i ++;
 	end = i;
-	while(line[end] && line[end] != ' ')
+	while(line[end] && line[end] != ' ' && check_les_chevrons(line, end))
 		end ++;
 	new_token = create_token();
 	new_token->type = HEREDOC;
 	if(end - i == 0)
-		new_token->now = NULL;
+		new_token->content = NULL;
 	else
-		new_token->now = ft_substr(line,i,end-i);
+		new_token->content = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
 }
@@ -171,16 +214,27 @@ int token_outfile(char *line, int i, s_token **tokens)
 	while(line[i] && line[i] == ' ')
 		i ++;
 	end = i;
-	while(line[end] && line[end] != ' ')
+	while(line[end] && line[end] != ' ' && check_les_chevrons(line, end))
 		end ++;
 	new_token = create_token();
 	new_token->type = REDIR_OUT;
 	if(end - i == 0)
-		new_token->now = NULL;
+		new_token->content = NULL;
 	else
-		new_token->now = ft_substr(line,i,end-i);
+		new_token->content = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
+}
+
+int check_les_chevrons(char *line, int i)
+{
+	if(line[i] == '<' || line[i] == '>')
+		return (0);
+	if(line[i] == '(' || line[i] == ')')
+		return (0);
+	if(line[i] == ';')
+		return (0);
+	return (1);
 }
 
 //Create a infile token containing relative file path
@@ -193,14 +247,14 @@ int token_infile(char *line, int i, s_token **tokens)
 	while(line[i] && line[i] == ' ')
 		i ++;
 	end = i;
-	while(line[end] && line[end] != ' ')
+	while(line[end] && line[end] != ' ' && check_les_chevrons(line, end))
 		end ++;
 	new_token = create_token();
 	new_token->type = REDIR_IN;
 	if(end - i == 0)
-		new_token->now = NULL;
+		new_token->content = NULL;
 	else
-		new_token->now = ft_substr(line,i,end-i);
+		new_token->content = ft_substr(line,i,end-i);
 	token_add_back(tokens, new_token);
 	return (end);
 }
@@ -214,14 +268,9 @@ int token_pipe(char *line, int i, s_token **tokens)
 	i ++;
 	new_token = create_token();
 	new_token->type = PIPE;
-	new_token->now = NULL;
+	new_token->content = NULL;
 	token_add_back(tokens, new_token);
 	return (i);
-}
-
-int token_env(char *line, int i, s_token **tokens)
-{
-	
 }
 
 //Checks if token is a Shell command then create a arg token if not
@@ -242,9 +291,9 @@ int token_char(char *line, int i, s_token **tokens)
 	{
 		new_token->type = ARG;
 		if(end - i == 0)
-			new_token->now = NULL;
+			new_token->content = NULL;
 		else
-			new_token->now = ft_substr(line, i, end - i);
+			new_token->content = ft_substr(line, i, end - i);
 	}
 	token_add_back(tokens, new_token);
 	return (end);
@@ -257,7 +306,7 @@ int check_for_commands(char *line, int i)
 	int end;
 
 	end = i;
-	while(line[end] != ' ')
+	while(line[end] != ' ' && line[end])
 		end++;
 	substr = ft_substr(line,i,end-i);
 	if (ms_strcmp("echo",substr))
@@ -283,6 +332,8 @@ void delete_tokens(s_token **tokens)
 	s_token *current;
 	s_token *next;
 
+	if(!tokens)
+		return ;
 	current = *tokens;
 	while(current)
 	{

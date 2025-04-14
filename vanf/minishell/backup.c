@@ -215,3 +215,51 @@ int start_jobs(char *line)
 	delete_job(job);
 	//job_print(job);
 }
+
+// char *create_input_line(char *line)
+// {
+// 	char *before;
+// 	char *after;
+// 	char *env;
+// 	int i;
+// 	int end;
+
+// 	i = 0;
+	
+// 	while(line[i])
+// 	{
+// 		if (line[i] == '$' && (line[i + 1] != '?' || line[i + 1] != ' ') && line[i+1])
+// 		{
+// 			end = i;
+// 			before = ft_substr(line,0, i-1);
+// 			while(line[i] != ' ')
+// 				end ++;
+// 			env = getenv(ft_substr(line,i,end-i));
+// 			ft_strlcat(before,env,ft_strlen(before)+ft_strlen(env));
+// 			i = end;
+// 		}
+// 		else
+// 			before[i] = line [i];
+// 	}
+// 	return (before);
+// }
+
+// int replace_env(char *line, int i, s_token **tokens)
+// {
+// 	int end;
+// 	char *env;
+// 	char *stor;
+// 	int start;
+
+// 	start = 0;
+// 	end = i;
+// 	while(line[end] != ' ' && line[end])
+// 		end ++;
+// 	env = getenv(ft_substr(line,i,end-i));
+// 	printf("Test: %s,%d",ft_substr(line,i,end-i),end);
+// 	if(!env)
+// 		return(end);
+// 	//stor = ft_strdup(env);
+// 	tokenizer(env,tokens,0);
+// 	return (end);
+// }
