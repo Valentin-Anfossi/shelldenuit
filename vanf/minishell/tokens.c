@@ -115,6 +115,9 @@ int token_dblq(char *line, int i, s_token **tokens)
 // ie : echo bou ">" out == bou > out
 // '' is the same except it doesnt expands the env variables in echo
 
+//ENV Variables can contain commands/args/anything
+// In case the command is not echo, they should be expanded and tokenized
+
 int tokenizer_helper(char *line, int i, s_token **tokens)
 {
 	if(line[i] == '$' && line[i+1] && line[i+1] != '?' && line[i+1] != ' ')
