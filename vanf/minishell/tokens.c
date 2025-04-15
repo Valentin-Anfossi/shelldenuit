@@ -54,8 +54,11 @@ s_token **tokenizer_start(char *line)
 
 
 
-int check_quotes(char *line, int i)
+int check_single_quotes(char *line, int i)
 {
+	while(line[i])
+	{
+	}
 	return(i++);
 }
 
@@ -73,7 +76,7 @@ int tokenizer(char *line, s_token **tokens, int i)
 		i = token_infile(line,i,tokens);
 	else if(line[i] == '|')
 		i = token_pipe(line,i,tokens);
-	else if(line[i] == '"' && line[i] == '\'')
+	else if(line[i] == '"' || line[i] == '\'')
 		i = token_quotes(line,i,tokens);
 	else
 		i = tokenizer_helper(line, i, tokens);
@@ -83,22 +86,33 @@ int tokenizer(char *line, s_token **tokens, int i)
 int token_quotes(char *line, int i, s_token **tokens)
 {
 	if(line[i] == '"')
-	{
-		while(line[++i])
-			if(line[i] == '"')
+		i = token_dblq(line, i, tokens);
+	else if(line[i] == '\'')
+		i = token_q(line,i, tokens);
+	return (i);
+}
 
+int token_dblq(char *line, int i, s_token **tokens)
+{
+	int end;
+
+	end = i;
+	i++;
+	while(line[i])
+	{
+		if(line[i]=='"')
 			
-			else
-				i++;
 	}
 }
 
-
-
-
-
-"asd $TEST asd" 
-'asd $TEST asd' 
+// "" can be a "-n" for echo command ONLY if it's separated by a space
+// ie : echo "-n" bou == bou(without newline)
+// but : echo "-n"bou == -nbou
+// and : echo bou"-n" == bou-n
+// "" can be a command, ie: "cd" .. works
+// "" can be a path for cd , ie "cd" "vanf" works
+// "" cannot be a pipe or >> << < >
+// ie : echo bou ">" out == bou > out
 
 
 int tokenizer_helper(char *line, int i, s_token **tokens)

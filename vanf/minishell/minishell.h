@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/14 18:00:48 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:24:44 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@
 #define EXPORT 13;
 #define UNSET 14;
 #define EXIT 15;
-
+#define ARGSIN 20;
+#define ARGDOU 21;
  
 typedef struct t_token s_token;
 
