@@ -92,6 +92,11 @@ int token_quotes(char *line, int i, s_token **tokens)
 	return (i);
 }
 
+int token_q(char *line, int i, s_token **tokens)
+{
+	return (0);
+}
+
 int token_dblq(char *line, int i, s_token **tokens)
 {
 	int end;
@@ -101,15 +106,17 @@ int token_dblq(char *line, int i, s_token **tokens)
 	while(line[i])
 	{
 		if(line[i]=='"')
-			
+			return (0);
 	}
 }
+
 
 // "" can be a "-n" for echo command ONLY if it's separated by a space
 // ie : echo "-n" bou == bou(without newline)
 // but : echo "-n"bou == -nbou
 // and : echo bou"-n" == bou-n
 // "" can be a command, ie: "cd" .. works
+// but "cd .." == command not found
 // "" can be a path for cd , ie "cd" "vanf" works
 // "" cannot be a pipe or >> << < >
 // ie : echo bou ">" out == bou > out

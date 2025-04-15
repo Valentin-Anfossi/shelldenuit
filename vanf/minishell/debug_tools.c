@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:20:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/14 14:56:55 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:07:18 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void debug_print_tokens(s_token **tokens)
 	printf("-=Tokens print=-\n");
 	while(cur_token)
 	{
-		printf("{Type:%d Content:\"%s\"} ",cur_token->type, cur_token->content);
+		if(!cur_token->content)
+			printf("{Type:%d} ",cur_token->type);
+		else
+			printf("{Type:%d Content:\"%s\"} ",cur_token->type, cur_token->content);
 		cur_token = cur_token->next;
 		i++;
 	}
