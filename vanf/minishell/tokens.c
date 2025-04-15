@@ -113,7 +113,7 @@ int token_dblq(char *line, int i, s_token **tokens)
 // "" can be a path for cd , ie "cd" "vanf" works
 // "" cannot be a pipe or >> << < >
 // ie : echo bou ">" out == bou > out
-
+// '' is the same except it doesnt expands the env variables in echo
 
 int tokenizer_helper(char *line, int i, s_token **tokens)
 {
