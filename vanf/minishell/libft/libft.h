@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:36 by vanfossi          #+#    #+#             */
-/*   Updated: 2024/12/07 19:27:09 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:37:03 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdarg.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include <stdint.h>
 
 //# define SIZE_MAX  	2147483647
 # define INT_MAX  	2147483647
