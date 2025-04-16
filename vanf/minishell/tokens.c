@@ -118,6 +118,7 @@ int token_dblq(char *line, int i, s_token **tokens)
 // "" can be a command, ie: "cd" .. works
 // but "cd .." == command not found
 // "" can be a path for cd , ie "cd" "vanf" works
+// cd "va"nf works as well
 // "" cannot be a pipe or >> << < >
 // ie : echo bou ">" out == bou > out
 // '' is the same except it doesnt expands the env variables in echo
