@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/17 13:47:43 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:16:01 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,15 @@ void	create_space_token(t_token **tokens)
 	new_token = malloc_token();
 	new_token->content = " ";
 	token_add_back(tokens,new_token);
+}
+
+void split_tokens(char *line, int start, int end, t_token **tokens)
+{
+	while(start<end)
+	{
+			
+	}
+	
 }
 
 void create_token(char *line, int start, int end, t_token **tokens)
@@ -113,7 +122,6 @@ t_token **create_lst_tokens2(char *line)
     if (start < end) {
         create_token(line, start, end, tokens);
     }
-    
     return tokens;
 }
 
