@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/17 13:29:19 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:47:43 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,79 +59,62 @@ void create_token(char *line, int start, int end, t_token **tokens)
 
 t_token **create_lst_tokens2(char *line)
 {
-	int in_doubles;
-	int in_singles;
-	int start;
-	int end;
-	t_token **tokens;
-	
-	tokens = (t_token **)malloc(sizeof(t_token *));
-	*tokens = NULL;
-	in_doubles = 0;
-	in_singles = 0;
-	start = 0;
-	end = 0;
-	while(line[end])
-	{
-		if (line[end] == '"')
-		{
-			if(in_doubles)
-			{
-				printf("0\n");
-				create_token(line,start,end+1,tokens);
-				start = end +1;
-				in_doubles = 0;				
-			}
-			else if(ft_strchr(&line[end+1],'"'))
-			{
-				printf("1\n");
-				create_token(line,start,end,tokens);
-				start = end;
-				in_doubles = 1;
-			}
-			else if(start != 0)
-			{
-				printf("2\n");
-				create_token(line,start,end+1,tokens);
-				start ++;
-			}
-		}
-		if (line[end] == '\'')
-		{
-			if(in_singles)
-			{
-				printf("3\n");
-				create_token(line,start,end+1,tokens);
-				start = end +1;
-				in_singles = 0;				
-			}
-			else if(ft_strchr(&line[end+1],'"'))
-			{
-				printf("4\n");
-				create_token(line,start,end,tokens);
-				start = end;
-				in_singles = 1;
-			}
-			else if(start != 0)
-			{
-				printf("5\n");
-				create_token(line,start,end+1,tokens);
-				start ++;
-			}
-		}
-		else if (line[end] == ' ' && !in_doubles)
-		{
-			printf("6\n");
-			create_token(line,start,end,tokens);
-			create_space_token(tokens);
-			start = end + 1;
-			in_doubles = 0;
-		}
-		end ++;
-	}
-	if(line[end - 1] != '"')
-		create_token(line,start,end,tokens);
-	return (tokens);
+    int in_doubles = 0;
+    int in_singles = 0;
+    int start = 0;
+    int end = 0;
+    t_token **tokens;
+    
+    tokens = (t_token **)malloc(sizeof(t_token *));
+    *tokens = NULL;
+    
+    while(line[end])
+    {
+        if (line[end] == '"' && !in_singles)
+        {
+            if(in_doubles)
+            {
+                create_token(line, start, end + 1, tokens);
+                start = end + 1;
+                in_doubles = 0;
+            }
+            else if(ft_strchr(&line[end + 1], '"'))
+            {
+                create_token(line, start, end, tokens);
+                start = end;
+                in_doubles = 1;
+            }
+        }
+        else if (line[end] == '\'' && !in_doubles)
+        {
+            if(in_singles)
+            {
+                create_token(line, start, end + 1, tokens);
+                start = end + 1;
+                in_singles = 0;
+            }
+            else if(ft_strchr(&line[end + 1], '\''))
+            {
+                create_token(line, start, end, tokens);
+                start = end;
+                in_singles = 1;
+            }
+        }
+        else if (line[end] == ' ' && !in_doubles && !in_singles)
+        {
+            if (start != end) {
+                create_token(line, start, end, tokens);
+            }
+            create_space_token(tokens);
+            start = end + 1;
+        }
+        end++;
+    }
+    if (start < end) {
+        create_token(line, start, end, tokens);
+    }
+    
+    return tokens;
 }
 
 
