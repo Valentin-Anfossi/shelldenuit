@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/17 13:29:19 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:33:49 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_token **create_lst_tokens2(char *line)
 				start = end +1;
 				in_singles = 0;				
 			}
-			else if(ft_strchr(&line[end+1],'"'))
+			else if(ft_strchr(&line[end+1],'\''))
 			{
 				printf("4\n");
 				create_token(line,start,end,tokens);
