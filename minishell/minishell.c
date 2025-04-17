@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/16 19:42:57 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/17 03:18:15 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,41 +46,16 @@ void	create_space_token(t_token **tokens)
 void create_token(char *line, int start, int end, t_token **tokens)
 {
 	t_token *new_token;
+	int i;
 
+	if(end <= start)
+		return ;
 	new_token = malloc_token();
 	new_token->content = ft_substr(line, start, (end-start));
 	token_add_back(tokens,new_token);
 }
 
-t_token **create_lst_tokens(char *line)
-{
-	int start = 0;
-	int end = 0;
-	t_token **tokens;
-
-	tokens = (t_token **)malloc(sizeof(t_token *));
-	*tokens = NULL;
-	while(end <= (int)ft_strlen(line)) //"asd" "asd"
-	{
-		if(line[end] == ' ' || end == (int)ft_strlen(line))
-		{
-			create_token(line,start,end,tokens);
-			create_space_token(tokens);
-			start = end;
-			start ++;
-		}
-		if(line[end] == '"')
-			if (ft_strchr(&line[end],'"'))
-            {
-    			end += create_quoted_token(&line[end], tokens);
-                start = end;
-                continue ; 
-            }
-		end ++;
-	}
-    	// create_token(line, start, end, tokens);
-	return (tokens);
-}
+// Looks OK ! mais a tester !
 
 t_token **create_lst_tokens2(char *line)
 {
@@ -88,7 +63,7 @@ t_token **create_lst_tokens2(char *line)
 	int start;
 	int end;
 	t_token **tokens;
-
+	
 	tokens = (t_token **)malloc(sizeof(t_token *));
 	*tokens = NULL;
 	in_quotes = 0;
@@ -96,25 +71,35 @@ t_token **create_lst_tokens2(char *line)
 	end = 0;
 	while(line[end])
 	{
-		if(line[end] == '"' && in_quotes)
+		if (line[end] == '"')
 		{
-			create_token(line,start,end+1,tokens);
-			start = end +1;
-			in_quotes = 0;
-		}
-		else if (line[end] == '"')
-		{
-			if(ft_strchr(&line[end+1],'"') && start != 0)
+			if(in_quotes)
 			{
+				printf("0\n");
+				create_token(line,start,end+1,tokens);
+				start = end +1;
+				in_quotes = 0;				
+			}
+			else if(ft_strchr(&line[end+1],'"'))
+			{
+				printf("1\n");
 				create_token(line,start,end,tokens);
 				start = end;
 				in_quotes = 1;
 			}
+			else if(start != 0)
+			{
+				printf("3\n");
+				create_token(line,start,end+1,tokens);
+				start ++;
+			}
 		}
 		else if (line[end] == ' ' && !in_quotes)
 		{
+			printf("2\n");
 			create_token(line,start,end,tokens);
-			start = end;
+			create_space_token(tokens);
+			start = end + 1;
 			in_quotes = 0;
 		}
 		end ++;
@@ -124,11 +109,12 @@ t_token **create_lst_tokens2(char *line)
 	return (tokens);
 }
 
+
 t_token **organize_tokens(t_token **tokens)
 {
-	if(ms_strcmpdsa
-}	
 	
+}	
+
 
 int create_quoted_token(char *line, t_token **tokens)
 {
@@ -159,11 +145,41 @@ int create_quoted_token(char *line, t_token **tokens)
 
 //abou jdskdjskj "000"asda"sada asd
 // if croise une quote(weshlaquote)
-	// strchr("ouellestlaquote")
-		//si oui (bien)
-			//on continue jusqua cote et on tokenize
-		//si non (bou)
-			//on tokenize au prochain espace
+// strchr("ouellestlaquote")
+//si oui (bien)
+//on continue jusqua cote et on tokenize
+//si non (bou)
+//on tokenize au prochain espace
 
 
 // minishell :cd "bonjour
+
+// t_token **create_lst_tokens(char *line)
+// {
+// 	int start = 0;
+// 	int end = 0;
+// 	t_token **tokens;
+
+// 	tokens = (t_token **)malloc(sizeof(t_token *));
+// 	*tokens = NULL;
+// 	while(end <= (int)ft_strlen(line)) //"asd" "asd"
+// 	{
+// 		if(line[end] == ' ' || end == (int)ft_strlen(line))
+// 		{
+// 			create_token(line,start,end,tokens);
+// 			create_space_token(tokens);
+// 			start = end;
+// 			start ++;
+// 		}
+// 		if(line[end] == '"')
+// 			if (ft_strchr(&line[end],'"'))
+//             {
+//     			end += create_quoted_token(&line[end], tokens);
+//                 start = end;
+//                 continue ; 
+//             }
+// 		end ++;
+// 	}
+//     	// create_token(line, start, end, tokens);
+// 	return (tokens);
+// }
