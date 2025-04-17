@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/17 13:47:43 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:43:56 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,47 @@ void	create_space_token(t_token **tokens)
 	token_add_back(tokens,new_token);
 }
 
+int check_redirection(char *line)
+{
+	if(*line == '>' && *(line+1) == '>')
+		return (2);
+	else if(*line == '<' && *(line+1) == '<')
+		return (2);
+	else if(*line == '>')
+		return (1);
+	else if(*line == '<')
+		return (1);
+	else
+		return (0);
+}
+
+void split_token(char *line, int start, int end, t_token **tokens)
+{
+	int i;
+	
+	i = 0;
+	i = start;
+	while(i <= end)
+	{
+		if(check_redirection(&line[i]))
+		{
+			printf("0");
+			create_token(line,start,i,tokens);
+			create_token(line,i,i + check_redirection(&line[i]),tokens);
+			i += (check_redirection(&line[i]));
+			start = i;
+		}
+		else if(i == end)
+		{
+			printf("1");
+			create_token(line,start,end,tokens);
+			i++;
+		}
+		else
+			i ++;
+	}
+}
+
 void create_token(char *line, int start, int end, t_token **tokens)
 {
 	t_token *new_token;
@@ -56,6 +97,9 @@ void create_token(char *line, int start, int end, t_token **tokens)
 }
 
 // Looks OK ! mais a tester !
+// TO DO :
+// pour reduire a 25 lines : tout mettre dans une struct et changer les values avec -> dans les create tokens func
+// chiant a faire mais ca devrait passer
 
 t_token **create_lst_tokens2(char *line)
 {
@@ -80,7 +124,7 @@ t_token **create_lst_tokens2(char *line)
             }
             else if(ft_strchr(&line[end + 1], '"'))
             {
-                create_token(line, start, end, tokens);
+                split_token(line, start, end, tokens);
                 start = end;
                 in_doubles = 1;
             }
@@ -95,7 +139,7 @@ t_token **create_lst_tokens2(char *line)
             }
             else if(ft_strchr(&line[end + 1], '\''))
             {
-                create_token(line, start, end, tokens);
+                split_token(line, start, end, tokens);
                 start = end;
                 in_singles = 1;
             }
@@ -103,7 +147,7 @@ t_token **create_lst_tokens2(char *line)
         else if (line[end] == ' ' && !in_doubles && !in_singles)
         {
             if (start != end) {
-                create_token(line, start, end, tokens);
+                split_token(line, start, end, tokens);
             }
             create_space_token(tokens);
             start = end + 1;
@@ -111,16 +155,16 @@ t_token **create_lst_tokens2(char *line)
         end++;
     }
     if (start < end) {
-        create_token(line, start, end, tokens);
+        split_token(line, start, end, tokens);
     }
     
     return tokens;
 }
 
 
-t_token **organize_tokens(t_token **tokens)
+t_token **type_tokens(t_token **tokens)
 {
-	
+		
 }	
 
 
