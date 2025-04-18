@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/18 03:29:10 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/18 03:37:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void type_tokens(t_token **tokens);
 
 // si tu veux test fais toi plaiz, vaut mieux trouver les bug maintenant
 // en gros on est de retour a ce qu'on avait avant (avec les quotes)
+// maintenant faut faire le parser
+// https://www.geeksforgeeks.org/recursive-descent-parser/
 // il est 3h du mat donc bonne nuit
 
 int main(void)
