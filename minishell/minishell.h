@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/16 17:08:18 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/18 03:12:11 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,14 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define CMD 1
-#define ARG 2
+#define ARG 1
+#define RE_OUT 2
+#define RE_APP 3
+#define RE_IN 4
+#define HEREDOC 5
+#define QUO_S 6
+#define QUO_D 7
+#define SPC 8
 
 typedef struct s_token t_token;
 

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/17 19:43:56 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/18 03:29:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,21 @@ void	create_space_token(t_token **tokens);
 t_token **create_lst_tokens(char *line);
 int create_quoted_token(char *line, t_token **tokens);
 t_token **create_lst_tokens2(char *line);
+void type_tokens(t_token **tokens);
+
+// BONJOUR JF
+//CES INSTRUCTIONS SAUTODETRUIRON DANS 69 SECONDES
+// EN VRAI JE CROIS CA MARCHE
+// CA FAIT AUSSI LES TYPES
+
+//en gros : ca fait les tokens avec create_lst_tokens2
+//si c'est du texte ca l'envoie dans split token
+//		ca split les >> < << etc et ca fait des tokens
+//sinon si c'est entre quotes ca en fait un token
+
+// si tu veux test fais toi plaiz, vaut mieux trouver les bug maintenant
+// en gros on est de retour a ce qu'on avait avant (avec les quotes)
+// il est 3h du mat donc bonne nuit
 
 int main(void)
 {
@@ -28,7 +43,8 @@ int main(void)
 	{
 		line = readline("labonneshell :");
 		if(line)
-			tokens = create_lst_tokens2(line);	
+			tokens = create_lst_tokens2(line);
+		type_tokens(tokens);	
 		debug_print_tokens(tokens);
 	}
 		
@@ -67,7 +83,6 @@ void split_token(char *line, int start, int end, t_token **tokens)
 	{
 		if(check_redirection(&line[i]))
 		{
-			printf("0");
 			create_token(line,start,i,tokens);
 			create_token(line,i,i + check_redirection(&line[i]),tokens);
 			i += (check_redirection(&line[i]));
@@ -75,7 +90,6 @@ void split_token(char *line, int start, int end, t_token **tokens)
 		}
 		else if(i == end)
 		{
-			printf("1");
 			create_token(line,start,end,tokens);
 			i++;
 		}
@@ -87,7 +101,6 @@ void split_token(char *line, int start, int end, t_token **tokens)
 void create_token(char *line, int start, int end, t_token **tokens)
 {
 	t_token *new_token;
-	int i;
 
 	if(end <= start)
 		return ;
@@ -111,7 +124,6 @@ t_token **create_lst_tokens2(char *line)
     
     tokens = (t_token **)malloc(sizeof(t_token *));
     *tokens = NULL;
-    
     while(line[end])
     {
         if (line[end] == '"' && !in_singles)
@@ -161,11 +173,35 @@ t_token **create_lst_tokens2(char *line)
     return tokens;
 }
 
-
-t_token **type_tokens(t_token **tokens)
+//25 lignes tout pile 
+void type_tokens(t_token **tokens)
 {
-		
-}	
+	t_token *t;
+
+	t = *tokens;
+	while(t)
+	{
+		if(!ms_strcmp(t->content,">"))
+			t->type = RE_OUT;
+		else if(!ms_strcmp(t->content,">>"))
+			t->type = RE_APP;
+		else if(!ms_strcmp(t->content,"<"))
+			t->type = RE_IN;
+		else if(!ms_strcmp(t->content,"<<"))
+			t->type = HEREDOC;
+		else if(t->content[0]=='"' && t->content[ft_strlen(t->content)-1] == '"')
+			t->type = QUO_D;
+		else if(t->content[0]=='\'' && t->content[ft_strlen(t->content)-1] == '\'')
+			t->type = QUO_S;
+		else if(!ms_strcmp(t->content," "))
+			t->type = SPC;
+		else
+			t->type = ARG;
+		if(!t->next)
+			break;
+		t = t->next;
+	}
+}
 
 
 int create_quoted_token(char *line, t_token **tokens)
