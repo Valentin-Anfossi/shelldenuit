@@ -99,3 +99,18 @@ void debug_print_tokens(t_token **tokens)
 	printf("\n");
 	//printf("\n-=End=-\n");
 }
+
+void debug_print_job(t_job **jobs)
+{
+	t_job *job;
+	int	i = 0;
+
+	job = *jobs;
+	if (job->cmd)
+		ft_printf("%s", job->cmd);
+	while (job->args[i])
+	{
+		ft_printf("%s", job->args[i]);
+		i++;
+	}
+}

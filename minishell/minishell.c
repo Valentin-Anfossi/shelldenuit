@@ -20,6 +20,98 @@ int create_quoted_token(char *line, t_token **tokens);
 t_token **create_lst_tokens2(char *line);
 void type_tokens(t_token **tokens);
 
+// SALUT VAL
+// CE MESSAGE S'AUTODETRUIRA PAS PARCE QUE JE SAIS PAS CODER CA
+// J'ai pas trouver d'erreur dans le tokeniser GG ! (j.ai juste ajouter un check pour le pipe)
+// du coup en ce qui concerne le parsing, je fais peut etre fausse route
+// mais la seule chose qui m'est venu en tete c'est de :
+// commencer a preparer les jobs en creeant une struct t_job
+// commencer a checker les erreurs de commande
+// QUESTION : quand on tokenise les redir heredoc et append, ce serait pas mieux de ne pas les differencier 
+//			dans le tokeniser mais plutot apres la creation du JOB, au moment ou on "execute" la redir/heredoc ??? 
+//
+//ATTENTION SPOIL : ce que j'ai fait la, segfault.... Je recheck ca vite la je pars au taff !
+//
+//
+//petite info pour le pipe : si il est entre quote, il joue pas le role de pipe 
+// jelucian@c1r2p8:~/Core$ echo salut "|" cat yo.txt 
+// salut | cat yo.txt
+
+
+t_job	*malloc_job(void)
+{
+	t_job *job;
+
+	job = (t_job *)malloc(sizeof(t_job));
+	job->args = NULL;
+	job->cmd = NULL;
+	job->redir = NULL;
+	job->piped_job = NULL;
+	return (job);
+}
+
+int check_for_commands(char *content)
+{
+
+	if (ms_strcmp("echo", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if(ms_strcmp("cd", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if(ms_strcmp("pwd", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if(ms_strcmp("export", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if(ms_strcmp("unset", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if(ms_strcmp("env", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if(ms_strcmp("exit", ft_strtrim(content, "\"\'")))
+		return (1);
+	write(2, ft_strtrim(content, "\"\'"), ft_strlen(ft_strtrim(content, "\"\'")));
+	write(2, ": command not found", 20);
+	return (0);
+}
+// skip les espaces au debut a faire;
+t_job	*create_job(t_token *tokens, t_job **jobs)
+{
+	t_job	*new_job;
+	int		i;
+
+	i = 0;
+	new_job = malloc_job();
+	if (check_for_commands(tokens[0].content))
+		new_job->cmd = ft_strtrim(tokens[0].content, "\"\'");
+	tokens = tokens->next;
+	while(tokens)
+	{
+		if (tokens->type == ARG && tokens->content == "|")
+			new_job->piped_job = create_job(tokens, jobs);
+		else if (tokens->type == ARG || tokens->type == QUO_D || tokens->type == QUO_S)
+		{
+			new_job->args[i] = tokens->content;
+			i++;
+		}
+		else if (tokens->type != SPC)
+			new_job->redir[0] = tokens->content;
+		if (!tokens->next)
+			break;
+		tokens = tokens->next;
+	}
+	return (new_job);
+}
+
+
+t_job	**create_lst_job(t_token **tokens)
+{
+	t_job **jobs;
+	t_token *t;
+	
+	t = *tokens;
+	jobs = (t_job **)malloc(sizeof(t_job *));
+	*jobs = create_job(t, jobs);
+	return (jobs);
+}
+
 // BONJOUR JF
 //CES INSTRUCTIONS SAUTODETRUIRON DANS 69 SECONDES
 // EN VRAI JE CROIS CA MARCHE
@@ -40,17 +132,18 @@ int main(void)
 {
 	char *line;
 	t_token **tokens;
+	t_job	**jobs;
 
 	while(1)
 	{
 		line = readline("labonneshell :");
 		if(line)
 			tokens = create_lst_tokens2(line);
-		type_tokens(tokens);	
+		type_tokens(tokens);
 		debug_print_tokens(tokens);
+		jobs = create_lst_job(tokens);
+	//	debug_print_job(jobs);
 	}
-		
-
 }
 
 void	create_space_token(t_token **tokens)
@@ -61,7 +154,7 @@ void	create_space_token(t_token **tokens)
 	token_add_back(tokens,new_token);
 }
 
-int check_redirection(char *line)
+int check_redirection_pipe(char *line)
 {
 	if(*line == '>' && *(line+1) == '>')
 		return (2);
@@ -70,6 +163,8 @@ int check_redirection(char *line)
 	else if(*line == '>')
 		return (1);
 	else if(*line == '<')
+		return (1);
+	else if(*line == '|')
 		return (1);
 	else
 		return (0);
@@ -83,11 +178,11 @@ void split_token(char *line, int start, int end, t_token **tokens)
 	i = start;
 	while(i <= end)
 	{
-		if(check_redirection(&line[i]))
+		if(check_redirection_pipe(&line[i]))
 		{
 			create_token(line,start,i,tokens);
-			create_token(line,i,i + check_redirection(&line[i]),tokens);
-			i += (check_redirection(&line[i]));
+			create_token(line,i,i + check_redirection_pipe(&line[i]),tokens);
+			i += (check_redirection_pipe(&line[i]));
 			start = i;
 		}
 		else if(i == end)
@@ -218,6 +313,7 @@ int create_quoted_token(char *line, t_token **tokens)
 	create_token(line, 0, i + 1, tokens);
     return (i + 1);
 }
+
 
 
 // if strchr("/")
