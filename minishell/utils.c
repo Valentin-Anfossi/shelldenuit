@@ -76,10 +76,8 @@ t_token *malloc_token(void)
 }
 void debug_print_tokens(t_token **tokens)
 {
-	int i;
-	
 	t_token *cur_token;
-	i = 0;
+
 	if(!tokens)
 	{
 		printf("No token list to print !\n");
@@ -94,7 +92,6 @@ void debug_print_tokens(t_token **tokens)
 		else
 			printf("{%d:%s}",cur_token->type,cur_token->content);
 		cur_token = cur_token->next;
-		i++;
 	}
 	printf("\n");
 	//printf("\n-=End=-\n");
@@ -106,11 +103,17 @@ void debug_print_job(t_job **jobs)
 	int	i = 0;
 
 	job = *jobs;
+	if (!jobs)
+	{
+		ft_printf("No job");
+		return ;
+	}
 	if (job->cmd)
-		ft_printf("%s", job->cmd);
+		ft_printf("CMD : %s\n", job->cmd);
 	while (job->args[i])
 	{
-		ft_printf("%s", job->args[i]);
+		ft_printf("ARG %d : %s ; ", i, job->args[i]);
 		i++;
 	}
+	ft_printf("\n");
 }

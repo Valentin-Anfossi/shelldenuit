@@ -43,7 +43,8 @@ t_job	*malloc_job(void)
 	t_job *job;
 
 	job = (t_job *)malloc(sizeof(t_job));
-	job->args = NULL;
+	job->args = malloc(sizeof(char **));
+	job->args[0] = NULL;
 	job->cmd = NULL;
 	job->redir = NULL;
 	job->piped_job = NULL;
@@ -53,49 +54,57 @@ t_job	*malloc_job(void)
 int check_for_commands(char *content)
 {
 
-	if (ms_strcmp("echo", ft_strtrim(content, "\"\'")))
+	if (!ms_strcmp("echo", ft_strtrim(content, "\"\'")))
 		return (1);
-	else if(ms_strcmp("cd", ft_strtrim(content, "\"\'")))
+	else if(!ms_strcmp("cd", ft_strtrim(content, "\"\'")))
 		return (1);
-	else if(ms_strcmp("pwd", ft_strtrim(content, "\"\'")))
+	else if(!ms_strcmp("pwd", ft_strtrim(content, "\"\'")))
 		return (1);
-	else if(ms_strcmp("export", ft_strtrim(content, "\"\'")))
+	else if(!ms_strcmp("export", ft_strtrim(content, "\"\'")))
 		return (1);
-	else if(ms_strcmp("unset", ft_strtrim(content, "\"\'")))
+	else if(!ms_strcmp("unset", ft_strtrim(content, "\"\'")))
 		return (1);
-	else if(ms_strcmp("env", ft_strtrim(content, "\"\'")))
+	else if(!ms_strcmp("env", ft_strtrim(content, "\"\'")))
 		return (1);
-	else if(ms_strcmp("exit", ft_strtrim(content, "\"\'")))
+	else if(!ms_strcmp("exit", ft_strtrim(content, "\"\'")))
 		return (1);
-	write(2, ft_strtrim(content, "\"\'"), ft_strlen(ft_strtrim(content, "\"\'")));
-	write(2, ": command not found", 20);
-	return (0);
+    else
+    {
+	    write(2, ft_strtrim(content, "\"\'"), ft_strlen(ft_strtrim(content, "\"\'")));
+	    write(2, ": command not found\n", 20);
+	    return (0);
+    }
 }
 // skip les espaces au debut a faire;
-t_job	*create_job(t_token *tokens, t_job **jobs)
+t_job	*create_job(t_token **tokens, t_job **jobs)
 {
 	t_job	*new_job;
+    t_token *t;
 	int		i;
 
+    t = *tokens;
 	i = 0;
 	new_job = malloc_job();
-	if (check_for_commands(tokens[0].content))
-		new_job->cmd = ft_strtrim(tokens[0].content, "\"\'");
-	tokens = tokens->next;
-	while(tokens)
+	if (check_for_commands(t->content))
 	{
-		if (tokens->type == ARG && tokens->content == "|")
-			new_job->piped_job = create_job(tokens, jobs);
-		else if (tokens->type == ARG || tokens->type == QUO_D || tokens->type == QUO_S)
+         new_job->cmd = ft_strtrim(t->content, "\"\'");
+         if (t->next)
+	        t = t->next;
+    }
+	while(t->content)
+	{
+		if (t->type == ARG && !ms_strcmp(t->content, "|"))
+			new_job->piped_job = create_job(&t, jobs);
+		else if (t->type == ARG || t->type == QUO_D || t->type == QUO_S)
 		{
-			new_job->args[i] = tokens->content;
+			new_job->args[i] = t->content;
 			i++;
 		}
-		else if (tokens->type != SPC)
-			new_job->redir[0] = tokens->content;
-		if (!tokens->next)
+		else if (t->type != SPC)
+			new_job->redir[0] = t->content;
+		if (!t->next)
 			break;
-		tokens = tokens->next;
+		t = t->next;
 	}
 	return (new_job);
 }
@@ -104,11 +113,9 @@ t_job	*create_job(t_token *tokens, t_job **jobs)
 t_job	**create_lst_job(t_token **tokens)
 {
 	t_job **jobs;
-	t_token *t;
 	
-	t = *tokens;
 	jobs = (t_job **)malloc(sizeof(t_job *));
-	*jobs = create_job(t, jobs);
+	*jobs = create_job(tokens, jobs);
 	return (jobs);
 }
 
@@ -142,7 +149,7 @@ int main(void)
 		type_tokens(tokens);
 		debug_print_tokens(tokens);
 		jobs = create_lst_job(tokens);
-	//	debug_print_job(jobs);
+		debug_print_job(jobs);
 	}
 }
 
