@@ -385,7 +385,7 @@ int tokenizer(char *line, s_token **tokens, int i)
 	if(line[i] == '.' && line[i+1] && line[i+1] == '/')
 		i = token_exec(line,i,tokens);
 	else if(line[i] == '>' && line[i+1] && line[i+1] == '>')
-		i = token_append(line,i,tokens);
+		i = token_append(line, i,tokens);
 	else if(line[i] == '<' && line[i+1] && line[i+1] == '<')
 		i = token_heredoc(line,i,tokens);
 	else if(line[i] == '>')
