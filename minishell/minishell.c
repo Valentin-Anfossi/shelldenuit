@@ -30,9 +30,6 @@ void type_tokens(t_token **tokens);
 // QUESTION : quand on tokenise les redir heredoc et append, ce serait pas mieux de ne pas les differencier 
 //			dans le tokeniser mais plutot apres la creation du JOB, au moment ou on "execute" la redir/heredoc ??? 
 //
-//ATTENTION SPOIL : ce que j'ai fait la, segfault.... Je recheck ca vite la je pars au taff !
-//
-//
 //petite info pour le pipe : si il est entre quote, il joue pas le role de pipe 
 // jelucian@c1r2p8:~/Core$ echo salut "|" cat yo.txt 
 // salut | cat yo.txt
@@ -44,9 +41,9 @@ t_job	*malloc_job(void)
 
 	job = (t_job *)malloc(sizeof(t_job));
 	job->args = malloc(sizeof(char **));
-	job->args[0] = NULL;
+	job->redir = malloc(sizeof(char **));
 	job->cmd = NULL;
-	job->redir = NULL;
+	job->error = 0;
 	job->piped_job = NULL;
 	return (job);
 }
@@ -68,14 +65,9 @@ int check_for_commands(char *content)
 		return (1);
 	else if(!ms_strcmp("exit", ft_strtrim(content, "\"\'")))
 		return (1);
-    else
-    {
-	    write(2, ft_strtrim(content, "\"\'"), ft_strlen(ft_strtrim(content, "\"\'")));
-	    write(2, ": command not found\n", 20);
-	    return (0);
-    }
+	return (0);
 }
-// skip les espaces au debut a faire;
+
 t_job	*create_job(t_token **tokens, t_job **jobs)
 {
 	t_job	*new_job;
@@ -85,27 +77,32 @@ t_job	*create_job(t_token **tokens, t_job **jobs)
     t = *tokens;
 	i = 0;
 	new_job = malloc_job();
-	if (check_for_commands(t->content))
-	{
-         new_job->cmd = ft_strtrim(t->content, "\"\'");
-         if (t->next)
-	        t = t->next;
-    }
+	while (t->type == SPC && t->next)
+		t = t->next;
+    new_job->cmd = ft_strdup(ft_strtrim(t->content, "\"\'"));
+	if (!check_for_commands(t->content))
+		new_job->error = 1;
 	while(t->content)
 	{
-		if (t->type == ARG && !ms_strcmp(t->content, "|"))
-			new_job->piped_job = create_job(&t, jobs);
+		if (!t->next)
+			break;
+		t = t->next;
+		if (t->type == ARG && ms_strcmp(t->content, "|") == 0)
+			break ;
 		else if (t->type == ARG || t->type == QUO_D || t->type == QUO_S)
 		{
-			new_job->args[i] = t->content;
+			new_job->args[i] = ft_strdup(t->content);
 			i++;
 		}
 		else if (t->type != SPC)
 			new_job->redir[0] = t->content;
-		if (!t->next)
-			break;
-		t = t->next;
 	}
+	if (ms_strcmp(t->content, "|") == 0)
+	{
+		t = t->next;
+		new_job->piped_job = create_job(&t, jobs);
+	}
+	new_job->args[i] = NULL;
 	return (new_job);
 }
 

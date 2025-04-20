@@ -100,7 +100,7 @@ void debug_print_tokens(t_token **tokens)
 void debug_print_job(t_job **jobs)
 {
 	t_job *job;
-	int	i = 0;
+	int	i;
 
 	job = *jobs;
 	if (!jobs)
@@ -108,12 +108,25 @@ void debug_print_job(t_job **jobs)
 		ft_printf("No job");
 		return ;
 	}
-	if (job->cmd)
-		ft_printf("CMD : %s\n", job->cmd);
-	while (job->args[i])
+	while(job)
 	{
-		ft_printf("ARG %d : %s ; ", i, job->args[i]);
-		i++;
+		i = 0;
+		if (job->error != 0)
+			ft_printf("ERROR\n");
+		if (job->cmd)
+			ft_printf("CMD : %s\n", job->cmd);
+		while (job->args[i])
+		{
+			ft_printf("ARG %d : %s ; ", i, job->args[i]);
+			i++;
+		}
+		if(job->piped_job == NULL)
+			break ;
+		else 
+		{
+			job = job->piped_job;
+			ft_printf("\n");
+		}
 	}
 	ft_printf("\n");
 }

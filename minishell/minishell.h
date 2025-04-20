@@ -38,14 +38,22 @@
 #define SPC 8
 
 typedef struct s_token  t_token;
-
 typedef struct s_job    t_job;
+typedef struct s_redir  t_redir;
+
+typedef struct s_redir
+{
+    int     type;
+    char    *target;
+    t_redir *redir;
+}   t_redir;
 
 typedef struct s_job
 {
     char    *cmd; // checker le premier token ARG, si c'est pas une commande message d'erreur (si il y a un pipe continuer vers le prochain job)
     char    **args; // les argument de la commande. exemple : -n "fait chier le parsing il faut une IA parseuse"
-    char    **redir;  //redir[0] = le type de redirection et redir[1] l'endroit ou rediriger (ou le EOF du heredoc)
+    int     error;
+    t_redir *redir;  //redir[0] = le type de redirection et redir[1] l'endroit ou rediriger (ou le EOF du heredoc)
     t_job   *piped_job;  // en cas de pipe, go vers un nouveau job en partant du token suivant 
 }    t_job;
 
