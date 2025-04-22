@@ -6,40 +6,13 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 17:41:51 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/18 03:18:50 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/22 05:24:04 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Return last token from lst
-t_token	*token_last(t_token *lst)
-{
-	t_token	*list;
 
-	if (!lst)
-		return (0);
-	list = lst;
-	while (list->next)
-		list = list->next;
-	return (list);
-}
-
-//Add token to the back of lst
-void	token_add_back(t_token **lst, t_token *token)
-{
-	t_token	*last;
-
-	if (!lst || !token)
-		return ;
-	if (*lst == 0)
-		*lst = token;
-	else
-	{
-		last = token_last(*lst);
-		last->next = token;
-	}
-}
 
 //Compare 2 strings, return 0 if theyre the same
 int ms_strcmp(char *str1, char *str2)
@@ -64,16 +37,7 @@ int	ms_lstsize(t_token *lst)
 	return (i);
 }
 
-t_token *malloc_token(void)
-{
-	t_token *new_token;
 
-	new_token = (t_token *)malloc(sizeof(t_token));
-	new_token->type = 0;
-	new_token->content = NULL;
-	new_token->next = NULL;
-	return (new_token);
-}
 void debug_print_tokens(t_token **tokens)
 {
 	t_token *cur_token;
@@ -100,6 +64,7 @@ void debug_print_tokens(t_token **tokens)
 void debug_print_job(t_job **jobs)
 {
 	t_job *job;
+	t_token *t;
 	int	i;
 
 	job = *jobs;
@@ -119,6 +84,15 @@ void debug_print_job(t_job **jobs)
 		{
 			ft_printf("ARG %d : %s ; ", i, job->args[i]);
 			i++;
+		}
+		while(t)
+		{
+			if(!t)
+				break;
+			printf("{%s}\n",t->content);
+			if(!t->next)
+				break;
+			t = t->next;
 		}
 		if(job->piped_job == NULL)
 			break ;
