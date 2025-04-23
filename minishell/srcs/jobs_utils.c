@@ -14,8 +14,8 @@
 
 t_job	*malloc_job(void)
 {
-	t_job *job;
-	
+	t_job	*job;
+
 	job = (t_job *)malloc(sizeof(t_job));
 	job->args = (char **)malloc(sizeof(char **));
 	job->redir = (t_redir *)malloc(sizeof(char **));
@@ -25,22 +25,21 @@ t_job	*malloc_job(void)
 	return (job);
 }
 
-int check_for_commands(char *content)
+int	check_for_commands(char *content)
 {
-	
 	if (!ms_strcmp("echo", ft_strtrim(content, "\"\'")))
-	return (1);
-	else if(!ms_strcmp("cd", ft_strtrim(content, "\"\'")))
-	return (1);
-	else if(!ms_strcmp("pwd", ft_strtrim(content, "\"\'")))
-	return (1);
-	else if(!ms_strcmp("export", ft_strtrim(content, "\"\'")))
-	return (1);
-	else if(!ms_strcmp("unset", ft_strtrim(content, "\"\'")))
-	return (1);
-	else if(!ms_strcmp("env", ft_strtrim(content, "\"\'")))
-	return (1);
-	else if(!ms_strcmp("exit", ft_strtrim(content, "\"\'")))
-	return (1);
+		return (1);
+	else if (!ms_strcmp("cd", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if (!ms_strcmp("pwd", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if (!ms_strcmp("export", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if (!ms_strcmp("unset", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if (!ms_strcmp("env", ft_strtrim(content, "\"\'")))
+		return (1);
+	else if (!ms_strcmp("exit", ft_strtrim(content, "\"\'")))
+		return (1);
 	return (0);
 }

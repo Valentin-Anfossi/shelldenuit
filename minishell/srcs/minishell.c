@@ -12,23 +12,24 @@
 
 #include "minishell.h"
 
-int main(void)
+int	main(void)
 {
-	char *line;
-	t_token **tokens;
+	char	*line;
+	t_token	**tokens;
 	t_job	**jobs;
-	
-	while(1)
+
+	while (1)
 	{
 		line = readline("labonneshell :");
-		if(line)
-		tokens = create_lst_tokens(line);
+		if (line)
+		{
+			add_history(line);
+			tokens = create_lst_tokens(line);
+		}
 		type_tokens(tokens);
 		debug_print_tokens(tokens);
 		jobs = create_lst_job(tokens);
 		debug_print_job(jobs);
 	}
+	clear_history ;
 }
-
-
-

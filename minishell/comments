@@ -4,7 +4,6 @@
 // pour reduire a 25 lines : tout mettre dans une struct et changer les values avec -> dans les create tokens func
 // chiant a faire mais ca devrait passer
 
-//25 lignes tout pile 
 
 // if strchr("/")
 //	type = command;

@@ -12,65 +12,68 @@
 
 #include "minishell.h"
 
-void create_token(char *line, int start, int end, t_token **tokens)
+void	create_token(char *line, int start, int end, t_token **tokens)
 {
-	t_token *new_token;
+	t_token	*new_token;
 
-	if(end <= start)
+	if (end <= start)
 		return ;
 	new_token = malloc_token();
-	new_token->content = ft_substr(line, start, (end-start));
-	token_add_back(tokens,new_token);
+	new_token->content = ft_substr(line, start, (end - start));
+	token_add_back(tokens, new_token);
 }
 
 void	create_space_token(t_token **tokens)
 {
-	t_token *new_token;
+	t_token	*new_token;
+
 	new_token = malloc_token();
 	new_token->content = " ";
-	token_add_back(tokens,new_token);
+	token_add_back(tokens, new_token);
 }
 
-void type_tokens(t_token **tokens)
+void	type_tokens(t_token **tokens)
 {
-	t_token *t;
+	t_token	*t;
 
 	t = *tokens;
-	while(t)
+	while (t)
 	{
-		if(!ms_strcmp(t->content,">"))
+		if (!ms_strcmp(t->content, ">"))
 			t->type = RE_OUT;
-		else if(!ms_strcmp(t->content,">>"))
+		else if (!ms_strcmp(t->content, ">>"))
 			t->type = RE_APP;
-		else if(!ms_strcmp(t->content,"<"))
+		else if (!ms_strcmp(t->content, "<"))
 			t->type = RE_IN;
-		else if(!ms_strcmp(t->content,"<<"))
+		else if (!ms_strcmp(t->content, "<<"))
 			t->type = HEREDOC;
-		else if(t->content[0]=='"' && t->content[ft_strlen(t->content)-1] == '"')
+		else if (t->content[0] == '"'
+			&& t->content[ft_strlen(t->content) - 1] == '"')
 			t->type = QUO_D;
-		else if(t->content[0]=='\'' && t->content[ft_strlen(t->content)-1] == '\'')
+		else if (t->content[0] == '\''
+			&& t->content[ft_strlen(t->content) - 1] == '\'')
 			t->type = QUO_S;
-		else if(!ms_strcmp(t->content," "))
+		else if (!ms_strcmp(t->content, " "))
 			t->type = SPC;
 		else
 			t->type = ARG;
-		if(!t->next)
-			break;
+		if (!t->next)
+			break ;
 		t = t->next;
 	}
 }
 
-int check_redirection_pipe(char *line)
+int	check_redirection_pipe(char *line)
 {
-	if(*line == '>' && *(line+1) == '>')
+	if (*line == '>' && *(line + 1) == '>')
 		return (2);
-	else if(*line == '<' && *(line+1) == '<')
+	else if (*line == '<' && *(line + 1) == '<')
 		return (2);
-	else if(*line == '>')
+	else if (*line == '>')
 		return (1);
-	else if(*line == '<')
+	else if (*line == '<')
 		return (1);
-	else if(*line == '|')
+	else if (*line == '|')
 		return (1);
 	else
 		return (0);
@@ -105,9 +108,9 @@ void	token_add_back(t_token **lst, t_token *token)
 	}
 }
 
-t_token *malloc_token(void)
+t_token	*malloc_token(void)
 {
-	t_token *new_token;
+	t_token	*new_token;
 
 	new_token = (t_token *)malloc(sizeof(t_token));
 	new_token->type = 0;

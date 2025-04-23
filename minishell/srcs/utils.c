@@ -12,16 +12,17 @@
 
 #include "minishell.h"
 
-
-
 //Compare 2 strings, return 0 if theyre the same
-int ms_strcmp(char *str1, char *str2)
+int	ms_strcmp(char *str1, char *str2)
 {
-    int i = 0;
-    while (str1[i] && str2[i] && str1[i] == str2[i])
-        i++;
-    return (str1[i] - str2[i]);
+	int	i;
+
+	i = 0;
+	while (str1[i] && str2[i] && str1[i] == str2[i])
+		i++;
+	return (str1[i] - str2[i]);
 }
+
 int	ms_lstsize(t_token *lst)
 {
 	t_token	*list;
@@ -37,35 +38,31 @@ int	ms_lstsize(t_token *lst)
 	return (i);
 }
 
-
-void debug_print_tokens(t_token **tokens)
+void	debug_print_tokens(t_token **tokens)
 {
-	t_token *cur_token;
+	t_token	*cur_token;
 
-	if(!tokens)
+	if (!tokens)
 	{
 		printf("No token list to print !\n");
-		return;
+		return ;
 	}
 	cur_token = *tokens;
-	//printf("-=Tokens print=-\n");
-	while(cur_token)
+	while (cur_token)
 	{
-		if(!cur_token->content)
-			printf("{Type:%d} ",cur_token->type);
+		if (!cur_token->content)
+			printf("{Type:%d} ", cur_token->type);
 		else
-			printf("{%d:%s}",cur_token->type,cur_token->content);
+			printf("{%d:%s}", cur_token->type, cur_token->content);
 		cur_token = cur_token->next;
 	}
 	printf("\n");
-	//printf("\n-=End=-\n");
 }
 
-void debug_print_job(t_job **jobs)
+void	debug_print_job(t_job **jobs)
 {
-	t_job *job;
-	t_token *t;
-	int	i;
+	t_job	*job;
+	int		i;
 
 	job = *jobs;
 	if (!jobs)
@@ -73,7 +70,7 @@ void debug_print_job(t_job **jobs)
 		ft_printf("No job");
 		return ;
 	}
-	while(job)
+	while (job)
 	{
 		i = 0;
 		if (job->error != 0)
@@ -85,18 +82,9 @@ void debug_print_job(t_job **jobs)
 			ft_printf("ARG %d : %s ; ", i, job->args[i]);
 			i++;
 		}
-		while(t)
-		{
-			if(!t)
-				break;
-			printf("{%s}\n",t->content);
-			if(!t->next)
-				break;
-			t = t->next;
-		}
-		if(job->piped_job == NULL)
+		if (job->piped_job == NULL)
 			break ;
-		else 
+		else
 		{
 			job = job->piped_job;
 			ft_printf("\n");

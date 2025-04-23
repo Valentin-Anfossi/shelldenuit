@@ -1,11 +1,13 @@
 NAME = minishell
 LIBFT = ./libft/libft.a
 
+SRCS = srcs/*.c
+
 all: $(NAME)
 
-$(NAME): srcs/minishell.c srcs/utils.c srcs/jobs.c srcs/tokens.c srcs/tokens_utils.c srcs/jobs_utils.c $(LIBFT)
+$(NAME): $(SRCS) $(LIBFT)
 	@gcc -g -Wall -Wextra -I./libft $^ -L./libft -lft -lreadline -o $@
-	echo "compilation reussie !"
+	@echo "compilation reussie !"
 
 $(LIBFT):
 	@make -C ./libft
