@@ -1,0 +1,136 @@
+
+// Looks OK ! mais a tester !
+// TO DO :
+// pour reduire a 25 lines : tout mettre dans une struct et changer les values avec -> dans les create tokens func
+// chiant a faire mais ca devrait passer
+
+//25 lignes tout pile 
+
+// if strchr("/")
+//	type = command;
+//abou jdskdjskj "000"asda"sada asd
+//0000100000000012333200002222210000
+//LINE I
+//dede "de"e" dwde
+
+// int in_single;
+// int in_double;
+
+//dede "de"e" dwde
+//  0000 1112   0100000 0
+
+//abou jdskdjskj "000"asda"sada asd
+// if croise une quote(weshlaquote)
+// strchr("ouellestlaquote")
+//si oui (bien)
+//on continue jusqua cote et on tokenize
+//si non (bou)
+//on tokenize au prochain espace
+
+
+// minishell :cd "bonjour
+
+// t_token **create_lst_tokens(char *line)
+// {
+// 	int start = 0;
+// 	int end = 0;
+// 	t_token **tokens;
+
+// 	tokens = (t_token **)malloc(sizeof(t_token *));
+// 	*tokens = NULL;
+// 	while(end <= (int)ft_strlen(line)) //"asd" "asd"
+// 	{
+// 		if(line[end] == ' ' || end == (int)ft_strlen(line))
+// 		{
+// 			create_token(line,start,end,tokens);
+// 			create_space_token(tokens);
+// 			start = end;
+// 			start ++;
+// 		}
+// 		if(line[end] == '"')
+// 			if (ft_strchr(&line[end],'"'))
+//             {
+//     			end += create_quoted_token(&line[end], tokens);
+//                 start = end;
+//                 continue ; 
+//             }
+// 		end ++;
+// 	}
+//     	// create_token(line, start, end, tokens);
+// 	return (tokens);
+// }
+// BONJOUR JF
+//CES INSTRUCTIONS SAUTODETRUIRON DANS 69 SECONDES
+// EN VRAI JE CROIS CA MARCHE
+// CA FAIT AUSSI LES TYPES
+
+//en gros : ca fait les tokens avec create_lst_tokens2
+//si c'est du texte ca l'envoie dans split token
+//		ca split les >> < << etc et ca fait des tokens
+//sinon si c'est entre quotes ca en fait un token
+
+// si tu veux test fais toi plaiz, vaut mieux trouver les bug maintenant
+// en gros on est de retour a ce qu'on avait avant (avec les quotes)
+// maintenant faut faire le parser
+// https://www.geeksforgeeks.org/recursive-descent-parser/
+// il est 3h du mat donc bonne nuit
+
+// SALUT VAL
+// CE MESSAGE S'AUTODETRUIRA PAS PARCE QUE JE SAIS PAS CODER CA
+// J'ai pas trouver d'erreur dans le tokeniser GG ! (j.ai juste ajouter un check pour le pipe)
+// du coup en ce qui concerne le parsing, je fais peut etre fausse route
+// mais la seule chose qui m'est venu en tete c'est de :
+// commencer a preparer les jobs en creeant une struct t_job
+// commencer a checker les erreurs de commande
+// QUESTION : quand on tokenise les redir heredoc et append, ce serait pas mieux de ne pas les differencier 
+//			dans le tokeniser mais plutot apres la creation du JOB, au moment ou on "execute" la redir/heredoc ??? 
+//
+//petite info pour le pipe : si il est entre quote, il joue pas le role de pipe 
+// jelucian@c1r2p8:~/Core$ echo salut "|" cat yo.txt 
+// salut | cat yo.txt
+
+// t_job	*create_job_save(t_token **tokens, t_job **jobs)
+// {
+// 	t_job	*new_job;
+//     t_token *t;
+// 	int		i;
+	
+//     t = *tokens;
+// 	i = 0;
+// 	new_job = malloc_job();
+// 	while (t->type == SPC && t->next)
+// 		t = t->next;
+//     new_job->cmd = ft_strdup(ft_strtrim(t->content, "\"\'"));
+// 	if (!check_for_commands(t->content))
+// 	new_job->error = 1;
+// 	while(t->content)
+// 	{
+// 		if (!t->next)
+// 		break;
+// 		t = t->next;
+// 		if (t->type == ARG && ms_strcmp(t->content, "|") == 0)
+// 		break ;
+// 		else if (t->type == ARG || t->type == QUO_D || t->type == QUO_S)
+// 		{
+// 			new_job->args[i] = ft_strdup(t->content);
+// 			i++;
+// 		}
+// 		else if (t->type != SPC)
+// 		new_job->redir->type = t->type;
+// 	}
+// 	if (ms_strcmp(t->content, "|") == 0)
+// 	{
+// 		t = t->next;
+// 		new_job->piped_job = create_job(&t, jobs);
+// 	}
+// 	new_job->args[i] = NULL;
+// 	return (new_job);
+// }
+
+// t_job	*create_lst_job(t_token **tokens)
+// {
+// 	t_job *jobs;
+
+// 	jobs = create_job(tokens);
+// 	return (jobs);
+// }
