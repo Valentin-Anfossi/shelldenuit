@@ -38,14 +38,14 @@ FLAGS	= -Wall -Wextra -Werror -I.
 all: $(NAME)
 
 $(NAME): $(OFILES)
-	ar rcs $(NAME) $(OFILES)
+	@ar rcs $(NAME) $(OFILES)
 
 bonus : $(OFILES) $(BONUSOFILES)
 	ar rcs $(NAME) $(OFILES) $(BONUSOFILES)
 
 #Compile .o < .c seulement si changes
 %.o: %.c
-	$(CC) $(FLAGS) -c $< -o $@
+	@$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OFILES)

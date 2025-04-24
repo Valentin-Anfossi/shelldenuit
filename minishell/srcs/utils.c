@@ -7,15 +7,20 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 17:41:51 by vanfossi          #+#    #+#             */
 <<<<<<< HEAD:minishell/utils.c
+<<<<<<< HEAD:minishell/utils.c
 /*   Updated: 2025/04/18 03:18:50 by vanfossi         ###   ########.fr       */
 =======
 /*   Updated: 2025/04/24 10:24:59 by vanfossi         ###   ########.fr       */
 >>>>>>> 80bda5a (Creation de job ATESTER):minishell/srcs/utils.c
+=======
+/*   Updated: 2025/04/22 05:24:04 by vanfossi         ###   ########.fr       */
+>>>>>>> ba9bfb06332e120b263b3dc0dd61a48dcaed5752:minishell/srcs/utils.c
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+<<<<<<< HEAD:minishell/utils.c
 //Return last token from lst
 t_token	*token_last(t_token *lst)
 {
@@ -73,7 +78,19 @@ int ms_strcmp(char *str1, char *str2)
 		return (1);
 	else
 		return (0);
+=======
+//Compare 2 strings, return 0 if theyre the same
+int	ms_strcmp(char *str1, char *str2)
+{
+	int	i;
+
+	i = 0;
+	while (str1[i] && str2[i] && str1[i] == str2[i])
+		i++;
+	return (str1[i] - str2[i]);
+>>>>>>> ba9bfb06332e120b263b3dc0dd61a48dcaed5752:minishell/srcs/utils.c
 }
+
 int	ms_lstsize(t_token *lst)
 {
 	t_token	*list;
@@ -89,39 +106,28 @@ int	ms_lstsize(t_token *lst)
 	return (i);
 }
 
-t_token *malloc_token(void)
+void	debug_print_tokens(t_token **tokens)
 {
-	t_token *new_token;
+	t_token	*cur_token;
 
-	new_token = (t_token *)malloc(sizeof(t_token));
-	new_token->type = 0;
-	new_token->content = NULL;
-	new_token->next = NULL;
-	return (new_token);
-}
-void debug_print_tokens(t_token **tokens)
-{
-	t_token *cur_token;
-
-	if(!tokens)
+	if (!tokens)
 	{
 		printf("No token list to print !\n");
-		return;
+		return ;
 	}
 	cur_token = *tokens;
-	//printf("-=Tokens print=-\n");
-	while(cur_token)
+	while (cur_token)
 	{
-		if(!cur_token->content)
-			printf("{Type:%d} ",cur_token->type);
+		if (!cur_token->content)
+			printf("{Type:%d} ", cur_token->type);
 		else
-			printf("{%d:%s}",cur_token->type,cur_token->content);
+			printf("{%d:%s}", cur_token->type, cur_token->content);
 		cur_token = cur_token->next;
 	}
 	printf("\n");
-	//printf("\n-=End=-\n");
 }
 
+<<<<<<< HEAD:minishell/utils.c
 void debug_print_job(t_job *jobs)
 {
 <<<<<<< HEAD:minishell/utils.c
@@ -131,6 +137,12 @@ void debug_print_job(t_job *jobs)
 	int	i;
 	t_job *job;
 >>>>>>> 80bda5a (Creation de job ATESTER):minishell/srcs/utils.c
+=======
+void	debug_print_job(t_job **jobs)
+{
+	t_job	*job;
+	int		i;
+>>>>>>> ba9bfb06332e120b263b3dc0dd61a48dcaed5752:minishell/srcs/utils.c
 
 	job = jobs;
 	if (!job)
@@ -138,19 +150,21 @@ void debug_print_job(t_job *jobs)
 		ft_printf("No jobs");
 		return ;
 	}
-	if (job->cmd)
-		ft_printf("CMD : %s\n", job->cmd);
-	while (job->args[i])
+	while (job)
 	{
+<<<<<<< HEAD:minishell/utils.c
 <<<<<<< HEAD:minishell/utils.c
 		ft_printf("ARG %d : %s ; ", i, job->args[i]);
 		i++;
 =======
+=======
+>>>>>>> ba9bfb06332e120b263b3dc0dd61a48dcaed5752:minishell/srcs/utils.c
 		i = 0;
 		if (job->error != 0)
 			ft_printf("ERROR\n");
 		if (job->cmd)
 			ft_printf("CMD : %s\n", job->cmd);
+<<<<<<< HEAD:minishell/utils.c
 		if (job->redir)
 		{
 			while(job->redir)
@@ -159,19 +173,28 @@ void debug_print_job(t_job *jobs)
 				job->redir = job->redir->next;
 			}
 		}
+=======
+>>>>>>> ba9bfb06332e120b263b3dc0dd61a48dcaed5752:minishell/srcs/utils.c
 		while (job->args[i])
 		{
 			ft_printf("ARG %d : %s ; ", i, job->args[i]);
 			i++;
 		}
+<<<<<<< HEAD:minishell/utils.c
 		if(job->piped_job == NULL)
+=======
+		if (job->piped_job == NULL)
+>>>>>>> ba9bfb06332e120b263b3dc0dd61a48dcaed5752:minishell/srcs/utils.c
 			break ;
 		else
 		{
 			job = job->piped_job;
 			ft_printf("\n");
 		}
+<<<<<<< HEAD:minishell/utils.c
 >>>>>>> 80bda5a (Creation de job ATESTER):minishell/srcs/utils.c
+=======
+>>>>>>> ba9bfb06332e120b263b3dc0dd61a48dcaed5752:minishell/srcs/utils.c
 	}
 	ft_printf("\n");
 }
