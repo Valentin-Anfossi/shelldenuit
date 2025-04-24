@@ -6,79 +6,13 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/24 11:26:44 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:47:09 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_tok_redir(t_token *t)
-{
-	if(!t->content)
-		return (0);
-	else if(ms_strcmp(t->content,">"))
-		return (1);
-	else if (ms_strcmp(t->content,">>"))
-		return (1);
-	else if (ms_strcmp(t->content,"<"))
-		return (1);
-	else if (ms_strcmp(t->content,"<<"))
-		return (1);
-	else
-		return (0);
-}
 
-int is_tok_arg(t_token *t)
-{
-	if(!t)
-		return (0);
-	if(!is_tok_redir(t) && !is_tok_cmd(t) && !is_tok_pipe(t))
-		return (1);
-	else
-		return (0);
-}
-
-int is_tok_exec(t_token *t)
-{
-	char *s;
-	int i;
-
-	i = 0;
-	if(t->content)
-	{
-		s = ft_strtrim(t->content,"\"\'");
-		while(s[i] == ' ')
-			i ++;
-		while(s[i] == '.')
-			i ++;
-		if(s[i] == '/')
-			return (1);
-		else
-			return (0);
-	}
-}
-int is_tok_cmd(t_token *t)
-{
-	int i;
-	
-	i = 0;
-	while(ms_cmdlst()[i])
-	{
-		if(ms_strcmp(ms_cmdlst()[i],ft_strtrim(t->content,"\'\"")))
-			return (1);
-		else if(is_tok_exec(t))
-			return (1);
-		i ++;
-	}
-	return (0);
-}
-int is_tok_pipe(t_token *t)
-{
-	if(ms_strcmp(t->content,"|"))
-		return (1);
-	else
-		return (0);
-}
 
 t_token *add_to_job_redir(t_token *t, t_job *j)
 {
