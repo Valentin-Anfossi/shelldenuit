@@ -6,21 +6,39 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 17:41:51 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/22 05:24:04 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/24 10:24:59 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
+char **ms_cmdlst()
+{
+	char **cmdlst;
+	cmdlst = (char **)malloc(sizeof(char *) * 8);
 
-//Compare 2 strings, return 0 if theyre the same
+	cmdlst[0] = "echo";
+	cmdlst[1] = "cd";
+	cmdlst[2] = "pwd";
+	cmdlst[3] = "export";
+	cmdlst[4] = "unset";
+	cmdlst[5] = "env";
+	cmdlst[6] = "exit";
+	cmdlst[7] = NULL;
+
+	return (cmdlst);
+}
+//Compare 2 strings, return 0 = different 1 = same
 int ms_strcmp(char *str1, char *str2)
 {
-    int i = 0;
-    while (str1[i] && str2[i] && str1[i] == str2[i])
-        i++;
-    return (str1[i] - str2[i]);
+	int i = 0;
+	while (str1[i] && str2[i] && str1[i] == str2[i])
+		i++;
+	if(i == (int)ft_strlen(str1) && i == (int)ft_strlen(str2))
+		return (1);
+	else
+		return (0);
 }
 int	ms_lstsize(t_token *lst)
 {
@@ -61,16 +79,15 @@ void debug_print_tokens(t_token **tokens)
 	//printf("\n-=End=-\n");
 }
 
-void debug_print_job(t_job **jobs)
+void debug_print_job(t_job *jobs)
 {
-	t_job *job;
-	t_token *t;
 	int	i;
+	t_job *job;
 
-	job = *jobs;
-	if (!jobs)
+	job = jobs;
+	if (!job)
 	{
-		ft_printf("No job");
+		ft_printf("No jobs");
 		return ;
 	}
 	while(job)
@@ -80,23 +97,22 @@ void debug_print_job(t_job **jobs)
 			ft_printf("ERROR\n");
 		if (job->cmd)
 			ft_printf("CMD : %s\n", job->cmd);
+		if (job->redir)
+		{
+			while(job->redir)
+			{
+				ft_printf("REDIRTYPE :%d REDIRTARGET: %s\n",job->redir->type,job->redir->target);
+				job->redir = job->redir->next;
+			}
+		}
 		while (job->args[i])
 		{
 			ft_printf("ARG %d : %s ; ", i, job->args[i]);
 			i++;
 		}
-		while(t)
-		{
-			if(!t)
-				break;
-			printf("{%s}\n",t->content);
-			if(!t->next)
-				break;
-			t = t->next;
-		}
 		if(job->piped_job == NULL)
 			break ;
-		else 
+		else
 		{
 			job = job->piped_job;
 			ft_printf("\n");

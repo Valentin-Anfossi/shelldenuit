@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:15:50 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/22 05:24:08 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/24 10:32:37 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,42 +23,6 @@ void create_token(char *line, int start, int end, t_token **tokens)
 	token_add_back(tokens,new_token);
 }
 
-void	create_space_token(t_token **tokens)
-{
-	t_token *new_token;
-	new_token = malloc_token();
-	new_token->content = " ";
-	token_add_back(tokens,new_token);
-}
-
-void type_tokens(t_token **tokens)
-{
-	t_token *t;
-
-	t = *tokens;
-	while(t)
-	{
-		if(!ms_strcmp(t->content,">"))
-			t->type = RE_OUT;
-		else if(!ms_strcmp(t->content,">>"))
-			t->type = RE_APP;
-		else if(!ms_strcmp(t->content,"<"))
-			t->type = RE_IN;
-		else if(!ms_strcmp(t->content,"<<"))
-			t->type = HEREDOC;
-		else if(t->content[0]=='"' && t->content[ft_strlen(t->content)-1] == '"')
-			t->type = QUO_D;
-		else if(t->content[0]=='\'' && t->content[ft_strlen(t->content)-1] == '\'')
-			t->type = QUO_S;
-		else if(!ms_strcmp(t->content," "))
-			t->type = SPC;
-		else
-			t->type = ARG;
-		if(!t->next)
-			break;
-		t = t->next;
-	}
-}
 
 int check_redirection_pipe(char *line)
 {
@@ -74,6 +38,18 @@ int check_redirection_pipe(char *line)
 		return (1);
 	else
 		return (0);
+}
+
+int get_redir_type(t_token *t)
+{
+	if(ms_strcmp(t->content,"<"))
+		return (R_IN);
+	else if(ms_strcmp(t->content,">"))
+		return (R_OUT);
+	if(ms_strcmp(t->content,">>"))
+		return (R_APPEND);
+	if(ms_strcmp(t->content,"<<"))
+		return (R_HEREDOC);
 }
 
 //Return last token from lst
