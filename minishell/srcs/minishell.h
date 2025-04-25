@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/24 12:03:53 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/25 11:24:16 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ enum Redirs
 typedef struct s_shell
 {
 	char *cwd;
+	char **env;
 } t_shell;
 
 typedef struct s_redir
