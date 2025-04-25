@@ -55,7 +55,6 @@ int check_jobs(t_job *jobs)
 		j = j->piped_job;
 	}
 	return (re);
-	
 }
 //Free all the jurbs
 void free_jobs(t_job *jobs)

@@ -120,15 +120,15 @@ int is_tok_arg(t_token *t)
 		return (0);
 }
 
-int is_tok_exec(t_token *t)
+int is_str_exec(char *t)
 {
 	char *s;
 	int i;
 
 	i = 0;
-	if(t->content)
+	if(t)
 	{
-		s = ft_strtrim(t->content,"\"\'");
+		s = ft_strtrim(t,"\"\'");
 		while(s[i] == ' ')
 			i ++;
 		while(s[i] == '.')
@@ -149,7 +149,7 @@ int is_tok_cmd(t_token *t)
 	{
 		if(ms_strcmp(ms_cmdlst()[i],ft_strtrim(t->content,"\'\"")))
 			return (1);
-		else if(is_tok_exec(t))
+		else if(is_str_exec(t->content))
 			return (1);
 		i ++;
 	}

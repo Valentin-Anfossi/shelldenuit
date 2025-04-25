@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/24 11:52:30 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:03:53 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,18 @@ typedef struct s_token
 }   t_token;
 
 //TOKENS
+t_token	**create_lst_tokens(char *line);
+t_token	*malloc_token(void);
 void	create_token(char *line, int start, int end, t_token **tokens);
 void	split_token(char *line, int start, int end, t_token **tokens);
-t_token	**create_lst_tokens(char *line);
-t_token	*token_last(t_token *lst);
-void	token_add_back(t_token **lst, t_token *token);
-t_token	*malloc_token(void);
 int		check_redirection_pipe(char *line);
 int 	is_tok_redir(t_token *t);
 int 	is_tok_arg(t_token *t);
-int 	is_tok_exec(t_token *t);
+int 	is_str_exec(char *t);
 int 	is_tok_cmd(t_token *t);
 int		is_tok_pipe(t_token *t);
+t_token	*token_last(t_token *lst);
+void	token_add_back(t_token **lst, t_token *token);
 
 //JOBS
 t_job	**create_lst_job(t_token **tokens);
