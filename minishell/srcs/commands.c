@@ -1,6 +1,14 @@
-//
-// Created by valen on 25/04/2025.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 14:47:44 by vanfossi          #+#    #+#             */
+/*   Updated: 2025/04/29 14:47:44 by vanfossi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -9,9 +17,7 @@
 // 	char *cmd;
 
 // 	cmd = ft_strtrim(job->cmd,"\'\"");
-// 	if(is_str_exec(job->cmd))
-// 		cmd_exec(job);
-// 	else if(ms_strcmp("cd",cmd))
+// 	if(ms_strcmp("cd",cmd))
 // 		cmd_cd(job);
 // 	else if(ms_strcmp("echo",cmd))
 // 		cmd_echo(job);
@@ -26,11 +32,17 @@
 // 	else if(ms_strcmp("exit",cmd))
 // 		cmd_exit(job);
 // 	else
-// 		cmd_error(job);
+// 		is_str_exec(job);
+// }
+
+// void is_str_exec(job)
+// {
+// 	// check si y a un file de merde
+// 	ft_printf("error");
 // }
 
 
-void cmd_exec(t_job *job)
-{
+// void cmd_exec(t_job *job)
+// {
 
-}
+// }
