@@ -4,7 +4,7 @@
     {
       "name": "C/C++ Runner: Debug Session",
       "type": "lldb",
-      "request": "launch",
+      "request": "make",
       "args": [],
       "cwd": "/Users/jf/Documents/GitHub/minishell/vanf/minishell",
       "program": "/Users/jf/Documents/GitHub/minishell/vanf/minishell/build/Debug/outDebug"

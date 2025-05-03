@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:08:45 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/03 23:13:30 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/04 00:02:33 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ void create_spc_token(t_token **tokens)
 	t_token *new_token;
 
 	if(*tokens && ms_strcmp((*tokens)->content," "))
-	{
-		printf("bou");
 		return;
-	}
 
 	new_token = malloc_token();
 	new_token->content = " ";
@@ -74,7 +71,8 @@ t_token	**create_lst_tokens(char *line)
 			if (start != end)
 				split_token(line, start, end, tokens);
 			start = end + 1;
-			create_spc_token(tokens);
+			if(line[end + 1] && line[end + 1] != ' ')
+				create_spc_token(tokens);
 		}
 		end++;
 	}
