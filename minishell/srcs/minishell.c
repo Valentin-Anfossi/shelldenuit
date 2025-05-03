@@ -117,6 +117,7 @@ void execute_jobs(t_job *jobs, t_shell *shell)
 		// CHILD FORK
 		if(n_pid == 0)
 		{
+			ft_printf("yoyoy \n");
 			select_command(jobs,shell);
 			exit(EXIT_FAILURE);
 		}

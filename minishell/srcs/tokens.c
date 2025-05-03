@@ -24,6 +24,12 @@ void create_spc_token(t_token **tokens)
 	token_add_back(tokens,new_token);
 }
 
+void check_tokens(t_token **tokens)
+{
+	t_token;
+}
+
+
 t_token	**create_lst_tokens(char *line)
 {
 	int	in_doubles = 0;
