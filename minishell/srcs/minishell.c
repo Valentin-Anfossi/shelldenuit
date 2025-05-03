@@ -46,12 +46,62 @@ void test_redir(t_job *job)
 	//Ca redirect bien "hello ?" et le ls dans le fichier output !! :o magie ! 🪄
 }
 
+void command_echo(t_job *j, t_shell *s)
+{
+	int i;
+	int n;
+
+	i = 0;
+	n = 0;
+	while(j->args[i])
+	{
+		if(ms_strcmp(j->args[i],"-n"))
+		{
+			n = 1;
+			i ++;
+			continue;
+		}
+		ft_printf("%s",j->args[i]);
+		i ++;
+		if(j->args[i])
+			ft_printf(" ");
+	}
+	if(!n)
+		ft_printf("\n");
+}
+
+void command_cd(t_job *j, t_shell *s)
+{
+	if(j->args[1])
+	{
+		perror("cd: too many arguments");
+		return;
+	}
+	if(opendir(j->args[0]))
+	{
+		
+	}
+
+	
+}
+
+void select_command(t_job *jobs, t_shell *s)
+{
+	if(jobs->cmd)
+	{
+		if(ms_strcmp(jobs->cmd,"echo"))
+			command_echo(jobs,s);
+		if(ms_strcmp(jobs->cmd,"cd"))
+			command_cd(jobs,s);
+	}
+}
+
 //They took er jebs!
 // Est ce quil faut rien faire avec le parent thread ? (a part wait l'exit du child)
 // Je sais pas trop
 // Aussi les redirections out (out et out_append) on peut les faire sans pipe
 // dup2 ca fonctionne tres bien (woopi) exemple au dessus
-void execute_jobs(t_job *jobs)
+void execute_jobs(t_job *jobs, t_shell *shell)
 {
 	int *statloc;
 	
@@ -67,17 +117,13 @@ void execute_jobs(t_job *jobs)
 		// CHILD FORK
 		if(n_pid == 0)
 		{
-			//printf("%d\n",getpid());
-						
+			select_command(jobs,shell);
 			exit(EXIT_FAILURE);
 		}
 		// PARENT FORK (DO NOTHING BUT WAIT)
 		else
 		{
 			waitpid(n_pid,statloc,WUNTRACED);
-			//printf("%d\n",n_pid);
-			//printf("Exit status = %d\n",*statloc);
-
 		}
 		jobs = jobs->piped_job;
 	}
@@ -105,74 +151,6 @@ int	is_tok_quoted(t_token *tok)
 	else
 		return (0);
 }
-// s = $USER
-// s = $USER$USER
-// s = "hey salut $USER lol lol lol $USER"
-
-// char *expand_token_env(char *s, t_shell *shell)
-// {
-// 	int i;
-// 	int j;
-// 	char *out;
-// 	char *before;
-
-// 	i = 0;
-// 	j = 0;
-// 	s = ft_strtrim(s,"\"");
-// 	while(s[i])
-// 	{
-		
-// 		if(s[i] == '$')
-// 		{
-// 			before = ft_substr(s,j,i-j);
-// 			j = i + 1;
-// 			while(s[j] != ' ' && s[j] != '$' && s[j])
-// 				j ++;
-// 			char *substr = ft_substr(s, i + 1,j-1-i);
-// 			char *s1 = getenv(substr);
-// 			out = ft_strjoin(before,s1);
-// 			i = j-1;
-// 		}
-// 		i++;
-// 	}
-// 	if(base[0] == 0)
-// 		return (s);
-// 	return (base);
-// }
-
-// char *expand_token_env(char *s, t_shell *shell)
-// {
-// 	int i;
-// 	int j;
-// 	int	k;
-// 	char *out;
-
-// 	i = 0;
-// 	j = 0;
-// 	k = 0;
-// 	s = ft_strtrim(s,"\"");
-// 	while(s[i])
-// 	{
-// 		if(s[i] == '$')
-// 		{
-// 			j = i + 1;
-// 			while(s[j] != ' ' && s[j] != '$' && s[j])
-// 				j ++;
-// 			char *substr = ft_substr(s, i + 1,j-1-i);
-// 			char *s1 = getenv(substr);
-// 			out = ft_strjoin(out, s1);
-// 			i = j-1;
-// 			k = ft_strlen(out);
-// 		}
-// 		else
-// 		{
-// 			out[k] = s[i];
-// 			k++;
-// 		}
-// 		i++;
-// 	}
-// 	return (out);
-// }
 
 char *expand_token_env(char *s, t_shell *shell)
 {
@@ -189,7 +167,7 @@ char *expand_token_env(char *s, t_shell *shell)
 	j = 0;
 	s = ft_strtrim(s,"\"");
 	out = ft_strdup ("");
-	
+
 	while(s[i])
 	{
 		if(s[i] == '$')
@@ -207,11 +185,7 @@ char *expand_token_env(char *s, t_shell *shell)
 				i = j - 1;
 			}
 			else
-			{
-				to_add[0] = '$';
-				to_add[1] = '\0';
-				out = ft_strjoin(out,to_add);
-			}
+				out = ft_strjoin(out,"$");
 		}
 		else
 		{
@@ -260,8 +234,8 @@ int main(void)
 		debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		if(!check_jobs(jobs))
-			execute_jobs(jobs);
-		//debug_print_job(jobs);
+			execute_jobs(jobs,shell);
+		debug_print_job(jobs);
 		free_jobs(jobs);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/25 11:24:16 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:03:27 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <dirent.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -102,7 +103,7 @@ void 	free_jobs(t_job *jobs);
 //UTILS
 void	debug_print_job(t_job *jobs);
 void	debug_print_tokens(t_token **tokens);
-int		ms_strcmp(char *str1, char *str2);
+int		ms_strcmp(char *str1, const char *str2);
 int		ms_lstsize(t_token *lst);
 char 	**ms_cmdlst();
 

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/24 11:43:40 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/03 18:01:47 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char **ms_cmdlst()
 	return (cmdlst);
 }
 //Compare 2 strings, return 0 = different 1 = same
-int ms_strcmp(char *str1, char *str2)
+int ms_strcmp(char *str1, const char *str2)
 {
 	int i = 0;
 	while (str1[i] && str2[i] && str1[i] == str2[i])

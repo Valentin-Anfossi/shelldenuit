@@ -134,3 +134,72 @@
 // 	jobs = create_job(tokens);
 // 	return (jobs);
 // }
+
+// s = $USER
+// s = $USER$USER
+// s = "hey salut $USER lol lol lol $USER"
+
+// char *expand_token_env(char *s, t_shell *shell)
+// {
+// 	int i;
+// 	int j;
+// 	char *out;
+// 	char *before;
+
+// 	i = 0;
+// 	j = 0;
+// 	s = ft_strtrim(s,"\"");
+// 	while(s[i])
+// 	{
+		
+// 		if(s[i] == '$')
+// 		{
+// 			before = ft_substr(s,j,i-j);
+// 			j = i + 1;
+// 			while(s[j] != ' ' && s[j] != '$' && s[j])
+// 				j ++;
+// 			char *substr = ft_substr(s, i + 1,j-1-i);
+// 			char *s1 = getenv(substr);
+// 			out = ft_strjoin(before,s1);
+// 			i = j-1;
+// 		}
+// 		i++;
+// 	}
+// 	if(base[0] == 0)
+// 		return (s);
+// 	return (base);
+// }
+
+// char *expand_token_env(char *s, t_shell *shell)
+// {
+// 	int i;
+// 	int j;
+// 	int	k;
+// 	char *out;
+
+// 	i = 0;
+// 	j = 0;
+// 	k = 0;
+// 	s = ft_strtrim(s,"\"");
+// 	while(s[i])
+// 	{
+// 		if(s[i] == '$')
+// 		{
+// 			j = i + 1;
+// 			while(s[j] != ' ' && s[j] != '$' && s[j])
+// 				j ++;
+// 			char *substr = ft_substr(s, i + 1,j-1-i);
+// 			char *s1 = getenv(substr);
+// 			out = ft_strjoin(out, s1);
+// 			i = j-1;
+// 			k = ft_strlen(out);
+// 		}
+// 		else
+// 		{
+// 			out[k] = s[i];
+// 			k++;
+// 		}
+// 		i++;
+// 	}
+// 	return (out);
+// }
