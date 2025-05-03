@@ -6,11 +6,26 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:08:45 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/22 05:17:21 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/03 23:13:30 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void create_spc_token(t_token **tokens)
+{
+	t_token *new_token;
+
+	if(*tokens && ms_strcmp((*tokens)->content," "))
+	{
+		printf("bou");
+		return;
+	}
+
+	new_token = malloc_token();
+	new_token->content = " ";
+	token_add_back(tokens,new_token);
+}
 
 t_token	**create_lst_tokens(char *line)
 {
@@ -59,6 +74,7 @@ t_token	**create_lst_tokens(char *line)
 			if (start != end)
 				split_token(line, start, end, tokens);
 			start = end + 1;
+			create_spc_token(tokens);
 		}
 		end++;
 	}
