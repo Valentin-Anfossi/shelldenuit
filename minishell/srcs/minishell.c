@@ -117,7 +117,6 @@ void execute_jobs(t_job *jobs, t_shell *shell)
 		// CHILD FORK
 		if(n_pid == 0)
 		{
-			ft_printf("yoyoy \n");
 			select_command(jobs,shell);
 			exit(EXIT_FAILURE);
 		}
@@ -232,6 +231,8 @@ int main(void)
 		//type_tokens(tokens);
 		debug_print_tokens(tokens);
 		check_env(tokens,shell);
+		debug_print_tokens(tokens);
+		check_tokens(tokens);
 		debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		if(!check_jobs(jobs))

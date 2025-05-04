@@ -164,3 +164,9 @@ int is_tok_pipe(t_token *t)
 	else
 		return (0);
 }
+
+void	ms_lstdelone(t_token *lst, void (*del)(void *))
+{
+	del(lst->content);
+	free(lst);
+}

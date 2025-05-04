@@ -91,6 +91,7 @@ int 	is_tok_cmd(t_token *t);
 int		is_tok_pipe(t_token *t);
 t_token	*token_last(t_token *lst);
 void	token_add_back(t_token **lst, t_token *token);
+void	check_tokens(t_token **tokens);
 
 //JOBS
 t_job	**create_lst_job(t_token **tokens);

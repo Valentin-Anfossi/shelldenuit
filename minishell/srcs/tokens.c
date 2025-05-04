@@ -24,9 +24,41 @@ void create_spc_token(t_token **tokens)
 	token_add_back(tokens,new_token);
 }
 
+// echo "slt""prout"
+// echo "slt"$USER"prout"
+// echo "slt$USER"
+
+void token_cat(t_token *t, t_token *n)
+{
+	t->content = ft_strjoin(t->content, n->content);
+	ft_printf(" je suis concatener : %s\n", t->content);
+	t->next = n->next;
+	free(n);
+}
+
 void check_tokens(t_token **tokens)
 {
-	t_token;
+	t_token *t;
+
+	t = *tokens;
+	while (t)
+	{
+		if (t->next && ms_strcmp(t->content, "$") 
+			&& !ms_strcmp(t->next->content, " "))
+		{
+			t->content = "";
+			t = t->next->next;
+		}
+		else if (t->next && ms_strcmp(t->next->content, " "))
+		{
+			t = t->next->next;
+			continue;	
+		}
+		else if (t->next && is_tok_arg(t->next))
+			token_cat(t, t->next);
+		else
+			t = t->next;
+	}
 }
 
 
