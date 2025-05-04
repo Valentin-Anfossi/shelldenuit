@@ -1,13 +1,26 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "C/C++ Runner: Debug Session",
-      "type": "lldb",
-      "request": "make",
-      "args": [],
-      "cwd": "/Users/jf/Documents/GitHub/minishell/vanf/minishell",
-      "program": "/Users/jf/Documents/GitHub/minishell/vanf/minishell/build/Debug/outDebug"
-    }
-  ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C WSL Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/vanfossi/git_minishell/minishell/minishell",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "/home/vanfossi/git_minishell/minishell/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "c-build"
+        }
+    ]
 }
