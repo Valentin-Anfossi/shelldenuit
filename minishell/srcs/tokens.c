@@ -31,7 +31,7 @@ void create_spc_token(t_token **tokens)
 void token_cat(t_token *t, t_token *n)
 {
 	t->content = ft_strjoin(t->content, n->content);
-	ft_printf(" je suis concatener : %s\n", t->content);
+	//ft_printf(" je suis concatener : %s\n", t->content);
 	t->next = n->next;
 	free(n);
 }
@@ -43,7 +43,7 @@ void check_tokens(t_token **tokens)
 	t = *tokens;
 	while (t)
 	{
-		if (t->next && ms_strcmp(t->content, "$") 
+		if (t->next && ms_strcmp(t->content, "$") && t->type != 2 
 			&& !ms_strcmp(t->next->content, " "))
 		{
 			t->content = "";

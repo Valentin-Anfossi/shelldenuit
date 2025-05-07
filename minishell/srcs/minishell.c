@@ -21,7 +21,8 @@
 //Execve a besoin du path COMPLET (/home/vanfossi/blablabla)
 //l'arg Env de execve determine si il recoit les variable d'enviro
 //env = null par ex, il a acces a rien
-//pour l'env actuel de l'os c'est extern char **environ;
+//pour l'env actuel de l'os c'est 
+extern char **environ;
 //mais jpense faut faire le notre avec nos variables non ? (c pas precise mais ca ferait sens)
 
 void test_redir(t_job *job)
@@ -35,9 +36,9 @@ void test_redir(t_job *job)
 	argv = NULL;
 	env = NULL;
 	//on redirige STDOUT dans le fd
-	// dup2(fd, STDOUT_FILENO);
+	dup2(fd, STDOUT_FILENO);
 	fd = open("infile",O_RDONLY);
-	// isatty, ttyname, ttyslot, ioctl,
+	// isatty (entrée utilisateur ou d,un pipe/fichier/script.), ttyname, ttyslot, ioctl,
 	//on le ferme paske plus besoin
 	close(fd);
 	ft_printf("hello ?\n");
@@ -46,55 +47,7 @@ void test_redir(t_job *job)
 	//Ca redirect bien "hello ?" et le ls dans le fichier output !! :o magie ! 🪄
 }
 
-void command_echo(t_job *j, t_shell *s)
-{
-	int i;
-	int n;
 
-	i = 0;
-	n = 0;
-	while(j->args[i])
-	{
-		if(ms_strcmp(j->args[i],"-n"))
-		{
-			n = 1;
-			i ++;
-			continue;
-		}
-		ft_printf("%s",j->args[i]);
-		i ++;
-		if(j->args[i])
-			ft_printf(" ");
-	}
-	if(!n)
-		ft_printf("\n");
-}
-
-void command_cd(t_job *j, t_shell *s)
-{
-	if(j->args[1])
-	{
-		perror("cd: too many arguments");
-		return;
-	}
-	if(opendir(j->args[0]))
-	{
-		
-	}
-
-	
-}
-
-void select_command(t_job *jobs, t_shell *s)
-{
-	if(jobs->cmd)
-	{
-		if(ms_strcmp(jobs->cmd,"echo"))
-			command_echo(jobs,s);
-		if(ms_strcmp(jobs->cmd,"cd"))
-			command_cd(jobs,s);
-	}
-}
 
 //They took er jebs!
 // Est ce quil faut rien faire avec le parent thread ? (a part wait l'exit du child)
@@ -140,7 +93,7 @@ t_shell *create_shell(void)
 		exit(EXIT_FAILURE);
 	}
 	//Get the OS environement variables (spour tester)
-	s->env = __environ;
+	s->env = environ;
 	return (s);
 }
 
@@ -227,19 +180,23 @@ int main(void)
 	{
 		line = readline("labonneshell :");
 		if(line)
+		{
 			tokens = create_lst_tokens(line);
+			add_history(line);
+		}
 		//type_tokens(tokens);
-		debug_print_tokens(tokens);
+		//debug_print_tokens(tokens);
 		check_env(tokens,shell);
-		debug_print_tokens(tokens);
+	//	debug_print_tokens(tokens);
 		check_tokens(tokens);
-		debug_print_tokens(tokens);
+	//	debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		if(!check_jobs(jobs))
 			execute_jobs(jobs,shell);
-		debug_print_job(jobs);
+		//debug_print_job(jobs);
 		free_jobs(jobs);
 	}
+	clear_history();
 }
 
 

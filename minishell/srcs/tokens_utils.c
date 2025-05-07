@@ -20,6 +20,11 @@ void create_token(char *line, int start, int end, t_token **tokens)
 		return ;
 	new_token = malloc_token();
 	new_token->content = ft_substr(line, start, (end-start));
+
+	if (line[start] == line[end - 1] && line[start] == '"')
+		new_token->type = 2;
+	else if (line[start] == line[end - 1] && line[start] == '\'')
+		new_token->type = 1;
 	token_add_back(tokens,new_token);
 }
 

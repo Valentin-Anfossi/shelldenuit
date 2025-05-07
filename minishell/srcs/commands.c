@@ -12,6 +12,52 @@
 
 #include "minishell.h"
 
+void command_echo(t_job *j, t_shell *s)
+{
+	int i;
+	int n;
+
+	i = 0;
+	n = 0;
+	while(j->args[i])
+	{
+		if(ms_strcmp(j->args[i],"-n"))
+		{
+			n = 1;
+			i ++;
+			continue;
+		}
+		ft_printf("%s",j->args[i]);
+		i ++;
+		if(j->args[i])
+			ft_printf(" ");
+	}
+	if(!n)
+		ft_printf("\n");
+}
+void command_cd(t_job *j, t_shell *s)
+{
+	if(j->args[1])
+	{
+		perror("cd: too many arguments");
+		return;
+	}
+	if(opendir(j->args[0]))
+	{
+		
+	}
+}
+
+void select_command(t_job *jobs, t_shell *s)
+{
+	if(jobs->cmd)
+	{
+		if(ms_strcmp(jobs->cmd,"echo"))
+			command_echo(jobs,s);
+		if(ms_strcmp(jobs->cmd,"cd"))
+			command_cd(jobs,s);
+	}
+}
 // void select_command(t_job *job)
 // {
 // 	char *cmd;
