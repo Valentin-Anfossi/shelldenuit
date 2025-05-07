@@ -20,11 +20,6 @@ void create_token(char *line, int start, int end, t_token **tokens)
 		return ;
 	new_token = malloc_token();
 	new_token->content = ft_substr(line, start, (end-start));
-
-	if (line[start] == line[end - 1] && line[start] == '"')
-		new_token->type = 2;
-	else if (line[start] == line[end - 1] && line[start] == '\'')
-		new_token->type = 1;
 	token_add_back(tokens,new_token);
 }
 
@@ -174,4 +169,31 @@ void	ms_lstdelone(t_token *lst, void (*del)(void *))
 {
 	del(lst->content);
 	free(lst);
+}
+
+void typing_tokens(t_token **tokens)
+{
+	t_token *t;
+
+	t = *tokens;
+	while(t)
+	{
+		if(ms_strcmp(t->content," "))
+			t->type = SPC;
+		else if(t->content[0] == '"')
+			t->type = DBQ;
+		else if(t->content[0] == '\'')
+			t->type = SQ;
+		else if(ms_strcmp(t->content,">"))
+			t->type = OUT;
+		else if(ms_strcmp(t->content,"<"))
+			t->type = IN;
+		else if(ms_strcmp(t->content,">>"))
+			t->type = APP;
+		else if(ms_strcmp(t->content,"<<"))
+			t->type = HER;
+		else
+			t->type = ARG;
+	t = t->next;
+	}
 }

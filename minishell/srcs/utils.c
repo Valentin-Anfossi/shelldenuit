@@ -119,3 +119,24 @@ void debug_print_job(t_job *jobs)
 	}
 	ft_printf("\n");
 }
+
+//Split in two at first encounter of char c
+char **ms_split(char *string, int c)
+{
+	int i;
+	char **out;
+
+	i = 0;
+	while(string[i] != c)
+	{
+		i ++;
+	}
+	out = malloc(sizeof(char **));
+	out[0] = malloc(i+2);
+	ft_strlcpy(out[0], string, i+1);
+	string ++;
+	string+=i;
+	out[1] = ft_strdup(string);
+
+	return(out);
+}

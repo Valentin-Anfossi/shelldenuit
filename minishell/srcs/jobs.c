@@ -54,8 +54,6 @@ t_token *add_to_job_arg(t_token *t, t_job *j)
 	int i;
 	
 	i = 0;
-	if (ms_strcmp(t->content, " "))
-		return(t->next);
 	if(!j->args[0])
 	{
 		j->args[0] = ft_strdup(t->content);

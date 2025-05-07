@@ -22,15 +22,15 @@
 //l'arg Env de execve determine si il recoit les variable d'enviro
 //env = null par ex, il a acces a rien
 //pour l'env actuel de l'os c'est 
-extern char **environ;
+
 //mais jpense faut faire le notre avec nos variables non ? (c pas precise mais ca ferait sens)
 
-void test_redir(t_job *job)
+void	test_redir(t_job *job)
 {
-	int fd; 
-	char ** argv;
-	char **env;
-	
+	int		fd;
+	char	**argv;
+	char	**env;
+
 	// Pour les rights faut mettre le code CHMOD a la fin
 	fd = open("output",O_WRONLY | O_CREAT ,0755);
 	argv = NULL;
@@ -46,9 +46,6 @@ void test_redir(t_job *job)
 	exit(EXIT_FAILURE);
 	//Ca redirect bien "hello ?" et le ls dans le fichier output !! :o magie ! 🪄
 }
-
-
-
 //They took er jebs!
 // Est ce quil faut rien faire avec le parent thread ? (a part wait l'exit du child)
 // Je sais pas trop
@@ -59,16 +56,16 @@ void execute_jobs(t_job *jobs, t_shell *shell)
 	int *statloc;
 	
 	statloc = (int *)malloc(sizeof(int));
-	while(jobs)
+	while (jobs)
 	{
 		pid_t n_pid = fork();
-		if(n_pid == -1)
+		if (n_pid == -1)
 		{
 			perror("fork");
 			exit(EXIT_FAILURE);
 		}
 		// CHILD FORK
-		if(n_pid == 0)
+		if (n_pid == 0)
 		{
 			select_command(jobs,shell);
 			exit(EXIT_FAILURE);
@@ -87,87 +84,31 @@ t_shell *create_shell(void)
 	t_shell *s;
 
 	s = (t_shell *)malloc(sizeof(t_shell));
-	if(!getcwd(s->cwd,0))
+	extern char **environ;
+	s->env = environ;
+	int i = 0;
+	while (s->env[i])
+		i ++;
+	s->env[i] = ft_strdup("MINISHELL=trobien");
+	//s->env[i+1] = NULL;
+	if (!getcwd(s->cwd,0))
 	{
 		perror("Could not get current working dir. wtf did you do ?");
 		exit(EXIT_FAILURE);
 	}
 	//Get the OS environement variables (spour tester)
-	s->env = environ;
 	return (s);
 }
 
 int	is_tok_quoted(t_token *tok)
 {
-	if(tok->content[0] == '\'' && tok->content[ft_strlen(tok->content)] == '\'')
+	if (tok->content[0] == '\''
+		&& tok->content[ft_strlen(tok->content)] == '\'')
 		return (1);
 	else
 		return (0);
 }
 
-char *expand_token_env(char *s, t_shell *shell)
-{
-	int i;
-	int j;
-	char *out;
-	char *env;
-	char *to_add;
-	char *temp;
-
-	to_add = (char *)malloc(2);
-	out = NULL;
-	i = 0;
-	j = 0;
-	s = ft_strtrim(s,"\"");
-	out = ft_strdup ("");
-
-	while(s[i])
-	{
-		if(s[i] == '$')
-		{
-			j = i+1;
-			while(ft_isalnum(s[j]) || s[j] == '_')
-				j++;
-			if(j > i + 1)
-			{
-				temp = ft_substr(s,i+1,j - i - 1);
-				env = getenv(temp);
-				free(temp);
-				if(env)
-					out = ft_strjoin(out, env);
-				i = j - 1;
-			}
-			else
-				out = ft_strjoin(out,"$");
-		}
-		else
-		{
-			to_add[0] = s[i];
-			to_add[1] = '\0';
-			out = ft_strjoin(out,to_add);
-		}
-		i++;
-	}
-	return (out);
-}
-void check_env(t_token **tokens,t_shell *shell)
-{
-	t_token *tok;
-	
-	tok = *tokens;
-	while(tok)
-	{
-		if(!is_tok_quoted(tok))
-		{
-			tok->content = expand_token_env(tok->content, shell);
-		}
-		if(tok->content[0] && tok->content[0] == '$' && tok->content[1])
-		{
-			tok->content = getenv(ft_strtrim(tok->content,"$"));
-		}
-		tok = tok->next;
-	}
-}
 int main(void)
 {
 	char *line;
@@ -176,28 +117,29 @@ int main(void)
 	t_job	*jobs;
 
 	shell = create_shell();
-	while(1)
+	int i = 0;
+	// while (shell->env[i++])
+	// 	printf("%s\n",shell->env[i]);
+
+	while (1)
 	{
 		line = readline("labonneshell :");
-		if(line)
+		if (line)
 		{
 			tokens = create_lst_tokens(line);
 			add_history(line);
 		}
-		//type_tokens(tokens);
-		//debug_print_tokens(tokens);
+		typing_tokens(tokens);
+		debug_print_tokens(tokens);
 		check_env(tokens,shell);
 	//	debug_print_tokens(tokens);
 		check_tokens(tokens);
-	//	debug_print_tokens(tokens);
+		debug_print_tokens(tokens);
 		jobs = create_job(tokens);
-		if(!check_jobs(jobs))
+		if (!check_jobs(jobs))
 			execute_jobs(jobs,shell);
-		//debug_print_job(jobs);
+		debug_print_job(jobs);
 		free_jobs(jobs);
 	}
 	clear_history();
 }
-
-
-

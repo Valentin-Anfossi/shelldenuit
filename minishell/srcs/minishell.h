@@ -48,6 +48,18 @@ enum Redirs
 	R_HEREDOC
 };
 
+enum Types
+{
+	SPC,
+	DBQ,
+	SQ,
+	OUT,
+	IN,
+	APP,
+	HER,
+	ARG
+};
+
 typedef struct s_shell
 {
 	char *cwd;
@@ -72,7 +84,6 @@ typedef struct s_job
 
 typedef struct s_token
 {
-
     char		*content;
     int        type;
     t_token    *next;
@@ -92,19 +103,28 @@ int		is_tok_pipe(t_token *t);
 t_token	*token_last(t_token *lst);
 void	token_add_back(t_token **lst, t_token *token);
 void	check_tokens(t_token **tokens);
+void 	typing_tokens(t_token **tokens);
+
+//EXPAND
+char	*expand_token_env(char *s, t_shell *shell);
+void	check_env(t_token **tokens, t_shell *shell);
 
 //JOBS
 t_job	**create_lst_job(t_token **tokens);
 t_job	*create_job(t_token **tokens);
 t_job	*malloc_job(void);
-int 	get_redir_type(t_token *t);
-int 	check_jobs(t_job *jobs);
-void 	free_jobs(t_job *jobs);
+int		get_redir_type(t_token *t);
+int		check_jobs(t_job *jobs);
+void	free_jobs(t_job *jobs);
 
 //UTILS
 void	debug_print_job(t_job *jobs);
 void	debug_print_tokens(t_token **tokens);
 int		ms_strcmp(char *str1, const char *str2);
 int		ms_lstsize(t_token *lst);
-char 	**ms_cmdlst();
+char	**ms_cmdlst(void);
+char	**ms_split(char *string, int c);
+
+//COMMANDS
+void	select_command(t_job *jobs, t_shell *s);
 

@@ -31,7 +31,7 @@ void create_spc_token(t_token **tokens)
 void token_cat(t_token *t, t_token *n)
 {
 	t->content = ft_strjoin(t->content, n->content);
-	//ft_printf(" je suis concatener : %s\n", t->content);
+	ft_printf(" je suis concatener : %s\n", t->content);
 	t->next = n->next;
 	free(n);
 }
@@ -46,7 +46,7 @@ void check_tokens(t_token **tokens)
 		if (t->next && ms_strcmp(t->content, "$") && t->type != 2 
 			&& !ms_strcmp(t->next->content, " "))
 		{
-			t->content = "";
+			t->content = ft_strdup("");
 			t = t->next->next;
 		}
 		else if (t->next && ms_strcmp(t->next->content, " "))
@@ -54,7 +54,7 @@ void check_tokens(t_token **tokens)
 			t = t->next->next;
 			continue;	
 		}
-		else if (t->next && is_tok_arg(t->next))
+		else if (t->next && is_tok_arg(t->next) && t->type != 0)
 			token_cat(t, t->next);
 		else
 			t = t->next;
@@ -72,6 +72,9 @@ t_token	**create_lst_tokens(char *line)
 
 	tokens = (t_token **)malloc(sizeof(t_token *));
 	*tokens = NULL;
+	while(line[start] == ' ')
+		start ++;
+	end = start;
 	while (line[end])
 	{
 		if (line[end] == '"' && !in_singles)

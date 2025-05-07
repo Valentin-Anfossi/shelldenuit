@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char *redirout(t_redir *redir, )
+void *redirout(t_redir *redir, )
 {
     t_redir *r;
     int stdo;
@@ -11,5 +11,5 @@ char *redirout(t_redir *redir, )
     fd = open(r->target, O_WRONLY | O_CREAT, 755);
     dup2(fd, STDOUT_FILENO);
     close(fd);
-    ft_printf("%s", )
+    ft_printf("%s", return_echo)
 }
