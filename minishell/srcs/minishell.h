@@ -124,7 +124,9 @@ int		ms_strcmp(char *str1, const char *str2);
 int		ms_lstsize(t_token *lst);
 char	**ms_cmdlst(void);
 char	**ms_split(char *string, int c);
+char	*ms_getenv(char *key, t_shell *s);
 
 //COMMANDS
 void	select_command(t_job *jobs, t_shell *s);
+void	command_export(t_job *j, t_shell *s);
 

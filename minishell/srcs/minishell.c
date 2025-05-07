@@ -64,10 +64,10 @@ void execute_jobs(t_job *jobs, t_shell *shell)
 			perror("fork");
 			exit(EXIT_FAILURE);
 		}
+		select_command(jobs, shell);
 		// CHILD FORK
 		if (n_pid == 0)
 		{
-			select_command(jobs,shell);
 			exit(EXIT_FAILURE);
 		}
 		// PARENT FORK (DO NOTHING BUT WAIT)
@@ -79,19 +79,26 @@ void execute_jobs(t_job *jobs, t_shell *shell)
 	}
 }
 
-t_shell *create_shell(void)
+t_shell	*create_shell(void)
 {
-	t_shell *s;
+	extern char	**environ;
+	t_shell		*s;
+	int			i;
 
+	i = 0;
 	s = (t_shell *)malloc(sizeof(t_shell));
-	extern char **environ;
-	s->env = environ;
-	int i = 0;
-	while (s->env[i])
-		i ++;
+	while (environ[i])
+		i++;
+	s->env = malloc(sizeof(char *) * (i + 2));
+	i = 0;
+	while (environ[i])
+	{
+		s->env[i] = ft_strdup(environ[i]);
+		i++;
+	}
 	s->env[i] = ft_strdup("MINISHELL=trobien");
-	//s->env[i+1] = NULL;
-	if (!getcwd(s->cwd,0))
+	s->env[i + 1] = NULL;
+	if (!getcwd(s->cwd, 0))
 	{
 		perror("Could not get current working dir. wtf did you do ?");
 		exit(EXIT_FAILURE);
@@ -111,16 +118,12 @@ int	is_tok_quoted(t_token *tok)
 
 int main(void)
 {
-	char *line;
-	t_shell *shell;
-	t_token **tokens;
+	char	*line;
+	t_shell	*shell;
+	t_token	**tokens;
 	t_job	*jobs;
 
 	shell = create_shell();
-	int i = 0;
-	// while (shell->env[i++])
-	// 	printf("%s\n",shell->env[i]);
-
 	while (1)
 	{
 		line = readline("labonneshell :");
@@ -130,15 +133,15 @@ int main(void)
 			add_history(line);
 		}
 		typing_tokens(tokens);
-		debug_print_tokens(tokens);
-		check_env(tokens,shell);
+	//	debug_print_tokens(tokens);
+		check_env(tokens, shell);
 	//	debug_print_tokens(tokens);
 		check_tokens(tokens);
-		debug_print_tokens(tokens);
+	//	debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		if (!check_jobs(jobs))
-			execute_jobs(jobs,shell);
-		debug_print_job(jobs);
+			execute_jobs(jobs, shell);
+	//	debug_print_job(jobs);
 		free_jobs(jobs);
 	}
 	clear_history();

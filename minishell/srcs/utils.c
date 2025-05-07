@@ -138,5 +138,27 @@ char **ms_split(char *string, int c)
 	string+=i;
 	out[1] = ft_strdup(string);
 
-	return(out);
+	return (out);
+}
+
+char	*ms_getenv(char *key, t_shell *s)
+{
+	int		i;
+	char	**actual;
+	char	*out;
+
+	out = NULL;
+	i = 0;
+	while (s->env[i])
+	{
+		actual = ms_split(s->env[i], '=');
+		if (ms_strcmp(actual[0], key))
+		{
+			out = actual[1];
+			break ;
+		}
+		i++;
+	}
+	free(actual);
+	return (out);
 }

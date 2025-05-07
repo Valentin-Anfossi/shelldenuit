@@ -1,0 +1,90 @@
+#include "minishell.h"
+
+// le nom de la var d'env doit etre ALPHANUM OU UNDERSCORE OK
+// le contenu = n'importe quoi OK
+// faut check si y'a un espace
+// modifier si elle existe deja
+//	MAJ ou min, underscore
+
+int	check_export(char **vars, t_shell *shell, char *str)
+{
+	int		i;
+	char	*env;
+
+	i = 0;
+	if (vars[0] && vars[1])
+	{
+		i = 1;
+		env = ms_getenv(vars[0], shell);
+		if (env)
+			return (2);
+		else if (!ft_isalpha(vars[0][0]))
+			return (0);
+		while (vars[0][i])
+		{
+			if (!ft_isalnum(vars[0][i]) && vars[0][i] != '_')
+				return (0);
+			i ++;
+		}
+	}
+	return (1);
+}
+
+
+void	add_to_env(t_shell *s, char *add_env)
+{
+	int		i;
+	int		j;
+	char	**new_env;
+
+	j = 0;
+	i = 0;
+	while (s->env[i])
+		i++;
+	new_env = malloc(sizeof(char *) * (i + 2));
+	i = 0;
+	while (s->env[i])
+	{
+		new_env[i] = ft_strdup(s->env[i]);
+		i++;
+	}
+	new_env[i] = ft_strdup(add_env);
+	new_env[i + 1] = NULL;
+	while (s->env[j])
+	{
+		free(s->env[j]);
+		j++;
+	}
+	free(s->env);
+	s->env = new_env;
+}
+
+void	modif_export(t_shell *s, char **vars, char *new)
+{
+	int	i;
+
+	i = 0;
+	while (ft_strncmp(s->env[i], vars[0], ft_strlen(vars[0])) != 0)
+		i++;
+	s->env[i] = ft_strdup(new);
+}
+
+void	command_export(t_job *j, t_shell *s)
+{
+	char	**vars;
+	int		k;
+
+	k = 1;
+	while (j->args[k])
+	{
+		vars = ms_split(j->args[k], '=');
+		if (check_export(vars, s, j->args[k]))
+		{
+			if (check_export(vars, s, j->args[k]) == 2)
+				modif_export(s, vars, j->args[k]);
+			else
+				add_to_env(s, j->args[k]);
+		}
+		k ++;
+	}
+}
