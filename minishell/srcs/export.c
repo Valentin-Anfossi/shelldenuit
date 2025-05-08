@@ -1,19 +1,17 @@
 #include "minishell.h"
 
-// le nom de la var d'env doit etre ALPHANUM OU UNDERSCORE OK
-// le contenu = n'importe quoi OK
-// faut check si y'a un espace
-// modifier si elle existe deja
-//	MAJ ou min, underscore
-
 int	check_export(char **vars, t_shell *shell, char *str)
 {
 	int		i;
 	char	*env;
 
 	i = 0;
-	if (vars[0] && vars[1])
+	if(!vars)
+		return (0);
+	if (vars && vars[0] && vars[1])
 	{
+		if(vars[0][0]>= '0' && vars[0][0] <='9')
+			return(err_exp_ident(str));
 		i = 1;
 		env = ms_getenv(vars[0], shell);
 		if (env)
@@ -59,14 +57,14 @@ void	add_to_env(t_shell *s, char *add_env)
 	s->env = new_env;
 }
 
-void	modif_export(t_shell *s, char **vars, char *new)
+void	modif_export(t_shell *s, char **vars, char *newstr)
 {
 	int	i;
 
 	i = 0;
 	while (ft_strncmp(s->env[i], vars[0], ft_strlen(vars[0])) != 0)
 		i++;
-	s->env[i] = ft_strdup(new);
+	s->env[i] = ft_strdup(newstr);
 }
 
 void	command_export(t_job *j, t_shell *s)

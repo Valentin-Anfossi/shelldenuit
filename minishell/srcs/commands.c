@@ -73,6 +73,8 @@ void	select_command(t_job *jobs, t_shell *s)
 			command_export(jobs, s);
 		if (ms_strcmp(jobs->cmd, "cd"))
 			command_cd(jobs, s);
+		if (ms_strcmp(jobs->cmd, "unset"))
+			command_unset(jobs, s);
 	}
 }
 // void select_command(t_job *job)

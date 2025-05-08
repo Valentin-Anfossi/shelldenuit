@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/03 18:03:27 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/08 17:39:53 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,16 @@ char	*ms_getenv(char *key, t_shell *s);
 
 //COMMANDS
 void	select_command(t_job *jobs, t_shell *s);
-void	command_export(t_job *j, t_shell *s);
 
+//COMMANDS: EXPORT
+void	command_export(t_job *j, t_shell *s);
+void	modif_export(t_shell *s, char **vars, char *newstr);
+void	add_to_env(t_shell *s, char *add_env);
+int	check_export(char **vars, t_shell *shell, char *str);
+
+//COMMANDS: UNSET
+void command_unset(t_job *j, t_shell *s);
+void unset_env(t_shell *s, char *str);
+
+//ERRORS
+int err_exp_ident(char *str);

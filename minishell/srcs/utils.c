@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/03 18:01:47 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/08 17:11:52 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,16 +121,17 @@ void debug_print_job(t_job *jobs)
 }
 
 //Split in two at first encounter of char c
+//Returns NULL if character not found
 char **ms_split(char *string, int c)
 {
 	int i;
 	char **out;
 
 	i = 0;
-	while(string[i] != c)
-	{
+	while(string[i] && string[i] != c)
 		i ++;
-	}
+	if(i + 1 >= ft_strlen(string))
+		return (NULL);
 	out = malloc(sizeof(char **));
 	out[0] = malloc(i+2);
 	ft_strlcpy(out[0], string, i+1);
@@ -152,7 +153,7 @@ char	*ms_getenv(char *key, t_shell *s)
 	while (s->env[i])
 	{
 		actual = ms_split(s->env[i], '=');
-		if (ms_strcmp(actual[0], key))
+		if (actual && ms_strcmp(actual[0], key))
 		{
 			out = actual[1];
 			break ;

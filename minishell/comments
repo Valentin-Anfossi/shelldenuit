@@ -203,3 +203,27 @@
 // 	}
 // 	return (out);
 // }
+
+//They took er jebs!
+// Est ce quil faut rien faire avec le parent thread ? (a part wait l'exit du child)
+// Je sais pas trop
+// Aussi les redirections out (out et out_append) on peut les faire sans pipe
+// dup2 ca fonctionne tres bien (woopi) exemple au dessus
+
+// le nom de la var d'env doit etre ALPHANUM OU UNDERSCORE OK
+// le contenu = n'importe quoi OK
+// faut check si y'a un espace
+// modifier si elle existe deja
+//	MAJ ou min, underscore
+
+//pour test il faut mettre une commande valide genre "cd bou"
+//ca fait pas la commande, juste ca print et fait un ls avec le new process
+//c normal c pour tester
+//tkt
+
+//Execve a besoin du path COMPLET (/home/vanfossi/blablabla)
+//l'arg Env de execve determine si il recoit les variable d'enviro
+//env = null par ex, il a acces a rien
+//pour l'env actuel de l'os c'est 
+
+//mais jpense faut faire le notre avec nos variables non ? (c pas precise mais ca ferait sens)
