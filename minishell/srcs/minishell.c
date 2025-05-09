@@ -13,8 +13,6 @@
 
 #include "minishell.h"
 
-
-
 void	test_redir(t_job *job)
 {
 	int		fd;

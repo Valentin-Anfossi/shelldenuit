@@ -12,43 +12,6 @@
 
 #include "minishell.h"
 
-void	command_env(t_shell *shell)
-{
-	int	i;
-
-	i = 0;
-	while (shell->env[i])
-	{
-		ft_printf("%s\n", shell->env[i]);
-		i ++;
-	}
-}
-
-
-void	command_echo(t_job *j, t_shell *s)
-{
-	int	i;
-	int	n;
-
-	i = 0;
-	n = 0;
-	while (ms_strcmp(j->args[i], " "))
-		i++;
-	while (j->args[i])
-	{
-		if (ms_strcmp(j->args[i], "-n"))
-		{
-			n = 1;
-			i ++;
-			continue ;
-		}
-		ft_printf("%s", j->args[i]);
-		i ++;
-	}
-	if (!n)
-		ft_printf("\n");
-}
-
 void	command_cd(t_job *j, t_shell *s)
 {
 	if (j->args[1])
