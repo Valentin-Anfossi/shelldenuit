@@ -14,7 +14,9 @@ SRCS = \
 	srcs/errors.c \
 	srcs/unset.c \
 	srcs/echo.c \
-	srcs/expand.c
+	srcs/expand.c \
+	srcs/env.c \
+	srcs/cd.c
 
 BUILD_DIR = build/Debug
 OUT_DEBUG = $(BUILD_DIR)/outDebug

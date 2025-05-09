@@ -11,5 +11,5 @@ void *redirout(t_redir *redir, )
     fd = open(r->target, O_WRONLY | O_CREAT, 755);
     dup2(fd, STDOUT_FILENO);
     close(fd);
-    ft_printf("%s", return_echo)
+    ft_printf("%s", return_echo);
 }
