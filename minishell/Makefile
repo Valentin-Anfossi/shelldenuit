@@ -12,7 +12,9 @@ SRCS = \
  	srcs/export.c 	\
  	srcs/minishell.c \
 	srcs/errors.c \
-	srcs/unset.c
+	srcs/unset.c \
+	srcs/echo.c \
+	srcs/expand.c
 
 BUILD_DIR = build/Debug
 OUT_DEBUG = $(BUILD_DIR)/outDebug

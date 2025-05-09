@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:25:00 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/08 18:12:46 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:06:33 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,21 @@
 
 void	remove_env(t_shell *s, int index)
 {
+	char *prev;
+	char *next;
 	
+	if (s->env[index+1])
+	{
+		s->env[index] = ft_strdup(s->env[index+1]);
+		index ++;
+		while(s->env[index])
+		{
+			s->env[index] = ft_strdup(s->env[index + 1]);
+			index ++;
+		}
+	}
+	else
+		s->env[index] = NULL;
 }
 
 void	unset_env(t_shell *s, char *str)
@@ -31,8 +45,7 @@ void	unset_env(t_shell *s, char *str)
 		{
 			if (s->env[i][len] && s->env[i][len] == '=')
 			{
-				remove_env(s, i);
-				s->env[i] = ft_strdup("REMOVED");
+				remove_env(s, i);	
 			}
 		}
 		i ++;
