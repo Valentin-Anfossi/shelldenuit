@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/24 11:43:40 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/08 17:11:52 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char **ms_cmdlst()
 	return (cmdlst);
 }
 //Compare 2 strings, return 0 = different 1 = same
-int ms_strcmp(char *str1, char *str2)
+int ms_strcmp(char *str1, const char *str2)
 {
 	int i = 0;
 	while (str1[i] && str2[i] && str1[i] == str2[i])
@@ -118,4 +118,48 @@ void debug_print_job(t_job *jobs)
 		}
 	}
 	ft_printf("\n");
+}
+
+//Split in two at first encounter of char c
+//Returns NULL if character not found
+char **ms_split(char *string, int c)
+{
+	int i;
+	char **out;
+
+	i = 0;
+	while(string[i] && string[i] != c)
+		i ++;
+	if(i + 1 >= ft_strlen(string))
+		return (NULL);
+	out = malloc(sizeof(char **));
+	out[0] = malloc(i+2);
+	ft_strlcpy(out[0], string, i+1);
+	string ++;
+	string+=i;
+	out[1] = ft_strdup(string);
+
+	return (out);
+}
+
+char	*ms_getenv(char *key, t_shell *s)
+{
+	int		i;
+	char	**actual;
+	char	*out;
+
+	out = NULL;
+	i = 0;
+	while (s->env[i])
+	{
+		actual = ms_split(s->env[i], '=');
+		if (actual && ms_strcmp(actual[0], key))
+		{
+			out = actual[1];
+			break ;
+		}
+		i++;
+	}
+	free(actual);
+	return (out);
 }

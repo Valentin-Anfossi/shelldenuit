@@ -134,3 +134,96 @@
 // 	jobs = create_job(tokens);
 // 	return (jobs);
 // }
+
+// s = $USER
+// s = $USER$USER
+// s = "hey salut $USER lol lol lol $USER"
+
+// char *expand_token_env(char *s, t_shell *shell)
+// {
+// 	int i;
+// 	int j;
+// 	char *out;
+// 	char *before;
+
+// 	i = 0;
+// 	j = 0;
+// 	s = ft_strtrim(s,"\"");
+// 	while(s[i])
+// 	{
+		
+// 		if(s[i] == '$')
+// 		{
+// 			before = ft_substr(s,j,i-j);
+// 			j = i + 1;
+// 			while(s[j] != ' ' && s[j] != '$' && s[j])
+// 				j ++;
+// 			char *substr = ft_substr(s, i + 1,j-1-i);
+// 			char *s1 = getenv(substr);
+// 			out = ft_strjoin(before,s1);
+// 			i = j-1;
+// 		}
+// 		i++;
+// 	}
+// 	if(base[0] == 0)
+// 		return (s);
+// 	return (base);
+// }
+
+// char *expand_token_env(char *s, t_shell *shell)
+// {
+// 	int i;
+// 	int j;
+// 	int	k;
+// 	char *out;
+
+// 	i = 0;
+// 	j = 0;
+// 	k = 0;
+// 	s = ft_strtrim(s,"\"");
+// 	while(s[i])
+// 	{
+// 		if(s[i] == '$')
+// 		{
+// 			j = i + 1;
+// 			while(s[j] != ' ' && s[j] != '$' && s[j])
+// 				j ++;
+// 			char *substr = ft_substr(s, i + 1,j-1-i);
+// 			char *s1 = getenv(substr);
+// 			out = ft_strjoin(out, s1);
+// 			i = j-1;
+// 			k = ft_strlen(out);
+// 		}
+// 		else
+// 		{
+// 			out[k] = s[i];
+// 			k++;
+// 		}
+// 		i++;
+// 	}
+// 	return (out);
+// }
+
+//They took er jebs!
+// Est ce quil faut rien faire avec le parent thread ? (a part wait l'exit du child)
+// Je sais pas trop
+// Aussi les redirections out (out et out_append) on peut les faire sans pipe
+// dup2 ca fonctionne tres bien (woopi) exemple au dessus
+
+// le nom de la var d'env doit etre ALPHANUM OU UNDERSCORE OK
+// le contenu = n'importe quoi OK
+// faut check si y'a un espace
+// modifier si elle existe deja
+//	MAJ ou min, underscore
+
+//pour test il faut mettre une commande valide genre "cd bou"
+//ca fait pas la commande, juste ca print et fait un ls avec le new process
+//c normal c pour tester
+//tkt
+
+//Execve a besoin du path COMPLET (/home/vanfossi/blablabla)
+//l'arg Env de execve determine si il recoit les variable d'enviro
+//env = null par ex, il a acces a rien
+//pour l'env actuel de l'os c'est 
+
+//mais jpense faut faire le notre avec nos variables non ? (c pas precise mais ca ferait sens)

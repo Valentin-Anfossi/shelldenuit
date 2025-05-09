@@ -1,18 +1,17 @@
 {
   "configurations": [
-    {
-      "name": "macos-clang-x64",
-      "includePath": [
-        "${workspaceFolder}/**"
-      ],
-      "compilerPath": "/usr/bin/clang",
-      "cStandard": "${default}",
-      "cppStandard": "${default}",
-      "intelliSenseMode": "macos-clang-x64",
-      "compilerArgs": [
-        ""
-      ]
-    }
+      {
+          "name": "Linux",
+          "includePath": [
+              "${workspaceFolder}/minishell/**",
+              "/usr/include",
+              "/usr/local/include"
+          ],
+          "defines": [],
+          "compilerPath": "/usr/bin/gcc",
+          "cStandard": "c17",
+          "intelliSenseMode": "linux-gcc-x64"
+      }
   ],
   "version": 4
 }

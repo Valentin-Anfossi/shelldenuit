@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/24 11:47:09 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:37:29 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_job *create_job(t_token **tokens)
 	while(t)
 	{
 		if(is_tok_redir(t))
-			if(is_tok_arg(t->next))//on peut faire ca ??
+			if(is_tok_arg(t->next))
 				t = add_to_job_redir(t,j);
 			else
 			{
