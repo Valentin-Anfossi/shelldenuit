@@ -122,15 +122,15 @@ void debug_print_job(t_job *jobs)
 
 //Split in two at first encounter of char c
 //Returns NULL if character not found
-char **ms_split(char *string, int c)
+char	**ms_split(char *string, int c)
 {
-	int i;
-	char **out;
+	int		i;
+	char	**out;
 
 	i = 0;
-	while(string[i] && string[i] != c)
+	while (string[i] && string[i] != c)
 		i ++;
-	if(i + 1 >= ft_strlen(string))
+	if (i + 1 >= (int)ft_strlen(string))
 		return (NULL);
 	out = malloc(sizeof(char **));
 	out[0] = malloc(i+2);

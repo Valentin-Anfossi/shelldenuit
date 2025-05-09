@@ -31,7 +31,7 @@ char	*expand_token_env(char *s, t_shell *shell)
 			if (j > i + 1)
 			{
 				temp = ft_substr(s, i + 1, j - i - 1);
-				env = getenv(temp);
+				env = ms_getenv(temp, shell);
 				free(temp);
 				if (env)
 					out = ft_strjoin(out, env);
@@ -50,7 +50,8 @@ char	*expand_token_env(char *s, t_shell *shell)
 	}
 	return (out);
 }
-void	check_env(t_token **tokens,t_shell *shell)
+
+void	check_env(t_token **tokens, t_shell *shell)
 {
 	t_token	*tok;
 

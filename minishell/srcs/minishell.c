@@ -70,8 +70,10 @@ t_shell	*create_shell(void)
 {
 	extern char	**environ;
 	t_shell		*s;
+	pid_t		pid_main;
 	int			i;
 
+	pid_main = getpid();
 	i = 0;
 	s = (t_shell *)malloc(sizeof(t_shell));
 	while (environ[i])
@@ -90,7 +92,6 @@ t_shell	*create_shell(void)
 		perror("Could not get current working dir. wtf did you do ?");
 		exit(EXIT_FAILURE);
 	}
-	//Get the OS environement variables (spour tester)
 	return (s);
 }
 
@@ -103,7 +104,7 @@ int	is_tok_quoted(t_token *tok)
 		return (0);
 }
 
-int main(void)
+int	main(void)
 {
 	char	*line;
 	t_shell	*shell;
@@ -120,15 +121,16 @@ int main(void)
 			add_history(line);
 		}
 		typing_tokens(tokens);
-	//	debug_print_tokens(tokens);
+		//debug_print_tokens(tokens);
 		check_env(tokens, shell);
-	//	debug_print_tokens(tokens);
+		//debug_print_tokens(tokens);
 		check_tokens(tokens);
-	//	debug_print_tokens(tokens);
+		//debug_print_tokens(tokens);
 		jobs = create_job(tokens);
+		//debug_print_job(jobs);
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
-		debug_print_job(jobs);
+		//debug_print_job(jobs);
 		free_jobs(jobs);
 	}
 	clear_history();

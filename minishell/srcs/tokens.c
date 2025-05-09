@@ -12,23 +12,23 @@
 
 #include "minishell.h"
 
-void create_spc_token(t_token **tokens)
+void	create_spc_token(t_token **tokens)
 {
-	t_token *new_token;
+	t_token	*new_token;
 
-	if(*tokens && ms_strcmp((*tokens)->content," "))
-		return;
+	if (*tokens && ms_strcmp((*tokens)->content, " "))
+		return ;
 
 	new_token = malloc_token();
 	new_token->content = " ";
-	token_add_back(tokens,new_token);
+	token_add_back(tokens, new_token);
 }
 
 // echo "slt""prout"
 // echo "slt"$USER"prout"
 // echo "slt$USER"
 
-void token_cat(t_token *t, t_token *n)
+void	token_cat(t_token *t, t_token *n)
 {
 	t->content = ft_strjoin(t->content, n->content);
 	ft_printf(" je suis concatener : %s\n", t->content);
@@ -36,14 +36,14 @@ void token_cat(t_token *t, t_token *n)
 	free(n);
 }
 
-void check_tokens(t_token **tokens)
+void	check_tokens(t_token **tokens)
 {
-	t_token *t;
+	t_token	*t;
 
 	t = *tokens;
 	while (t)
 	{
-		if (t->next && ms_strcmp(t->content, "$") && t->type != 2 
+		if (t->next && ms_strcmp(t->content, "$") && t->type != DBQ
 			&& !ms_strcmp(t->next->content, " "))
 		{
 			t->content = ft_strdup("");
@@ -52,7 +52,7 @@ void check_tokens(t_token **tokens)
 		else if (t->next && ms_strcmp(t->next->content, " "))
 		{
 			t = t->next->next;
-			continue;	
+			continue ;
 		}
 		else if (t->next && is_tok_arg(t->next) && t->type != 0)
 			token_cat(t, t->next);
@@ -61,18 +61,17 @@ void check_tokens(t_token **tokens)
 	}
 }
 
-
 t_token	**create_lst_tokens(char *line)
 {
-	int	in_doubles = 0;
-	int	in_singles = 0;
-	int	start = 0;
-	int	end = 0;
+	int		in_doubles = 0;
+	int		in_singles = 0;
+	int		start = 0;
+	int		end = 0;
 	t_token	**tokens;
 
 	tokens = (t_token **)malloc(sizeof(t_token *));
 	*tokens = NULL;
-	while(line[start] == ' ')
+	while (line[start] == ' ')
 		start ++;
 	end = start;
 	while (line[end])
@@ -112,7 +111,7 @@ t_token	**create_lst_tokens(char *line)
 			if (start != end)
 				split_token(line, start, end, tokens);
 			start = end + 1;
-			if(line[end + 1] && line[end + 1] != ' ')
+			if (line[end + 1] && line[end + 1] != ' ')
 				create_spc_token(tokens);
 		}
 		end++;
