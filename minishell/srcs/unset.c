@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void remove_env(t_shell *s, int index)
+void	remove_env(t_shell *s, int index)
 {
 	char *prev;
 	char *next;
@@ -31,19 +31,19 @@ void remove_env(t_shell *s, int index)
 		s->env[index] = NULL;
 }
 
-void unset_env(t_shell *s, char *str)
+void	unset_env(t_shell *s, char *str)
 {
-	int len;
-	int i;
+	int	len;
+	int	i;
 
 	i = 0;
 	len = ft_strlen(str);
-	while(s->env[i])
+	while (s->env[i])
 	{
-		printf("%s,%d\n",str,len);
-		if(!ft_strncmp(s->env[i],str,len))
+		printf("%s,%d\n", str, len);
+		if (!ft_strncmp(s->env[i], str, len))
 		{
-			if(s->env[i][len] && s->env[i][len] == '=')
+			if (s->env[i][len] && s->env[i][len] == '=')
 			{
 				remove_env(s, i);	
 			}
@@ -52,13 +52,13 @@ void unset_env(t_shell *s, char *str)
 	}
 }
 
-void command_unset(t_job *j, t_shell *s)
+void	command_unset(t_job *j, t_shell *s)
 {
-	char **vars;
-	int k;
-	
+	char	**vars;
+	int		k;
+
 	k = 1;
-	while(j->args[k])
+	while (j->args[k])
 	{
 		unset_env(s, j->args[k]);
 		k ++;

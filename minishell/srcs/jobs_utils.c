@@ -56,26 +56,29 @@ int check_jobs(t_job *jobs)
 	}
 	return (re);
 }
+
 //Free all the jurbs
-void free_jobs(t_job *jobs)
+void	free_jobs(t_job *jobs)
 {
-	t_redir *r;
-	t_job *j;
-	int i;
-	
-	while(jobs)
+	t_redir	*r;
+	t_job	*j;
+	int		i;
+
+	while (jobs)
 	{
 		i = 0;
-		while(jobs->redir)
+		if (jobs->cmd)
+			free(jobs->cmd);
+		while (jobs->redir)
 		{
 			r = jobs->redir->next;
 			free(jobs->redir);
 			jobs->redir = r;
 		}
-		while(jobs->args[i])
+		while (jobs->args[i])
 		{
 			free(jobs->args[i]);
-			i ++;		
+			i ++;
 		}
 		free(jobs->args);
 		j = jobs->piped_job;

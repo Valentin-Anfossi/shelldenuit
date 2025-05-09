@@ -62,16 +62,16 @@ enum Types
 
 typedef struct s_shell
 {
-	char *cwd;
-	char **env;
-} t_shell;
+	char	*cwd;
+	char	**env;
+}	t_shell;
 
 typedef struct s_redir
 {
-    int     type;
-    char    *target;
-    t_redir *next;
-}   t_redir;
+	int		type;
+	char	*target;
+	t_redir	*next;
+}	t_redir;
 
 typedef struct s_job
 {
@@ -84,10 +84,10 @@ typedef struct s_job
 
 typedef struct s_token
 {
-    char		*content;
-    int        type;
-    t_token    *next;
-}   t_token;
+	char	*content;
+	int		type;
+	t_token	*next;
+}	t_token;
 
 //TOKENS
 t_token	**create_lst_tokens(char *line);
@@ -95,15 +95,15 @@ t_token	*malloc_token(void);
 void	create_token(char *line, int start, int end, t_token **tokens);
 void	split_token(char *line, int start, int end, t_token **tokens);
 int		check_redirection_pipe(char *line);
-int 	is_tok_redir(t_token *t);
-int 	is_tok_arg(t_token *t);
-int 	is_str_exec(char *t);
-int 	is_tok_cmd(t_token *t);
+int		is_tok_redir(t_token *t);
+int		is_tok_arg(t_token *t);
+int		is_str_exec(char *t);
+int		is_tok_cmd(t_token *t);
 int		is_tok_pipe(t_token *t);
 t_token	*token_last(t_token *lst);
 void	token_add_back(t_token **lst, t_token *token);
 void	check_tokens(t_token **tokens);
-void 	typing_tokens(t_token **tokens);
+void	typing_tokens(t_token **tokens);
 
 //EXPAND
 char	*expand_token_env(char *s, t_shell *shell);
@@ -139,11 +139,11 @@ void	add_to_env(t_shell *s, char *add_env);
 int		check_export(char **vars, t_shell *shell, char *str);
 
 //COMMANDS: UNSET
-void command_unset(t_job *j, t_shell *s);
-void unset_env(t_shell *s, char *str);
+void	command_unset(t_job *j, t_shell *s);
+void	unset_env(t_shell *s, char *str);
 
 //COMMANDS: ENV
 void	command_env(t_shell *shell);
 
 //ERRORS
-int err_exp_ident(char *str);
+int		err_exp_ident(char *str);

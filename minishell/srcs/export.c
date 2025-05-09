@@ -6,12 +6,12 @@ int	check_export(char **vars, t_shell *shell, char *str)
 	char	*env;
 
 	i = 0;
-	if(!vars)
+	if (!vars)
 		return (0);
 	if (vars && vars[0] && vars[1])
 	{
-		if(vars[0][0]>= '0' && vars[0][0] <='9')
-			return(err_exp_ident(str));
+		if (vars[0][0] >= '0' && vars[0][0] <='9')
+			return (err_exp_ident(str));
 		i = 1;
 		env = ms_getenv(vars[0], shell);
 		if (env)
