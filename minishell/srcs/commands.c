@@ -12,18 +12,6 @@
 
 #include "minishell.h"
 
-void	command_cd(t_job *j, t_shell *s)
-{
-	if (j->args[1])
-	{
-		perror("cd: too many arguments");
-		return ;
-	}
-	if (opendir(j->args[0]))
-	{
-	}
-}
-
 void	select_command(t_job *jobs, t_shell *s)
 {
 	if (jobs->cmd)
