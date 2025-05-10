@@ -26,6 +26,8 @@ void	select_command(t_job *jobs, t_shell *s)
 			command_cd(jobs, s);
 		if (ms_strcmp(jobs->cmd, "unset"))
 			command_unset(jobs, s);
+		if (ms_strcmp(jobs->cmd, "pwd"))
+			command_pwd(jobs, s);
 	}
 }
 // void select_command(t_job *job)

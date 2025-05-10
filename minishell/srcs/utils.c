@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/08 17:11:52 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/10 03:42:41 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,6 @@ char	*ms_getenv(char *key, t_shell *s)
 		}
 		i++;
 	}
-	free(actual);
+	//free(actual);
 	return (out);
 }

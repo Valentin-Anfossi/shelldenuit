@@ -76,7 +76,7 @@ t_shell	*create_shell(void)
 	s = (t_shell *)malloc(sizeof(t_shell));
 	while (environ[i])
 		i++;
-	s->env = malloc(sizeof(char *) * (i + 2));
+	s->env = (char **)malloc(sizeof(char *) * (i + 2));
 	i = 0;
 	while (environ[i])
 	{
@@ -87,9 +87,10 @@ t_shell	*create_shell(void)
 	s->env[i + 1] = NULL;
 	if (!getcwd(s->cwd, 0))
 	{
-		perror("Could not get current working dir. wtf did you do ?");
+		ft_printf("Could not get current working dir. wtf did you do ?");
 		exit(EXIT_FAILURE);
 	}
+	s->cwd = getcwd(s->cwd,0);
 	return (s);
 }
 
@@ -100,6 +101,13 @@ int	is_tok_quoted(t_token *tok)
 		return (1);
 	else
 		return (0);
+}
+
+void tokens_start(t_token **t, t_shell *s)
+{
+	typing_tokens(t);
+	check_env(t, s);
+	check_tokens(t);
 }
 
 int	main(void)
@@ -118,6 +126,7 @@ int	main(void)
 			tokens = create_lst_tokens(line);
 			add_history(line);
 		}
+		// tokens_start(tokens);
 		typing_tokens(tokens);
 		//debug_print_tokens(tokens);
 		check_env(tokens, shell);
@@ -128,7 +137,7 @@ int	main(void)
 		//debug_print_job(jobs);
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
-		//debug_print_job(jobs);
+		debug_print_job(jobs);
 		free_jobs(jobs);
 	}
 	clear_history();

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:28:18 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/24 11:28:40 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/10 03:43:45 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ void	free_jobs(t_job *jobs)
 	while (jobs)
 	{
 		i = 0;
-		if (jobs->cmd)
-			free(jobs->cmd);
+		// if (jobs->cmd)
+		// 	free(jobs->cmd);
 		while (jobs->redir)
 		{
 			r = jobs->redir->next;
 			free(jobs->redir);
 			jobs->redir = r;
 		}
-		while (jobs->args[i])
+		while (jobs->args[i] != NULL)
 		{
 			free(jobs->args[i]);
 			i ++;
