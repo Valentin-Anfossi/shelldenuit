@@ -108,6 +108,7 @@ void tokens_start(t_token **t, t_shell *s)
 	typing_tokens(t);
 	check_env(t, s);
 	check_tokens(t);
+	//debug_print_tokens(tokens);
 }
 
 int	main(void)
@@ -126,15 +127,9 @@ int	main(void)
 			tokens = create_lst_tokens(line);
 			add_history(line);
 		}
-		// tokens_start(tokens);
-		typing_tokens(tokens);
-		//debug_print_tokens(tokens);
-		check_env(tokens, shell);
-		//debug_print_tokens(tokens);
-		check_tokens(tokens);
-		//debug_print_tokens(tokens);
+		tokens_start(tokens,shell);
 		jobs = create_job(tokens);
-		//debug_print_job(jobs);
+		debug_print_job(jobs);
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
 		debug_print_job(jobs);

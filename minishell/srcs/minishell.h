@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/09 14:21:36 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/10 15:17:12 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int		ms_lstsize(t_token *lst);
 char	**ms_cmdlst(void);
 char	**ms_split(char *string, int c);
 char	*ms_getenv(char *key, t_shell *s);
+void	free_shell(t_shell *s);
 
 //COMMANDS
 void	select_command(t_job *jobs, t_shell *s);
@@ -144,6 +145,9 @@ void	unset_env(t_shell *s, char *str);
 
 //COMMANDS: ENV
 void	command_env(t_shell *shell);
+
+//COMMANDS : EXIT
+void command_exit(t_shell *s, t_job *j);
 
 //ERRORS
 int		err_exp_ident(char *str);

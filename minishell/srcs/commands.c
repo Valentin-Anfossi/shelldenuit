@@ -28,6 +28,8 @@ void	select_command(t_job *jobs, t_shell *s)
 			command_unset(jobs, s);
 		if (ms_strcmp(jobs->cmd, "pwd"))
 			command_pwd(jobs, s);
+		if (ms_strcmp(jobs->cmd, "exit"))
+			command_exit(jobs,s);
 	}
 }
 // void select_command(t_job *job)
