@@ -18,18 +18,20 @@ void	select_command(t_job *jobs, t_shell *s)
 	{
 		if (ms_strcmp(jobs->cmd, "echo"))
 			command_echo(jobs, s);
-		if (ms_strcmp(jobs->cmd, "env"))
+		else if (ms_strcmp(jobs->cmd, "env"))
 			command_env(s);
-		if (ms_strcmp(jobs->cmd, "export"))
+		else if (ms_strcmp(jobs->cmd, "export"))
 			command_export(jobs, s);
-		if (ms_strcmp(jobs->cmd, "cd"))
+		else if (ms_strcmp(jobs->cmd, "cd"))
 			command_cd(jobs, s);
-		if (ms_strcmp(jobs->cmd, "unset"))
+		else if (ms_strcmp(jobs->cmd, "unset"))
 			command_unset(jobs, s);
-		if (ms_strcmp(jobs->cmd, "pwd"))
+		else if (ms_strcmp(jobs->cmd, "pwd"))
 			command_pwd(jobs, s);
-		if (ms_strcmp(jobs->cmd, "exit"))
+		else if (ms_strcmp(jobs->cmd, "exit"))
 			command_exit(jobs,s);
+		else
+			command_execute(jobs,s);
 	}
 }
 // void select_command(t_job *job)

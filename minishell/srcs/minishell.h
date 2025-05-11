@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/10 15:17:12 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/11 02:11:57 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_shell
 {
 	char	*cwd;
 	char	**env;
+	int		**pipefd;
 }	t_shell;
 
 typedef struct s_redir
@@ -116,6 +117,7 @@ t_job	*malloc_job(void);
 int		get_redir_type(t_token *t);
 int		check_jobs(t_job *jobs);
 void	free_jobs(t_job *jobs);
+void 	execute_fork(t_job *j, t_shell *s);
 
 //UTILS
 void	debug_print_job(t_job *jobs);
@@ -149,5 +151,10 @@ void	command_env(t_shell *shell);
 //COMMANDS : EXIT
 void command_exit(t_shell *s, t_job *j);
 
+//COMMANDS : EXECUTE
+void command_execute(t_job *j, t_shell *s);
+void execute_prog(t_job *j, t_shell *s);
+
 //ERRORS
 int		err_exp_ident(char *str);
+int		err_cmd_nfound(char *str);

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/10 11:53:58 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/11 02:06:54 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,4 +175,22 @@ void	free_shell(t_shell *s)
 		i ++;
 	}
 	free(s);
+}
+
+int startswith(char *s, char *start)
+{
+	int i;
+
+	i = 0;
+	if(!s || !start)
+		return (NULL);
+	while(start[i])
+	{
+		if(s[i] != start[i] && s[i])
+		{
+			return (NULL);
+		}
+		i ++;
+	}
+	return (1);
 }

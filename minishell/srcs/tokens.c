@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:08:45 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/04 00:02:33 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/10 16:22:11 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	create_spc_token(t_token **tokens)
 void	token_cat(t_token *t, t_token *n)
 {
 	t->content = ft_strjoin(t->content, n->content);
-	ft_printf(" je suis concatener : %s\n", t->content);
+	// ft_printf(" je suis concatener : %s\n", t->content);
 	t->next = n->next;
 	free(n);
 }

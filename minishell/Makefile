@@ -17,7 +17,8 @@ SRCS = \
 	srcs/expand.c \
 	srcs/env.c \
 	srcs/cd.c \
-	srcs/exit.c
+	srcs/exit.c \
+	srcs/execute.c
 
 BUILD_DIR = build/Debug
 OUT_DEBUG = $(BUILD_DIR)/outDebug

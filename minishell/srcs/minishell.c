@@ -35,34 +35,7 @@ void	test_redir(t_job *job)
 	//Ca redirect bien "hello ?" et le ls dans le fichier output !! :o magie ! 🪄
 }
 
-void execute_jobs(t_job *jobs, t_shell *shell)
-{
-	select_command(jobs, shell);
-	
-	// int *statloc;
-	
-	// statloc = (int *)malloc(sizeof(int));
-	// while (jobs)
-	// {
-	// 	pid_t n_pid = fork();
-	// 	if (n_pid == -1)
-	// 	{
-	// 		perror("fork");
-	// 		exit(EXIT_FAILURE);
-	// 	}
-	// 	// CHILD FORK
-	// 	if (n_pid == 0)
-	// 	{
-	// 		exit(EXIT_FAILURE);
-	// 	}
-	// 	// PARENT FORK (DO NOTHING BUT WAIT)
-	// 	else
-	// 	{
-	// 		waitpid(n_pid,statloc,WUNTRACED);
-	// 	}
-	// 	jobs = jobs->piped_job;
-	// }
-}
+
 
 t_shell	*create_shell(void)
 {
