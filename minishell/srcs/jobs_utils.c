@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:28:18 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/10 15:32:42 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/11 19:06:11 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,22 @@ int check_jobs(t_job *jobs)
 {
 	t_job *j;
 	int re;
+	int i;
 
+	i = 0;
 	re = 0;
 	if(!jobs)
 		return 1;
 	j = jobs;
 	while(j)
 	{
-		if(!j->cmd && j->args[0])
+		if(!j->cmd && j->args[i])
 		{
-			j->cmd = j->args[0];
+			while(ms_strcmp(j->args[i]," "))
+				i++;
+			j->cmd = j->args[i];
 			if(!re)
-				ft_printf("%s: command not found\n",ft_strtrim(jobs->args[0],"\"\'"));
+				ft_printf("%s: command not found\n",ft_strtrim(jobs->args[i],"\"\'"));
 			re = 1;
 		}
 		else if(j->error == ERR_NEWLINE)

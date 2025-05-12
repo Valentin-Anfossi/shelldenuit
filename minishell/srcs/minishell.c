@@ -101,6 +101,7 @@ int	main(void)
 			add_history(line);
 		}
 		tokens_start(tokens,shell);
+		debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		debug_print_job(jobs);
 		if (!check_jobs(jobs))

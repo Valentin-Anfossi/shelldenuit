@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:08:45 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/10 16:22:11 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/11 19:00:43 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,19 @@ void	check_tokens(t_token **tokens)
 			t = t->next->next;
 			continue ;
 		}
+		else if(t->type >= 3 && t->type <= 6)
+		{
+			while(t->next->type == 0)
+				t = t->next;
+			if(t->next->type == ARG)
+				t = t->next->next;
+		}
 		else if (t->next && is_tok_arg(t->next) && t->type != 0)
 			token_cat(t, t->next);
 		else
 			t = t->next;
 	}
+	t = *tokens;
 }
 
 t_token	**create_lst_tokens(char *line)

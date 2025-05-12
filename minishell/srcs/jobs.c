@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/03 12:37:29 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/11 19:02:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_token *add_to_job_redir(t_token *t, t_job *j)
 	}
 	if(t->next)
 	{
+		while(t->next->type == 0)
+			t = t->next;
 		new_redir->target = t->next->content;
 		new_redir->next = NULL;
 		t = t->next->next;

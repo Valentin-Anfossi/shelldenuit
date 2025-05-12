@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:09:39 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/10 11:06:05 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/11 12:05:55 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	command_echo(t_job *j, t_shell *s)
 
 	i = 0;
 	n = 0;
+
 	while (ms_strcmp(j->args[i], " ") || ms_strcmp(j->args[i],"-n"))
 	{
 		if(ms_strcmp(j->args[i],"-n"))

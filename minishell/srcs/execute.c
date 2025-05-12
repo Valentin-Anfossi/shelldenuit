@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 16:23:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/11 02:37:58 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/11 18:37:55 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,16 @@ void execute_prog(t_job *j, t_shell *s)
 		if(j->redir->type == R_IN)
 			fd = open(j->redir->target, O_RDONLY);// j'ai pas les liste auto, je vais voir le .h
 	}
+	fd = open("infile",O_RDONLY);
 	dup2(fd,STDIN_FILENO);
+	char buffer[256];
+	while(read(fd,buffer,256))
+		continue;
 	//faudrait faire une fonction qui lit le fichier et le "feed" dans STDIN
 	//on a le droit a read()
-
+	//par ex si je fais printf
+	int *end;
+	*end = EOF;
 	
 	
 	//comment on lit un fichier lol c'est un nom en argument non ?
@@ -70,7 +76,7 @@ void execute_fork(t_job *j, t_shell *s)
 		}
 		if (n_pid == 0)
 		{
-			dup2(pipefd[0],STDOUT_FILENO);
+			//dup2(s->pipefd[0],STDOUT_FILENO);
 			execute_prog(j,s); // ok je comprend petit a peti
 			exit(EXIT_FAILURE); // 
 		}
