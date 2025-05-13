@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/11 02:11:57 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/13 01:28:02 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@
 #include <dirent.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 typedef struct s_token	t_token;
 typedef struct s_job	t_job;
 typedef struct s_redir	t_redir;
+
+
+#ifndef BUFFER_SIZE
+	#define BUFFER_SIZE 128;
+#endif
 
 enum Error
 {
@@ -128,6 +134,10 @@ char	**ms_cmdlst(void);
 char	**ms_split(char *string, int c);
 char	*ms_getenv(char *key, t_shell *s);
 void	free_shell(t_shell *s);
+int 	ms_execvp(char *file, char **argv,t_shell *s);
+int		is_str_cmd(char *t);
+int 	startswith(char *s, char *start);
+
 
 //COMMANDS
 void	select_command(t_job *jobs, t_shell *s);

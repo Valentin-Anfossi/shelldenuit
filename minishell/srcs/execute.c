@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 16:23:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/11 18:37:55 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/13 02:33:58 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void execute_jobs(t_job *jobs, t_shell *shell)
 {
-	// ici on a tout les jobs
-	//faut creer les pipes avant de fork
-
 	int **pipes;
 	int i;
 	
@@ -27,42 +24,42 @@ void execute_jobs(t_job *jobs, t_shell *shell)
 	}
 	shell->pipefd = pipes;
 
-	//ensuite on peut fork ?
 	execute_fork(jobs,shell);
 }
 
 void execute_prog(t_job *j, t_shell *s)
 {
-	// du coup cette fonction c'est le job qui s'execute
-	// faut s'occuper des redirections d'abord
-	// par ex si y'a un infile il faut faire
 	int fd;
-	// faut ouvrir le fichier
+	char *buffer;
+	int	bytes;
+
+	buffer = (char *)malloc(BUFFER_SIZE);
 	if(j->redir)
 	{
 		if(j->redir->type == R_IN)
-			fd = open(j->redir->target, O_RDONLY);// j'ai pas les liste auto, je vais voir le .h
-	}
-	fd = open("infile",O_RDONLY);
+		{
+			fd = open(j->redir->target, O_RDONLY);
+			while((bytes = read(fd, buffer, BUFFER_SIZE) > 0))
+			{
+				write(STDIN_FILENO, buffer, bytes);
+			}
+			close(fd);
+		}
+	} 
 	dup2(fd,STDIN_FILENO);
-	char buffer[256];
-	while(read(fd,buffer,256))
-		continue;
-	//faudrait faire une fonction qui lit le fichier et le "feed" dans STDIN
-	//on a le droit a read()
-	//par ex si je fais printf
-	int *end;
-	*end = EOF;
 	
 	
-	//comment on lit un fichier lol c'est un nom en argument non ?
-	select_command(j,s);
-	command_execute(j,s);
+	if(is_str_cmd(j->cmd))
+		select_command(j,s);
+	else
+	{
+		ms_execvp(j->cmd,j->args,s);	
+	}
+	//command_execute(j,s);
 }
 
 void execute_fork(t_job *j, t_shell *s)
 {
-	ft_printf("ENTER PROG\n");
 	int *statloc;
 	
 	statloc = (int *)malloc(sizeof(int));
@@ -76,15 +73,14 @@ void execute_fork(t_job *j, t_shell *s)
 		}
 		if (n_pid == 0)
 		{
-			//dup2(s->pipefd[0],STDOUT_FILENO);
-			execute_prog(j,s); // ok je comprend petit a peti
-			exit(EXIT_FAILURE); // 
+			execute_prog(j,s);
+			exit(EXIT_FAILURE);
 		}
-		else //Faut seulement wait le dernier job
+		else
 		{
-			if(!j->piped_job) // tu as raison je pense 
-				waitpid(n_pid,statloc,WUNTRACED); //bah on rentre que si job n'a pas de piped job donc c'est le dernier non ?
-		} // je sais meme pas comment pipe
+			if(!j->piped_job)
+				waitpid(n_pid,statloc,WUNTRACED);
+		}
 		j = j->piped_job; 
 	}
 }

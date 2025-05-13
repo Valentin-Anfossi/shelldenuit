@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/11 19:02:10 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/13 06:20:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,11 @@ t_job *create_job(t_token **tokens)
 				j->error = ERR_NEWLINE;
 				break;
 			}
-		else if(is_tok_cmd(t) && !j->cmd)
+		else if(!j->cmd)
 		{
 			t = add_to_job_cmd(t, j);
+			while(t->type == SPC)
+				t = t->next;
 		}
 		else if(is_tok_pipe(t))
 		{

@@ -30,7 +30,7 @@ void	test_redir(t_job *job)
 	//on le ferme paske plus besoin
 	close(fd);
 	ft_printf("hello ?\n");
-	execve("./test",argv,env);
+	execve("ls",argv,env);
 	exit(EXIT_FAILURE);
 	//Ca redirect bien "hello ?" et le ls dans le fichier output !! :o magie ! 🪄
 }
