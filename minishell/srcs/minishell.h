@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/13 01:28:02 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:44:41 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_redir
 
 typedef struct s_job
 {
+	int		n;
 	char	*cmd;
 	char	**args;
 	int		error;
@@ -119,7 +120,7 @@ void	check_env(t_token **tokens, t_shell *shell);
 //JOBS
 t_job	**create_lst_job(t_token **tokens);
 t_job	*create_job(t_token **tokens);
-t_job	*malloc_job(void);
+t_job	*malloc_job(int lestoks);
 int		get_redir_type(t_token *t);
 int		check_jobs(t_job *jobs);
 void	free_jobs(t_job *jobs);
@@ -137,6 +138,11 @@ void	free_shell(t_shell *s);
 int 	ms_execvp(char *file, char **argv,t_shell *s);
 int		is_str_cmd(char *t);
 int 	startswith(char *s, char *start);
+int		is_folder(char *path);
+char	**ms_fix_args(t_job *job);
+int 	combiendetoks(t_token **t);
+char *ms_pathup(char *path, int n);
+
 
 
 //COMMANDS
@@ -147,7 +153,7 @@ void	command_echo(t_job *j, t_shell *s);
 
 //COMMANDS: EXPORT
 void	command_export(t_job *j, t_shell *s);
-void	modif_export(t_shell *s, char **vars, char *newstr);
+void	modif_export(t_shell *s, char *vars, char *newstr);
 void	add_to_env(t_shell *s, char *add_env);
 int		check_export(char **vars, t_shell *shell, char *str);
 

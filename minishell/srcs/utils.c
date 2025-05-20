@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/13 01:07:11 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/14 05:46:03 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	debug_print_tokens(t_token **tokens)
 void debug_print_job(t_job *jobs)
 {
 	t_job *job;
+	t_redir *redir;
 	int	i = 0;
 
 	job = jobs;
@@ -90,7 +91,7 @@ void debug_print_job(t_job *jobs)
 	}
 	while (job)
 	{
-
+		redir = job->redir;
 		i = 0;
 		if (job->error != 0)
 			ft_printf("ERROR\n");
@@ -98,10 +99,10 @@ void debug_print_job(t_job *jobs)
 			ft_printf("CMD : %s\n", job->cmd);
 		if (job->redir)
 		{
-			while(job->redir)
+			while(redir)
 			{
-				ft_printf("REDIRTYPE :%d REDIRTARGET: %s\n",job->redir->type,job->redir->target);
-				job->redir = job->redir->next;
+				ft_printf("REDIRTYPE :%d REDIRTARGET: %s\n",redir->type,redir->target);
+				redir = redir->next;
 			}
 		}
 		while (job->args[i])

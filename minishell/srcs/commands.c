@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+void convert_job(t_job *j)
+{
+	// mette la cmd en 1er dans les args
+	
+	int i;
+
+	i = 0;
+	while(j->args[i])
+	{
+		
+	}
+	
+	// enlever les espaces
+
+}
+
 void	select_command(t_job *jobs, t_shell *s)
 {
 	if (jobs->cmd)
@@ -30,8 +46,6 @@ void	select_command(t_job *jobs, t_shell *s)
 			command_pwd(jobs, s);
 		else if (ms_strcmp(jobs->cmd, "exit"))
 			command_exit(jobs,s);
-		else
-			command_execute(jobs,s);
 	}
 }
 // void select_command(t_job *job)

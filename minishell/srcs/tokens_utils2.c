@@ -76,3 +76,19 @@ int	is_tok_pipe(t_token *t)
 	else
 		return (0);
 }
+
+int combiendetoks(t_token **t)
+{
+	int i;
+	t_token *temp;
+
+	i = 0;
+	temp = *t;
+	while (temp)
+	{
+		temp = temp->next;
+		i ++;
+	}
+	printf("LA ->%d\n",i);
+	return (i);
+}

@@ -63,7 +63,7 @@ t_shell	*create_shell(void)
 		ft_printf("Could not get current working dir. wtf did you do ?");
 		exit(EXIT_FAILURE);
 	}
-	s->cwd = getcwd(s->cwd,0);
+	getcwd(s->cwd,0);
 	return (s);
 }
 
@@ -101,13 +101,14 @@ int	main(void)
 			add_history(line);
 		}
 		tokens_start(tokens,shell);
-		debug_print_tokens(tokens);
+		//debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		debug_print_job(jobs);
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
-		debug_print_job(jobs);
+		//debug_print_job(jobs);
 		free_jobs(jobs);
+		//exit(0);
 	}
 	clear_history();
 }

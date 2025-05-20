@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:20:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/09 16:20:33 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:40:47 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,12 @@ void	add_to_env(t_shell *s, char *add_env)
 	s->env = new_env;
 }
 
-void	modif_export(t_shell *s, char **vars, char *newstr)
+void	modif_export(t_shell *s, char *vars, char *newstr)
 {
 	int	i;
 
 	i = 0;
-	while (ft_strncmp(s->env[i], vars[0], ft_strlen(vars[0])) != 0)
+	while (ft_strncmp(s->env[i], vars, ft_strlen(vars)) != 0)
 		i++;
 	s->env[i] = ft_strdup(newstr);
 }
@@ -91,7 +91,7 @@ void	command_export(t_job *j, t_shell *s)
 		if (check_export(vars, s, j->args[k]))
 		{
 			if (check_export(vars, s, j->args[k]) == 2)
-				modif_export(s, vars, j->args[k]);
+				modif_export(s, vars[0], j->args[k]);
 			else
 				add_to_env(s, j->args[k]);
 		}

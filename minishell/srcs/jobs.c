@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/13 06:20:10 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:00:49 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,12 @@ t_job *create_job(t_token **tokens)
 {
 	t_token *t;
 	t_job *j;
+	int n;
 
-	j = malloc_job();
+	n = 0;
+	j = malloc_job(combiendetoks(tokens));
 	t = *tokens;
+
 	while(t)
 	{
 		if(is_tok_redir(t))
@@ -90,7 +93,7 @@ t_job *create_job(t_token **tokens)
 		else if(!j->cmd)
 		{
 			t = add_to_job_cmd(t, j);
-			while(t->type == SPC)
+			while(t && t->type == SPC)
 				t = t->next;
 		}
 		else if(is_tok_pipe(t))
@@ -101,6 +104,7 @@ t_job *create_job(t_token **tokens)
 		}
 		else
 			t = add_to_job_arg(t ,j);
+		n ++;
 	}
 	return (j);
 }
