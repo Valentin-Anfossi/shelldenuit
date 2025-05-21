@@ -86,8 +86,8 @@ void tokens_start(t_token **t, t_shell *s)
 
 int	main(void)
 {
-	char	*line;
 	t_shell	*shell;
+	char	*line;
 	t_token	**tokens;
 	t_job	*jobs;
 
@@ -107,6 +107,9 @@ int	main(void)
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
 		//debug_print_job(jobs);
+
+
+		
 		free_jobs(jobs);
 		//exit(0);
 	}

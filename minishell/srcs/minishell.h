@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/20 17:44:41 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:11:59 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_token	t_token;
 typedef struct s_job	t_job;
 typedef struct s_redir	t_redir;
 
+extern pid_t gl_pid;
 
 #ifndef BUFFER_SIZE
 	#define BUFFER_SIZE 128;
@@ -85,6 +86,8 @@ typedef struct s_job
 	int		n;
 	char	*cmd;
 	char	**args;
+	int		fd_infile;
+	int		fd_outfile;
 	int		error;
 	t_redir	*redir;
 	t_job	*piped_job;
@@ -141,7 +144,8 @@ int 	startswith(char *s, char *start);
 int		is_folder(char *path);
 char	**ms_fix_args(t_job *job);
 int 	combiendetoks(t_token **t);
-char *ms_pathup(char *path, int n);
+char	*ms_pathup(char *path, int n);
+int		check_redirs(t_job *jobs);
 
 
 

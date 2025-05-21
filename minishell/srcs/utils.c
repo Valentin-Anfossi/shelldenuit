@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/14 05:46:03 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:50:49 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,4 +210,33 @@ int	is_str_cmd(char *t)
 		i ++;
 	}
 	return (0);
+}
+char **ms_fix_args(t_job *job)
+{
+	char **args;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+
+	while(job->args[i])
+		i ++;
+	args = (char **)malloc(sizeof(char *) * i + 1);
+	i = 0;
+	args[j] = ft_strdup(job->cmd);
+	j ++;
+	while(job->args[i])
+	{
+		if(!ms_strcmp(" ",job->args[i]))
+		{
+			args[j] = ft_strdup(job->args[i]);
+			printf("%s\n",args[j]);
+			j ++;
+		}
+		i ++;
+	}
+	printf("CMD:%s",job->cmd);
+	args[j] = NULL;
+	return (args);
 }
