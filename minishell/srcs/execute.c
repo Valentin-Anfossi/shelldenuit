@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 16:23:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/21 16:04:14 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:16:51 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,16 @@ void execute_fork(t_job *j, t_shell *s, int *tuyau)
 	}
 	else
 		process_parent(j,s,tuyau);
+}
+
+void process_child(t_job *j, t_shell *s, int *tuyau)
+{
+	if(is_str_cmd(j->cmd))
+		execute_builtin(j,s);
+	else
+	{
+		
+	}
 }
 
 static void	parent_process(t_data *data, t_cmd *cmd, int *pip)
