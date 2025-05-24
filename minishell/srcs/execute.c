@@ -6,12 +6,14 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 16:23:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/22 18:16:51 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/24 09:16:15 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void exit_all(t_shell *s, t_job *j)
+{}
 
 int execute_builtin(t_job *j, t_shell *s)
 {
@@ -33,6 +35,43 @@ int execute_builtin(t_job *j, t_shell *s)
 	return (1);
 }
 
+
+void execute_fork(t_job *j, t_shell *s, int *tuyau)
+{
+	gl_pid = fork();
+	if(gl_pid < 0)
+	exit_all(s);
+	else if (!gl_pid)
+	{
+		process_child(j,s,tuyau);
+	}
+	else
+	process_parent(j,s,tuyau);
+}
+
+void process_child(t_job *j, t_shell *s, int *tuyau)
+{
+	if(is_str_cmd(j->cmd))
+	execute_builtin(j,s);
+	else
+	{
+		
+	}
+}
+
+static void	process_parent(t_shell *s, t_job *s, int *tuyau)
+{
+	close(pip[1]);
+	if (cmd->infile >= 0)
+	close(cmd->infile);
+	if (cmd->infile == -2)
+	cmd->infile = pip[0];
+	if (cmd->next != data->cmd && cmd->next->infile == -2)
+	cmd->next->infile = pip[0];
+	else
+	close(pip[0]);
+}
+
 int execute_jobs(t_job *jobs, t_shell *shell)
 {
 	t_job *j;
@@ -49,42 +88,6 @@ int execute_jobs(t_job *jobs, t_shell *shell)
 		execute_fork(j,shell,tuyau);
 		j = j->piped_job;
 	}
-}
-
-void execute_fork(t_job *j, t_shell *s, int *tuyau)
-{
-	gl_pid = fork();
-	if(gl_pid < 0)
-		exit_tout(s);
-	else if (!gl_pid)
-	{
-		process_child(j,s,tuyau);
-	}
-	else
-		process_parent(j,s,tuyau);
-}
-
-void process_child(t_job *j, t_shell *s, int *tuyau)
-{
-	if(is_str_cmd(j->cmd))
-		execute_builtin(j,s);
-	else
-	{
-		
-	}
-}
-
-static void	parent_process(t_data *data, t_cmd *cmd, int *pip)
-{
-	close(pip[1]);
-	if (cmd->infile >= 0)
-		close(cmd->infile);
-	if (cmd->infile == -2)
-		cmd->infile = pip[0];
-	if (cmd->next != data->cmd && cmd->next->infile == -2)
-		cmd->next->infile = pip[0];
-	else
-		close(pip[0]);
 }
 
 bool	exec(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/21 15:11:59 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/24 09:11:34 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ t_job	*malloc_job(int lestoks);
 int		get_redir_type(t_token *t);
 int		check_jobs(t_job *jobs);
 void	free_jobs(t_job *jobs);
-void 	execute_fork(t_job *j, t_shell *s);
+void execute_fork(t_job *j, t_shell *s, int *tuyau);
 
 //UTILS
 void	debug_print_job(t_job *jobs);
