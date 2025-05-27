@@ -56,7 +56,7 @@ int check_redirs(t_job *jobs)
 		r = j->redir;
 		while(r)
 		{
-			open_file(j,r);
+			open_file(j, r);
 			r = r->next;			
 		}
 		j = j->piped_job;

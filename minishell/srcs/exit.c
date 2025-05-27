@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void command_exit(t_shell *s, t_job *j)
+void command_exit(t_job *j, t_shell *s)
 {
 	//free_jobs(j);
 	free_shell(s);

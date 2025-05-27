@@ -13,6 +13,8 @@
 
 #include "minishell.h"
 
+pid_t gl_pid;
+
 void	test_redir(t_job *job)
 {
 	int		fd;
@@ -51,6 +53,7 @@ t_shell	*create_shell(void)
 		i++;
 	s->env = (char **)malloc(sizeof(char *) * (i + 2));
 	i = 0;
+	s->mainpid = pid_main;
 	while (environ[i])
 	{
 		s->env[i] = ft_strdup(environ[i]);
@@ -103,7 +106,7 @@ int	main(void)
 		tokens_start(tokens,shell);
 		//debug_print_tokens(tokens);
 		jobs = create_job(tokens);
-		debug_print_job(jobs);
+		//debug_print_job(jobs);
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
 		//debug_print_job(jobs);

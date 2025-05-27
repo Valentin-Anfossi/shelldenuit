@@ -72,6 +72,7 @@ typedef struct s_shell
 	char	*cwd;
 	char	**env;
 	int		**pipefd;
+	pid_t	mainpid;
 }	t_shell;
 
 typedef struct s_redir
@@ -127,7 +128,7 @@ t_job	*malloc_job(int lestoks);
 int		get_redir_type(t_token *t);
 int		check_jobs(t_job *jobs);
 void	free_jobs(t_job *jobs);
-void execute_fork(t_job *j, t_shell *s, int *tuyau);
+void execute_fork(t_shell *s, t_job *j, int *tuyau);
 
 //UTILS
 void	debug_print_job(t_job *jobs);
@@ -138,7 +139,7 @@ char	**ms_cmdlst(void);
 char	**ms_split(char *string, int c);
 char	*ms_getenv(char *key, t_shell *s);
 void	free_shell(t_shell *s);
-int 	ms_execvp(char *file, char **argv,t_shell *s);
+int 	ms_execvp(char *file, char **argv, t_shell *s);
 int		is_str_cmd(char *t);
 int 	startswith(char *s, char *start);
 int		is_folder(char *path);
@@ -147,10 +148,14 @@ int 	combiendetoks(t_token **t);
 char	*ms_pathup(char *path, int n);
 int		check_redirs(t_job *jobs);
 
-
-
 //COMMANDS
 void	select_command(t_job *jobs, t_shell *s);
+
+//COMMANDS: CD
+void	command_cd(t_job *j, t_shell *s);
+
+//COMMANDS: PWD
+void	command_pwd(t_job *j, t_shell *s);
 
 //COMMANDS: ECHO
 void	command_echo(t_job *j, t_shell *s);
@@ -169,11 +174,12 @@ void	unset_env(t_shell *s, char *str);
 void	command_env(t_shell *shell);
 
 //COMMANDS : EXIT
-void command_exit(t_shell *s, t_job *j);
+void	command_exit(t_job *j, t_shell *s);
 
 //COMMANDS : EXECUTE
-void command_execute(t_job *j, t_shell *s);
-void execute_prog(t_job *j, t_shell *s);
+void	command_execute(t_job *j, t_shell *s);
+int		execute_jobs(t_job *jobs, t_shell *shell);
+void	execute_prog(t_job *j, t_shell *s);
 
 //ERRORS
 int		err_exp_ident(char *str);

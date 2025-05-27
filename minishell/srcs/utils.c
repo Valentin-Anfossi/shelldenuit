@@ -184,12 +184,12 @@ int startswith(char *s, char *start)
 
 	i = 0;
 	if(!s || !start)
-		return (NULL);
+		return (0);
 	while(start[i])
 	{
 		if(s[i] != start[i] && s[i])
 		{
-			return (NULL);
+			return (0);
 		}
 		i ++;
 	}

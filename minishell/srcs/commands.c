@@ -45,7 +45,7 @@ void	select_command(t_job *jobs, t_shell *s)
 		else if (ms_strcmp(jobs->cmd, "pwd"))
 			command_pwd(jobs, s);
 		else if (ms_strcmp(jobs->cmd, "exit"))
-			command_exit(jobs,s);
+			command_exit(jobs, s);
 	}
 }
 // void select_command(t_job *job)

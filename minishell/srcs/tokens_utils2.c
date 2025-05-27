@@ -89,6 +89,5 @@ int combiendetoks(t_token **t)
 		temp = temp->next;
 		i ++;
 	}
-	printf("LA ->%d\n",i);
 	return (i);
 }
