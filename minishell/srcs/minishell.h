@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/24 09:11:34 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/27 20:10:06 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ typedef struct s_shell
 {
 	char	*cwd;
 	char	**env;
-	int		**pipefd;
+	int		tuyau[2];
+	int		exit_code;
 	pid_t	mainpid;
 }	t_shell;
 
@@ -147,6 +148,7 @@ char	**ms_fix_args(t_job *job);
 int 	combiendetoks(t_token **t);
 char	*ms_pathup(char *path, int n);
 int		check_redirs(t_job *jobs);
+int		is_executable(char *path);
 
 //COMMANDS
 void	select_command(t_job *jobs, t_shell *s);

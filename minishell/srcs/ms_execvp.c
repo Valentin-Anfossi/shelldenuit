@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 22:11:44 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/20 14:31:11 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:55:15 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ int ms_execvp(char *file, char **argv,t_shell *s)
 	
 	i = 0;
 	if(ft_strchr(file, '/'))
-	{
 		if(execve(file,argv,s->env) == -1)
 			return (errno);
-	}
 	path = ms_getenv("PATH",s);
 	if (!path)
 	{
@@ -58,3 +56,4 @@ int ms_execvp(char *file, char **argv,t_shell *s)
 		i ++;
 	}
 }
+

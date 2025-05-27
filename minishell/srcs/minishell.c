@@ -67,6 +67,7 @@ t_shell	*create_shell(void)
 		exit(EXIT_FAILURE);
 	}
 	getcwd(s->cwd,0);
+	s->exit_code = 0;
 	return (s);
 }
 
@@ -97,7 +98,7 @@ int	main(void)
 	shell = create_shell();
 	while (1)
 	{
-		line = readline("minishell: ");
+		line = readline("☠️   minishell: ");
 		if (line)
 		{
 			tokens = create_lst_tokens(line);
