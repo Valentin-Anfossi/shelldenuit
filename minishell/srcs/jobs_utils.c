@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:28:18 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/21 15:14:11 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/29 00:40:50 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_job	*malloc_job(int lestoks)
 	*job->args = NULL;
 	job->redir = NULL;
 	job->cmd = NULL;
+	job->pid = NULL;
 	job->fd_infile = -2;
 	job->fd_outfile = -2;
 	job->error = 0;
@@ -59,6 +60,7 @@ int check_jobs(t_job *jobs)
 			re = 1;
 		}
 		j = j->piped_job;
+		i = 0;
 	}
 	re = check_redirs(jobs);
 	return (re);

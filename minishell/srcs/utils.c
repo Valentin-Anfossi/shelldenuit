@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/21 11:50:49 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:59:26 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ char **ms_fix_args(t_job *job)
 		}
 		i ++;
 	}
-	printf("CMD:%s",job->cmd);
+	//printf("CMD:%s",job->cmd);
 	args[j] = NULL;
 	return (args);
 }

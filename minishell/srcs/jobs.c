@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/20 15:00:49 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:40:28 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ t_job *create_job(t_token **tokens)
 {
 	t_token *t;
 	t_job *j;
-	int n;
 
-	n = 0;
 	j = malloc_job(combiendetoks(tokens));
 	t = *tokens;
 
+	while(ms_strcmp(t->content," ")) // Faut skip les spaces au debut de chaque job
+		t = t->next;
 	while(t)
 	{
 		if(is_tok_redir(t))
@@ -104,7 +104,6 @@ t_job *create_job(t_token **tokens)
 		}
 		else
 			t = add_to_job_arg(t ,j);
-		n ++;
 	}
 	return (j);
 }
