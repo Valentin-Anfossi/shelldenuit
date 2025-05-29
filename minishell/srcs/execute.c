@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/30 01:13:42 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/30 01:15:29 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,23 +102,7 @@ int execute_jobs(t_job *j, t_shell *s)
 		}
 	}
 	h = 0;
-	
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
 	int status;
 	while(h < i) //ON WAIT TOUT LES CHILDS
 	{
