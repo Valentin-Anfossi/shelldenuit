@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 03:37:05 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 04:14:42 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ int execute_jobs(t_job *j, t_shell *s)
 				dup2(j->fd_outfile, STDOUT_FILENO);
 				//printf("1\n");
 			}
+			execute_set_redirs(j); // ON REMPLACE LES PIPES PAR LES REDIRS SI IL Y EN A
 			if(pipes) // ON FERME LES PIPES DANS LE CHILD (VU QUE C UNE COPIE IL HERITE DE TOUT LES PIPES MEME CEUX DONT IL NE SE SERT PAS, DONC FAUT TOUT CLOSE)
 			{
 				//printf("pipe\n");
