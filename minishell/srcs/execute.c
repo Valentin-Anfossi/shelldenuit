@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 04:14:42 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 04:21:09 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void execute_set_redirs(t_job *j)
     t_redir *r;
     int out_fd;
     int in_fd;
-
+	
     j->fd_outfile = dup(STDOUT_FILENO);
     j->fd_infile = dup(STDIN_FILENO);
     if (j->fd_outfile < 0 || j->fd_infile < 0) { 

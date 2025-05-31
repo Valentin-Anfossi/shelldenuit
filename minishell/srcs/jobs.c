@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 03:32:55 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 04:24:02 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,10 @@ t_job *create_job(t_token **tokens)
 			j ->piped_job = create_job(&t);
 			break;
 		}
-		else
+		else if(t->type != SPC) //REMOVED SPACES (FRANCHEMENT JE SAIS PLUS POURQUOI MAIS CA VA NOUS FAIRE CHIER APRES)
 			t = add_to_job_arg(t ,j);
+		else
+			t = t->next;
 	}
 	return (j);
 }
