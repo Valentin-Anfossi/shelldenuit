@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/28 14:59:26 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/30 03:38:04 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ char **ms_fix_args(t_job *job)
 		if(!ms_strcmp(" ",job->args[i]))
 		{
 			args[j] = ft_strdup(job->args[i]);
-			printf("%s\n",args[j]);
+			//printf("%s\n",args[j]);
 			j ++;
 		}
 		i ++;

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/29 01:32:49 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 03:28:22 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_shell
 {
 	char	*cwd;
 	char	**env;
-	int		tuyau[2];
 	int		exit_code;
 	pid_t	mainpid;
 }	t_shell;
@@ -154,21 +153,21 @@ int 	startswith(char *s, char *start);
 int		is_folder(char *path);
 char	**ms_fix_args(t_job *job);
 int 	combiendetoks(t_token **t);
-char	*ms_pathup(char *path, int n);
+char	*ms_pathup(char *path);
 int		check_redirs(t_job *jobs);
 int		is_executable(char *path);
 
 //COMMANDS
-void	select_command(t_job *jobs, t_shell *s);
+int	select_command(t_job *jobs, t_shell *s);
 
 //COMMANDS: CD
 void	command_cd(t_job *j, t_shell *s);
 
 //COMMANDS: PWD
-void	command_pwd(t_job *j, t_shell *s);
+void	command_pwd(t_shell *s);
 
 //COMMANDS: ECHO
-void	command_echo(t_job *j, t_shell *s);
+void	command_echo(t_job *j);
 
 //COMMANDS: EXPORT
 void	command_export(t_job *j, t_shell *s);
@@ -184,12 +183,15 @@ void	unset_env(t_shell *s, char *str);
 void	command_env(t_shell *shell);
 
 //COMMANDS : EXIT
-void	command_exit(t_job *j, t_shell *s);
+void	command_exit(t_shell *s);
 
 //COMMANDS : EXECUTE
 void	command_execute(t_job *j, t_shell *s);
 int		execute_jobs(t_job *jobs, t_shell *shell);
 void	execute_prog(t_job *j, t_shell *s);
+
+//COMMANDS : STATUS
+int command_status(t_job *j, t_shell *s);
 
 //ERRORS
 int		err_exp_ident(char *str);

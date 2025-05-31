@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:43:57 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/29 01:27:45 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 03:30:25 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	exit_all(t_shell *s, t_job *j)
 {
+	(void)s;
 	rl_clear_history();
 	exit(j->error);
 }

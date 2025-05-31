@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/28 14:40:28 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 03:32:55 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ t_job *create_job(t_token **tokens)
 			}
 		else if(!j->cmd)
 		{
-			t = add_to_job_cmd(t, j);
+			add_to_job_cmd(t, j);
+			t = add_to_job_arg(t,j); // NEEDED FOR EXCVE
 			while(t && t->type == SPC)
 				t = t->next;
 		}

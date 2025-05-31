@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 22:11:44 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/27 19:55:15 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 03:29:17 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ int ms_execvp(char *file, char **argv,t_shell *s)
 		{
 			if (execve(path,argv,s->env) == -1)
 				return (errno);
+			return (1);
 		}
 		i ++;
 	}
+	return (0);
 }
 

@@ -15,30 +15,6 @@
 
 pid_t gl_pid;
 
-void	test_redir(t_job *job)
-{
-	int		fd;
-	char	**argv;
-	char	**env;
-
-	// Pour les rights faut mettre le code CHMOD a la fin
-	fd = open("output",O_WRONLY | O_CREAT ,0755);
-	argv = NULL;
-	env = NULL;
-	//on redirige STDOUT dans le fd
-	dup2(fd, STDOUT_FILENO);
-	fd = open("infile",O_RDONLY);
-	// isatty (entrée utilisateur ou d,un pipe/fichier/script.), ttyname, ttyslot, ioctl,
-	//on le ferme paske plus besoin
-	close(fd);
-	ft_printf("hello ?\n");
-	execve("ls",argv,env);
-	exit(EXIT_FAILURE);
-	//Ca redirect bien "hello ?" et le ls dans le fichier output !! :o magie ! 🪄
-}
-
-
-
 t_shell	*create_shell(void)
 {
 	extern char	**environ;
@@ -98,23 +74,23 @@ int	main(void)
 	shell = create_shell();
 	while (1)
 	{
-		line = readline("☠️   minishell: ");
-		if (line)
+		line = readline("☠️  Minishell: ");
+		if (line[0])
 		{
 			tokens = create_lst_tokens(line);
 			add_history(line);
 		}
+		else
+			continue;
 		tokens_start(tokens,shell);
 		//debug_print_tokens(tokens);
 		jobs = create_job(tokens);
-		debug_print_job(jobs);
+		//debug_print_job(jobs);
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
 		//debug_print_job(jobs);
-
-
-		
 		free_jobs(jobs);
+		free(line);
 		//exit(0);
 	}
 	clear_history();

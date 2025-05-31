@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:20:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/20 17:40:47 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:19:30 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	modif_export(t_shell *s, char *vars, char *newstr)
 	i = 0;
 	while (ft_strncmp(s->env[i], vars, ft_strlen(vars)) != 0)
 		i++;
+	free(s->env[i]);
 	s->env[i] = ft_strdup(newstr);
 }
 

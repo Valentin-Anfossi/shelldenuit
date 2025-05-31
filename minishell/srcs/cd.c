@@ -6,15 +6,14 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/20 17:48:49 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 03:27:25 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *ms_pathup(char *path, int n)
+char *ms_pathup(char *path)
 {
-	char **s;
 	int i;
 
 	i = ft_strlen(path)-1;
@@ -29,22 +28,23 @@ char *ms_pathup(char *path, int n)
 
 void	command_cd(t_job *j, t_shell *s)
 {
-	DIR *dir;
 	char *path;
 	char **p;
 	int i;
 
 	i = 0;
-	if (!j->args[0])
-		return;
-	if (j->args[1])
+	if (!j->args[1])
+	{
+		s->cwd = ms_getenv("HOME",s);
+	}
+	if (j->args[2])
 	{
 		ft_printf("cd: too many arguments\n");
 		return ;
 	}
 	else
 	{
-		path = j->args[0];
+		path = j->args[1];
 		if(opendir(path))
 		{
 			p = ft_split(path,'/');
@@ -52,9 +52,9 @@ void	command_cd(t_job *j, t_shell *s)
 			{
 				if(ms_strcmp(p[i],".."))
 				{
-					printf("%s",ms_pathup(s->cwd,1));
-					modif_export(s, "PWD", ms_pathup(ms_getenv("PWD",s),1));
-					s->cwd = ms_pathup(s->cwd,1);
+					printf("%s",ms_pathup(s->cwd));
+					modif_export(s, "PWD", ms_pathup(ms_getenv("PWD",s)));
+					s->cwd = ms_pathup(s->cwd);
 					printf("o:%s\n",p[i]);
 				}
 				i ++;
@@ -74,7 +74,7 @@ void	command_cd(t_job *j, t_shell *s)
 
 
 
-void	command_pwd(t_job *j, t_shell *s)
+void	command_pwd(t_shell *s)
 {
 	ft_printf("%s\n",ms_getenv("PWD", s));
 }
