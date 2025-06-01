@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 03:27:25 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/01 03:52:49 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,51 @@ char *ms_pathup(char *path)
 {
 	int i;
 
-	i = ft_strlen(path)-1;
+	i = (ft_strlen(path)) - 1;
 	while(path[i])
 	{
 		if(path[i] == '/')
-			return(ft_substr(path,0,i));
+			return(ft_substr(path,0,i+1));
 		i --;
 	}
-	return (NULL);
+	return (path);
 }
 
+int is_cd_valid(t_job *j, t_shell *s)
+{
+	struct stat st;
+	
+	if (!j->args[1]) //NO ARGS == CD $HOME
+	{
+		modif_export(s,"OLDPWD",ft_strjoin("OLDPWD=",s->cwd));
+		s->cwd = ms_getenv("HOME",s);
+		modif_export(s,"PWD",ft_strjoin("PWD=",s->cwd));
+	}
+	else if (j->args[2])
+	{
+		write(STDERR_FILENO,"minishell : cd: too many arguments\n",36);
+		s->exit_code = 1;
+		return (0);
+	}
+}
+
+char *cd_create_path(char *str, t_shell *s)
+{
+	char *path;
+	
+	if(str && str[0] != '/') // RELATIVE
+	{
+		path = ft_strjoin(s->cwd,"/");
+		path = ft_strjoin(path,str);
+	}
+	else // ABSOLUTE
+	{
+		path = str;
+	}
+	return (path);
+}
+
+// NEEDS TO BE REDONE (je sais pas ce que j'ai fais mais c'est completement debile lol)
 void	command_cd(t_job *j, t_shell *s)
 {
 	char *path;
@@ -33,42 +68,10 @@ void	command_cd(t_job *j, t_shell *s)
 	int i;
 
 	i = 0;
-	if (!j->args[1])
-	{
-		s->cwd = ms_getenv("HOME",s);
-	}
-	if (j->args[2])
-	{
-		ft_printf("cd: too many arguments\n");
+	if(!is_cd_valid(j,s))
 		return ;
-	}
-	else
-	{
-		path = j->args[1];
-		if(opendir(path))
-		{
-			p = ft_split(path,'/');
-			while(p[i])
-			{
-				if(ms_strcmp(p[i],".."))
-				{
-					printf("%s",ms_pathup(s->cwd));
-					modif_export(s, "PWD", ms_pathup(ms_getenv("PWD",s)));
-					s->cwd = ms_pathup(s->cwd);
-					printf("o:%s\n",p[i]);
-				}
-				i ++;
-			}
-		}
-		else
-		{
-			if(is_folder(path) == 0)
-				ft_printf("cd: %s: Not a directory\n",j->args[0]);
-			else
-				ft_printf("cd: %s: No such file or directory\n",j->args[0]);
-			return;
-		}
-	}
+	path = cd_create_path(j->args[1], s);
+	printf("CD PATH :%s\n",path);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 04:21:09 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/01 00:55:35 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,21 +137,12 @@ int execute_jobs(t_job *j, t_shell *s)
 		{
 			//printf("child\n");
 			if(i > 0) //SI PAS 1ERE CMD ON CONNECT LA STDIN AU PIPE PRECEDENT
-			{
-				j->fd_infile = pipes[i - 1][0];
-				dup2(j->fd_infile, STDIN_FILENO);
-				//printf("0\n");
-			}
+				dup2(pipes[i - 1][0], STDIN_FILENO);
 			if(i < (n_j - 1)) //SI PAS DERNIERE CMD ON CONNECT LE STDOUT AU PIPE
-			{
-				j->fd_outfile = pipes[i][1];
-				dup2(j->fd_outfile, STDOUT_FILENO);
-				//printf("1\n");
-			}
+				dup2(pipes[i][1], STDOUT_FILENO);
 			execute_set_redirs(j); // ON REMPLACE LES PIPES PAR LES REDIRS SI IL Y EN A
 			if(pipes) // ON FERME LES PIPES DANS LE CHILD (VU QUE C UNE COPIE IL HERITE DE TOUT LES PIPES MEME CEUX DONT IL NE SE SERT PAS, DONC FAUT TOUT CLOSE)
 			{
-				//printf("pipe\n");
 				h = 0;			
 				while(h < n_p)
 				{
@@ -164,8 +155,8 @@ int execute_jobs(t_job *j, t_shell *s)
 			ms_fix_args(j);
 			if(is_str_cmd(j->cmd))
 			{
-				exit_status = select_command(j,s);
-				exit(exit_status);
+				select_command(j,s);
+				exit(s->exit_code);
 			}
 			exit_status = ms_execvp(j->cmd,j->args,s);
 			exit(exit_status);
@@ -197,7 +188,6 @@ int execute_jobs(t_job *j, t_shell *s)
 	{
 		waitpid(child_pids[h],&status,WUNTRACED);
 		s->exit_code = status;
-		//printf("EXIT %d : %d\n",h,status);
 		h ++;
 	}
 	free(child_pids);
