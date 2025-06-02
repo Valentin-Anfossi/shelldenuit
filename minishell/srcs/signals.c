@@ -1,25 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 17:16:56 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 03:21:15 by vanfossi         ###   ########.fr       */
+/*   Created: 2025/05/21 10:49:30 by vanfossi          #+#    #+#             */
+/*   Updated: 2025/05/21 10:56:43 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int err_exp_ident(char *str)
+static void signal_sigint(void)
 {
-	ft_printf("minishell: export: '%s': not a valid identifier\n",str);
-	return (0);
+	printf("\n");
+	rl_replace_line("",0);
+	rl_on_new_line();
+	if(gl_pid == 0)
+		rl_redisplay();
 }
 
-int err_cmd_nfound(char *str)
+static void signal_sigsegv(void)
 {
-	ft_printf("minishell: %s : command not found\n",str);
-	return (0);
+	printf("Segmentation fault\n");
+	exit(SIGSEGV);
+}
+
+static void signal_sigabrt(void)
+{
+	printf("abort\n");
+}
+
+void handle_signals(void)
+{
+	signal(SIGINT, &signal_sigint);
+	signal(SIGSEGV, &signal_sigsegv);
+	signal(SIGABRT, &signal_sigabrt);
+	signal(SIGQUIT, SIG_IGN);
 }

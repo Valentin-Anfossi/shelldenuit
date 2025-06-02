@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 17:16:56 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 03:21:15 by vanfossi         ###   ########.fr       */
+/*   Created: 2025/05/10 11:51:25 by vanfossi          #+#    #+#             */
+/*   Updated: 2025/05/31 03:24:33 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int err_exp_ident(char *str)
+void command_exit(t_shell *s)
 {
-	ft_printf("minishell: export: '%s': not a valid identifier\n",str);
-	return (0);
-}
-
-int err_cmd_nfound(char *str)
-{
-	ft_printf("minishell: %s : command not found\n",str);
-	return (0);
+	//free_jobs(j);
+	free_shell(s);
+	ft_printf("Bye !\n");
+	exit(EXIT_SUCCESS);
 }

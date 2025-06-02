@@ -1,0 +1,195 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
+/*   Updated: 2025/06/01 00:55:35 by vanfossi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+void execute_set_redirs(t_job *j)
+{
+    t_redir *r;
+    int out_fd;
+    int in_fd;
+	
+    j->fd_outfile = dup(STDOUT_FILENO);
+    j->fd_infile = dup(STDIN_FILENO);
+    if (j->fd_outfile < 0 || j->fd_infile < 0) { 
+        perror("dup"); 
+        exit(1); 
+    }
+    r = j->redir;
+    while (r)
+    {
+        if (r->type == R_OUT)
+        {
+            out_fd = open(r->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (out_fd < 0) 
+			{ 
+				perror("open"); 
+				exit(1); 
+			}
+            dup2(out_fd, STDOUT_FILENO);
+            close(out_fd);
+        }
+        else if (r->type == R_APPEND)
+        {
+            out_fd = open(r->target, O_WRONLY | O_APPEND | O_CREAT, 0644);
+            if (out_fd < 0) 
+			{
+				perror("open"); 
+				exit(1); 
+			}
+            dup2(out_fd, STDOUT_FILENO);
+            close(out_fd);
+        }
+        else if (r->type == R_IN)
+        {
+            in_fd = open(r->target, O_RDONLY);
+            if (in_fd < 0)
+			{ 
+				perror("open"); 
+				exit(1); 
+			}
+            dup2(in_fd, STDIN_FILENO);
+            close(in_fd);
+        }
+        r = r->next;
+    }
+}
+
+void execute_reset_redirs(t_job *j)
+{
+    if (dup2(j->fd_outfile, STDOUT_FILENO) < 0) 
+	{
+        perror("stdout restore"); 
+        exit(1);
+    }
+    close(j->fd_outfile);
+    if (dup2(j->fd_infile, STDIN_FILENO) < 0) 
+	{
+        perror("stdin restore");
+        exit(1);
+    }
+    close(j->fd_infile);
+}
+
+int execute_single_builtin(t_job *j, t_shell *s)
+{
+    execute_set_redirs(j);
+    ms_fix_args(j);
+    s->exit_code = select_command(j,s);
+    execute_reset_redirs(j);
+    return (1);
+}
+
+int execute_jobs(t_job *j, t_shell *s)
+{
+	int n_j;
+	int n_p;
+	int (*pipes)[2];
+	pid_t *child_pids;
+
+	n_j = n_jobs(j);
+	n_p = n_j - 1;
+	if(n_j == 1 && is_str_cmd(j->cmd)) // IF ONE JOB && BUILTIN WE DONT FORK (WHY ? WE SHOULD FORK IF ITS NOT A BUILTIN BECAUSE EXECVE REPLACES THE CURRENT PROCESS, SO IT CLOSES THE SHELL WHEN ITS DONE (AND WE DONT WANT THAT), BUT IF WE FORK IT WE CANT MODIFY THE ENV VARIABLES (AND BASH DOESNT DO IT EITHER), SO, SINCE WE HAVE TO BUILTIN THE TWO COMMANDS THAT CAN MODIFIY THE ENV VARIABLES, WE CAN SIMPLY NOT FORK AND EXECUTE EVERYTHING IN THE PARENT PROCESS AND IT WORKS ca va la forme ? pti ☕ ?)
+		return (execute_single_builtin(j,s));
+	// WE CREATE ALL THE PIPES (n jobs -1) BEFORE
+	pipes = (int (*)[2])malloc((n_p) * sizeof(int[2]));
+	if (!pipes)
+		return (-1); //ERROR MALLOC
+	
+	int i = 0;
+	int h = 0;
+	while(i < n_p)
+	{
+		if(pipe(pipes[i]) == -1)
+		{
+			//NEEDS TO CLOSE PIPES AND FREE IF IT FAILS
+			return (-1); //ERROR PIPE
+		}
+		i ++;
+	}
+
+	child_pids = (pid_t *)malloc(n_j * sizeof(pid_t));
+	if(!child_pids)
+	{
+		//NEEDS TO CLOSE PIPES AND FREE IF IT FAILS
+		return(-1); //ERROR MALLOC
+	}
+	
+	i = 0;
+	while(i < n_j) // MAIN LOOP FOR FORKS
+	{
+		int exit_status;
+
+		exit_status = 1;
+		pid_t pid = fork();
+		if(pid < 0)
+			break; //ERROR FORK
+		if(pid == 0) //CHILD
+		{
+			//printf("child\n");
+			if(i > 0) //SI PAS 1ERE CMD ON CONNECT LA STDIN AU PIPE PRECEDENT
+				dup2(pipes[i - 1][0], STDIN_FILENO);
+			if(i < (n_j - 1)) //SI PAS DERNIERE CMD ON CONNECT LE STDOUT AU PIPE
+				dup2(pipes[i][1], STDOUT_FILENO);
+			execute_set_redirs(j); // ON REMPLACE LES PIPES PAR LES REDIRS SI IL Y EN A
+			if(pipes) // ON FERME LES PIPES DANS LE CHILD (VU QUE C UNE COPIE IL HERITE DE TOUT LES PIPES MEME CEUX DONT IL NE SE SERT PAS, DONC FAUT TOUT CLOSE)
+			{
+				h = 0;			
+				while(h < n_p)
+				{
+					close(pipes[h][0]);
+					close(pipes[h][1]);
+					h ++;
+				}
+			}
+			//ON EXECUTE
+			ms_fix_args(j);
+			if(is_str_cmd(j->cmd))
+			{
+				select_command(j,s);
+				exit(s->exit_code);
+			}
+			exit_status = ms_execvp(j->cmd,j->args,s);
+			exit(exit_status);
+		}
+		else //PARENT
+		{
+			child_pids[i] = pid; // ON SAVE LE PID DU CHILD
+		}
+		i ++;
+		j = j->piped_job;
+	}
+	
+	//PARENT
+	//ON CLOSE LES PIPES
+	if(pipes)
+	{
+		h = 0;			
+		while(h < n_p)
+		{
+			close(pipes[h][0]);
+			close(pipes[h][1]);
+			h ++;
+		}
+	}
+	h = 0;
+
+	int status;
+	while(h < i) //ON WAIT TOUT LES CHILDS
+	{
+		waitpid(child_pids[h],&status,WUNTRACED);
+		s->exit_code = status;
+		h ++;
+	}
+	free(child_pids);
+	return (0);
+}

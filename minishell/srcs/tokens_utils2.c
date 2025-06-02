@@ -18,6 +18,11 @@ int	is_tok_redir(t_token *t)
 
 int	is_tok_arg(t_token *t)
 {
+	if(t->type == 0)
+	{
+		t = t->next;
+		return(is_tok_arg(t));
+	}
 	if (!t)
 		return (0);
 	if (!is_tok_redir(t) && !is_tok_cmd(t) && !is_tok_pipe(t))
@@ -70,4 +75,19 @@ int	is_tok_pipe(t_token *t)
 		return (1);
 	else
 		return (0);
+}
+
+int combiendetoks(t_token **t)
+{
+	int i;
+	t_token *temp;
+
+	i = 0;
+	temp = *t;
+	while (temp)
+	{
+		temp = temp->next;
+		i ++;
+	}
+	return (i);
 }

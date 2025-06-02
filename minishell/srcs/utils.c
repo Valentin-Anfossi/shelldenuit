@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/08 17:11:52 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 01:36:38 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	debug_print_tokens(t_token **tokens)
 void debug_print_job(t_job *jobs)
 {
 	t_job *job;
+	t_redir *redir;
 	int	i = 0;
 
 	job = jobs;
@@ -90,7 +91,7 @@ void debug_print_job(t_job *jobs)
 	}
 	while (job)
 	{
-
+		redir = job->redir;
 		i = 0;
 		if (job->error != 0)
 			ft_printf("ERROR\n");
@@ -98,10 +99,10 @@ void debug_print_job(t_job *jobs)
 			ft_printf("CMD : %s\n", job->cmd);
 		if (job->redir)
 		{
-			while(job->redir)
+			while(redir)
 			{
-				ft_printf("REDIRTYPE :%d REDIRTARGET: %s\n",job->redir->type,job->redir->target);
-				job->redir = job->redir->next;
+				ft_printf("REDIRTYPE :%d REDIRTARGET: %s\n",redir->type,redir->target);
+				redir = redir->next;
 			}
 		}
 		while (job->args[i])
@@ -160,6 +161,110 @@ char	*ms_getenv(char *key, t_shell *s)
 		}
 		i++;
 	}
-	free(actual);
+	//free(actual);
 	return (out);
+}
+
+void	free_shell(t_shell *s)
+{
+	int i;
+	
+	i = 0;
+	while(s->env[i])
+	{
+		free(s->env[i]);
+		i ++;
+	}
+	free(s);
+}
+
+int startswith(char *s, char *start)
+{
+	int i;
+
+	i = 0;
+	if(!s || !start)
+		return (0);
+	while(start[i])
+	{
+		if(s[i] != start[i] && s[i])
+		{
+			return (0);
+		}
+		i ++;
+	}
+	return (1);
+}
+
+int	is_str_cmd(char *t)
+{
+	int	i;
+
+	i = 0;
+	while (ms_cmdlst()[i])
+	{
+		if (ms_strcmp(ms_cmdlst()[i], ft_strtrim(t, "\'\"")))
+			return (1);
+		else if (is_str_exec(t))
+			return (1);
+		i ++;
+	}
+	return (0);
+}
+char **ms_fix_args(t_job *job)
+{
+	char **args;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+
+	while(job->args[i])
+		i ++;
+	args = (char **)malloc(sizeof(char *) * i + 1);
+	i = 0;
+	args[j] = ft_strdup(job->cmd);
+	j ++;
+	while(job->args[i])
+	{
+		if(!ms_strcmp(" ",job->args[i]))
+		{
+			args[j] = ft_strdup(job->args[i]);
+			//printf("%s\n",args[j]);
+			j ++;
+		}
+		i ++;
+	}
+	//printf("CMD:%s",job->cmd);
+	args[j] = NULL;
+	return (args);
+}
+//Changes env with the value in str. returns 1 if succesful, 0 if error
+int	ms_setenv(char *env, char *str, t_shell *s)
+{
+	char	**split;
+	char	*tmp;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (s->env[i])
+	{
+		j = 0;
+		split = ft_split(s->env[i], '=');
+		if (ms_strcmp(split[0], env))
+		{
+			free(s->env[i]);
+			tmp = ft_strjoin(split[0], "=");
+			s->env[i] = ft_strjoin(tmp, str);
+			while(split[j++])
+				free(split[j]);
+			free(tmp);
+			free(split);
+			return (1);
+		}
+		i ++;
+	}
+	return (0);
 }

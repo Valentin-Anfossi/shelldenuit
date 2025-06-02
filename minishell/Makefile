@@ -16,7 +16,13 @@ SRCS = \
 	srcs/echo.c \
 	srcs/expand.c \
 	srcs/env.c \
-	srcs/cd.c
+	srcs/cd.c \
+	srcs/exit.c \
+	srcs/execute.c \
+	srcs/ms_execvp.c \
+	srcs/redir.c \
+	srcs/execute_utils.c \
+	srcs/status.c
 
 BUILD_DIR = build/Debug
 OUT_DEBUG = $(BUILD_DIR)/outDebug

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/03 12:37:29 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 04:24:02 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_token *add_to_job_redir(t_token *t, t_job *j)
 	}
 	if(t->next)
 	{
+		while(t->next->type == 0)
+			t = t->next;
 		new_redir->target = t->next->content;
 		new_redir->next = NULL;
 		t = t->next->next;
@@ -73,8 +75,11 @@ t_job *create_job(t_token **tokens)
 	t_token *t;
 	t_job *j;
 
-	j = malloc_job();
+	j = malloc_job(combiendetoks(tokens));
 	t = *tokens;
+
+	while(ms_strcmp(t->content," ")) // Faut skip les spaces au debut de chaque job
+		t = t->next;
 	while(t)
 	{
 		if(is_tok_redir(t))
@@ -85,9 +90,12 @@ t_job *create_job(t_token **tokens)
 				j->error = ERR_NEWLINE;
 				break;
 			}
-		else if(is_tok_cmd(t) && !j->cmd)
+		else if(!j->cmd)
 		{
-			t = add_to_job_cmd(t, j);
+			add_to_job_cmd(t, j);
+			t = add_to_job_arg(t,j); // NEEDED FOR EXCVE
+			while(t && t->type == SPC)
+				t = t->next;
 		}
 		else if(is_tok_pipe(t))
 		{
@@ -95,8 +103,10 @@ t_job *create_job(t_token **tokens)
 			j ->piped_job = create_job(&t);
 			break;
 		}
-		else
+		else if(t->type != SPC) //REMOVED SPACES (FRANCHEMENT JE SAIS PLUS POURQUOI MAIS CA VA NOUS FAIRE CHIER APRES)
 			t = add_to_job_arg(t ,j);
+		else
+			t = t->next;
 	}
 	return (j);
 }

@@ -29,8 +29,5 @@
 
 int main(int argc, char **argv)
 {
-	//printf("%s",argv[1]);
-	char *out;
-	out = readline("");
-	printf("%s",out);
+	printf("SALUT\n");
 }

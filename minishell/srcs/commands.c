@@ -12,53 +12,26 @@
 
 #include "minishell.h"
 
-void	select_command(t_job *jobs, t_shell *s)
+int	select_command(t_job *jobs, t_shell *s)
 {
 	if (jobs->cmd)
 	{
 		if (ms_strcmp(jobs->cmd, "echo"))
-			command_echo(jobs, s);
-		if (ms_strcmp(jobs->cmd, "env"))
+			command_echo(jobs);
+		else if (ms_strcmp(jobs->cmd, "env"))
 			command_env(s);
-		if (ms_strcmp(jobs->cmd, "export"))
+		else if (ms_strcmp(jobs->cmd, "export"))
 			command_export(jobs, s);
-		if (ms_strcmp(jobs->cmd, "cd"))
+		else if (ms_strcmp(jobs->cmd, "cd"))
 			command_cd(jobs, s);
-		if (ms_strcmp(jobs->cmd, "unset"))
+		else if (ms_strcmp(jobs->cmd, "unset"))
 			command_unset(jobs, s);
+		else if (ms_strcmp(jobs->cmd, "pwd"))
+			command_pwd(s);
+		else if (ms_strcmp(jobs->cmd, "exit"))
+			command_exit(s);
+		else if (ms_strcmp(jobs->cmd, "$?"))
+			command_status(jobs,s);
 	}
+	return (0);
 }
-// void select_command(t_job *job)
-// {
-// 	char *cmd;
-
-// 	cmd = ft_strtrim(job->cmd,"\'\"");
-// 	if(ms_strcmp("cd",cmd))
-// 		cmd_cd(job);
-// 	else if(ms_strcmp("echo",cmd))
-// 		cmd_echo(job);
-// 	else if(ms_strcmp("pwd",cmd))
-// 		cmd_pwd(job);
-// 	else if(ms_strcmp("export",cmd))
-// 		cmd_export(job);
-// 	else if(ms_strcmp("unset",cmd))
-// 		cmd_unset(job);
-// 	else if(ms_strcmp("env",cmd))
-// 		cmd_env(job);
-// 	else if(ms_strcmp("exit",cmd))
-// 		cmd_exit(job);
-// 	else
-// 		is_str_exec(job);
-// }
-
-// void is_str_exec(job)
-// {
-// 	// check si y a un file de merde
-// 	ft_printf("error");
-// }
-
-
-// void cmd_exec(t_job *job)
-// {
-
-// }

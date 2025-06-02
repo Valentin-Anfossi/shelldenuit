@@ -6,21 +6,24 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:28:18 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/24 11:28:40 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/05/31 04:17:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_job	*malloc_job(void)
+t_job	*malloc_job(int lestoks)
 {
 	t_job *job;
 	
-	job = (t_job *)ft_calloc(1, sizeof(t_job));
-	job->args = (char **)ft_calloc(1, sizeof(char **));
+	job = (t_job *)ft_calloc(1,sizeof(t_job));
+	job->args = (char **)ft_calloc(lestoks,sizeof(char *));
 	*job->args = NULL;
 	job->redir = NULL;
 	job->cmd = NULL;
+	job->pid = 0;
+	job->fd_infile = -1;
+	job->fd_outfile = -1;
 	job->error = 0;
 	job->piped_job = NULL;
 	return (job);
@@ -32,18 +35,22 @@ int check_jobs(t_job *jobs)
 {
 	t_job *j;
 	int re;
+	int i;
 
+	i = 0;
 	re = 0;
 	if(!jobs)
 		return 1;
 	j = jobs;
 	while(j)
 	{
-		if(!j->cmd && j->args[0])
+		if(!j->cmd && j->args[i])
 		{
-			j->cmd = j->args[0];
+			while(ms_strcmp(j->args[i]," "))
+				i++;
+			j->cmd = j->args[i];
 			if(!re)
-				ft_printf("%s: command not found\n",ft_strtrim(jobs->args[0],"\"\'"));
+				ft_printf("%s: command not found\n",ft_strtrim(jobs->args[i],"\"\'"));
 			re = 1;
 		}
 		else if(j->error == ERR_NEWLINE)
@@ -53,7 +60,9 @@ int check_jobs(t_job *jobs)
 			re = 1;
 		}
 		j = j->piped_job;
+		i = 0;
 	}
+	//re = check_redirs(jobs);
 	return (re);
 }
 
@@ -67,15 +76,16 @@ void	free_jobs(t_job *jobs)
 	while (jobs)
 	{
 		i = 0;
-		if (jobs->cmd)
-			free(jobs->cmd);
+		// if (jobs->cmd)
+		// 	free(jobs->cmd);
+
 		while (jobs->redir)
 		{
 			r = jobs->redir->next;
 			free(jobs->redir);
 			jobs->redir = r;
 		}
-		while (jobs->args[i])
+		while (jobs->args[i] != NULL)
 		{
 			free(jobs->args[i]);
 			i ++;
