@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:20:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/01 01:26:12 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 08:41:12 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	modif_export(t_shell *s, char *vars, char *newstr)
 	s->env[i] = ft_strdup(newstr);
 }
 
-void	command_export(t_job *j, t_shell *s)
+int	command_export(t_job *j, t_shell *s)
 {
 	char	**vars;
 	int		k;
@@ -92,10 +92,17 @@ void	command_export(t_job *j, t_shell *s)
 		if (check_export(vars, s, j->args[k]))
 		{
 			if (check_export(vars, s, j->args[k]) == 2)
+			{
 				modif_export(s, vars[0], j->args[k]);
+				return (0);
+			}
 			else
+			{
 				add_to_env(s, j->args[k]);
+				return (0);
+			}
 		}
 		k ++;
 	}
+	return (1);
 }

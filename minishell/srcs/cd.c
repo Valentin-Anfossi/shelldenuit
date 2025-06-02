@@ -6,27 +6,27 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 04:26:07 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:02:09 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
+int ms_charraylen(char **ar)
+{
+	int i;
+	
+	i = 0;
+	if(!ar)
+		return (0);
+	while(ar[i])
+		i++;
+	return (i);
+}
 
 int is_cd_valid(t_job *j, t_shell *s)
 {
-	struct stat st;
-	
-	if (!j->args[1]) //NO ARGS == CD $HOME
-	{
-		ms_setenv("OLDPWD",s->cwd,s);
-		ms_setenv("PWD",ms_getenv("HOME",s),s);
-		s->cwd = ms_getenv("HOME",s);
-		chdir(s->cwd);
-		return (0);
-	}
-	else if (j->args[2])
+	if (ms_charraylen(j->args) > 2)
 	{
 		write(STDERR_FILENO,"minishell : cd: too many arguments\n",36);
 		s->exit_code = 1;
@@ -56,11 +56,9 @@ void	cd_error(t_shell *s, char *path)
 		write(STDERR_FILENO,path,ft_strlen(path));
 		write(STDERR_FILENO,"\n",1);			
 	}
-	else
-		write(STDERR_FILENO,"cd: ERROR \n",12);
 }
 
-void cd_previous(t_shell *s)
+int cd_previous(t_shell *s)
 {
 	char *tmp;
 	char *tmp_old;
@@ -75,10 +73,26 @@ void cd_previous(t_shell *s)
 	chdir(tmp_old);
 	free(tmp);
 	free(tmp_old);
+	return (0);
+}
+
+int cd_home(t_job *j, t_shell *s)
+{	
+	if (!j->args[1]) //NO ARGS == CD $HOME
+	{
+		ms_setenv("OLDPWD",s->cwd,s);
+		ms_setenv("PWD",ms_getenv("HOME",s),s);
+		free(s->cwd);
+		s->cwd = ms_getenv("HOME",s);
+		chdir(s->cwd);
+		return (0);
+	}
+	else
+		return (1);
 }
 
 // A FINIR
-void	command_cd(t_job *j, t_shell *s)
+int	command_cd(t_job *j, t_shell *s)
 {
 	char *path;
 	char **p;
@@ -86,27 +100,28 @@ void	command_cd(t_job *j, t_shell *s)
 
 	i = 0;
 	if(!is_cd_valid(j,s))
-		return ;
+		return (1);
+	if(!j->args[1])
+		return (cd_home(j, s));
 	if(ms_strcmp(j->args[1],"-"))
 		return (cd_previous(s));
 	if(chdir(j->args[1]) == -1)
 	{
 		cd_error(s,j->args[1]);
-		return ;
+		return(errno) ;
 	}
 	ms_setenv("OLDPWD",s->cwd,s);
 	s->cwd = getcwd(s->cwd,PATH_MAX);
 	ms_setenv("PWD",s->cwd,s);
 	printf("%s",s->cwd);
+	return (0);
 }
 
-
-
-
-void	command_pwd(t_shell *s)
+int	command_pwd(t_shell *s)
 {
 	char *buff;
 	buff = getcwd(NULL,PATH_MAX);
 	ft_printf("%s\n",buff);
 	free(buff);
+	return (0);
 }

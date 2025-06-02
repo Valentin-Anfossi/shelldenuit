@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/01 00:55:35 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:00:01 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int execute_jobs(t_job *j, t_shell *s)
 			ms_fix_args(j);
 			if(is_str_cmd(j->cmd))
 			{
-				select_command(j,s);
+				s->exit_code = select_command(j,s);
 				exit(s->exit_code);
 			}
 			exit_status = ms_execvp(j->cmd,j->args,s);

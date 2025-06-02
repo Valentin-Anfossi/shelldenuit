@@ -14,24 +14,27 @@
 
 int	select_command(t_job *jobs, t_shell *s)
 {
+	int exit;
+
 	if (jobs->cmd)
 	{
 		if (ms_strcmp(jobs->cmd, "echo"))
-			command_echo(jobs);
+			return(command_echo(jobs));
 		else if (ms_strcmp(jobs->cmd, "env"))
-			command_env(s);
+			return(command_env(s));
 		else if (ms_strcmp(jobs->cmd, "export"))
-			command_export(jobs, s);
+			return(command_export(jobs, s));
 		else if (ms_strcmp(jobs->cmd, "cd"))
-			command_cd(jobs, s);
+			return(command_cd(jobs, s));
 		else if (ms_strcmp(jobs->cmd, "unset"))
-			command_unset(jobs, s);
+			return(command_unset(jobs, s));
 		else if (ms_strcmp(jobs->cmd, "pwd"))
-			command_pwd(s);
+			return(command_pwd(s));
 		else if (ms_strcmp(jobs->cmd, "exit"))
 			command_exit(s);
 		else if (ms_strcmp(jobs->cmd, "$?"))
-			command_status(jobs,s);
+			return(command_status(s));
 	}
-	return (0);
+	else
+		return (1);
 }

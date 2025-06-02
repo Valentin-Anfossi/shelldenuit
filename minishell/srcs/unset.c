@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:25:00 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 03:21:44 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 08:38:22 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	remove_env(t_shell *s, int index)
 		s->env[index] = NULL;
 }
 
-void	unset_env(t_shell *s, char *str)
+int	unset_env(t_shell *s, char *str)
 {
 	int	len;
 	int	i;
@@ -41,21 +41,25 @@ void	unset_env(t_shell *s, char *str)
 		{
 			if (s->env[i][len] && s->env[i][len] == '=')
 			{
-				remove_env(s, i);	
+				remove_env(s, i);
+				return (1);
 			}
 		}
 		i ++;
 	}
+	return (0);
 }
 
-void	command_unset(t_job *j, t_shell *s)
+int	command_unset(t_job *j, t_shell *s)
 {
 	int		k;
 
 	k = 1;
 	while (j->args[k])
 	{
-		unset_env(s, j->args[k]);
+		if(unset_env(s, j->args[k]))
+			return (0);
 		k ++;
 	}
+	return (1);
 }
