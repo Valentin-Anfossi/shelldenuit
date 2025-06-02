@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/30 03:38:04 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 01:36:38 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,4 +239,32 @@ char **ms_fix_args(t_job *job)
 	//printf("CMD:%s",job->cmd);
 	args[j] = NULL;
 	return (args);
+}
+//Changes env with the value in str. returns 1 if succesful, 0 if error
+int	ms_setenv(char *env, char *str, t_shell *s)
+{
+	char	**split;
+	char	*tmp;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (s->env[i])
+	{
+		j = 0;
+		split = ft_split(s->env[i], '=');
+		if (ms_strcmp(split[0], env))
+		{
+			free(s->env[i]);
+			tmp = ft_strjoin(split[0], "=");
+			s->env[i] = ft_strjoin(tmp, str);
+			while(split[j++])
+				free(split[j]);
+			free(tmp);
+			free(split);
+			return (1);
+		}
+		i ++;
+	}
+	return (0);
 }

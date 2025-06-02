@@ -37,13 +37,7 @@ t_shell	*create_shell(void)
 	}
 	s->env[i] = ft_strdup("MINISHELL=trobien");
 	s->env[i + 1] = NULL;
-	// if (!getcwd(s->cwd, 0))
-	// {
-	// 	ft_printf("Could not get current working dir. wtf did you do ?");
-	// 	exit(EXIT_FAILURE);
-	// }
 	s->cwd = getcwd(s->cwd,PATH_MAX);
-	printf("%s",s->cwd);
 	s->exit_code = 0;
 	return (s);
 }
@@ -86,7 +80,7 @@ int	main(void)
 		tokens_start(tokens,shell);
 		//debug_print_tokens(tokens);
 		jobs = create_job(tokens);
-		debug_print_job(jobs);
+		//debug_print_job(jobs);
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
 		//debug_print_job(jobs);

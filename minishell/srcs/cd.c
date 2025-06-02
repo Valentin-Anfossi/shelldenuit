@@ -6,25 +6,13 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/01 03:52:49 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 03:14:41 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *ms_pathup(char *path)
-{
-	int i;
 
-	i = (ft_strlen(path)) - 1;
-	while(path[i])
-	{
-		if(path[i] == '/')
-			return(ft_substr(path,0,i+1));
-		i --;
-	}
-	return (path);
-}
 
 int is_cd_valid(t_job *j, t_shell *s)
 {
@@ -32,9 +20,11 @@ int is_cd_valid(t_job *j, t_shell *s)
 	
 	if (!j->args[1]) //NO ARGS == CD $HOME
 	{
-		modif_export(s,"OLDPWD",ft_strjoin("OLDPWD=",s->cwd));
+		ms_setenv("OLDPWD",s->cwd,s);
+		ms_setenv("PWD",ms_getenv("HOME",s),s);
 		s->cwd = ms_getenv("HOME",s);
-		modif_export(s,"PWD",ft_strjoin("PWD=",s->cwd));
+		chdir(s->cwd);
+		return (0);
 	}
 	else if (j->args[2])
 	{
@@ -42,25 +32,50 @@ int is_cd_valid(t_job *j, t_shell *s)
 		s->exit_code = 1;
 		return (0);
 	}
+	else
+		return (1);
 }
 
-char *cd_create_path(char *str, t_shell *s)
+void	cd_error(t_shell *s, char *path)
 {
-	char *path;
-	
-	if(str && str[0] != '/') // RELATIVE
+	if(errno == EACCES)
 	{
-		path = ft_strjoin(s->cwd,"/");
-		path = ft_strjoin(path,str);
+		write(STDERR_FILENO,"cd: Permission denied: ",23);
+		write(STDERR_FILENO,path,ft_strlen(path));
+		write(STDERR_FILENO,"\n",1);			
 	}
-	else // ABSOLUTE
+	if(errno == ENOENT)
 	{
-		path = str;
+		write(STDERR_FILENO,"cd: No such directory: ",24);
+		write(STDERR_FILENO,path,ft_strlen(path));
+		write(STDERR_FILENO,"\n",1);			
 	}
-	return (path);
+	if(errno == ENOTDIR)
+	{
+		write(STDERR_FILENO,"cd: Not a directory: ",22);
+		write(STDERR_FILENO,path,ft_strlen(path));
+		write(STDERR_FILENO,"\n",1);			
+	}
 }
 
-// NEEDS TO BE REDONE (je sais pas ce que j'ai fais mais c'est completement debile lol)
+void cd_previous(t_shell *s)
+{
+	char *tmp;
+	char *tmp_old;
+
+	tmp = ms_getenv("PWD",s);
+	tmp_old = ms_getenv("OLDPWD",s);
+
+	ms_setenv("PWD", tmp_old, s);
+	ms_setenv("OLDPWD", tmp, s);
+	free(s->cwd);
+	s->cwd = tmp_old;
+	chdir(tmp_old);
+	free(tmp);
+	free(tmp_old);
+}
+
+// A FINIR
 void	command_cd(t_job *j, t_shell *s)
 {
 	char *path;
@@ -70,8 +85,17 @@ void	command_cd(t_job *j, t_shell *s)
 	i = 0;
 	if(!is_cd_valid(j,s))
 		return ;
-	path = cd_create_path(j->args[1], s);
-	printf("CD PATH :%s\n",path);
+	if(ms_strcmp(j->args[1],"-"))
+		return (cd_previous(s));
+	if(chdir(j->args[1]) == -1)
+	{
+		cd_error(s,j->args[1]);
+		return ;
+	}
+	ms_setenv("OLDPWD",s->cwd,s);
+	s->cwd = getcwd(s->cwd,PATH_MAX);
+	ms_setenv("PWD",s->cwd,s);
+	printf("%s",s->cwd);
 }
 
 
@@ -79,5 +103,8 @@ void	command_cd(t_job *j, t_shell *s)
 
 void	command_pwd(t_shell *s)
 {
-	ft_printf("%s\n",ms_getenv("PWD", s));
+	char *buff;
+	buff = getcwd(NULL,PATH_MAX);
+	ft_printf("%s\n",buff);
+	free(buff);
 }

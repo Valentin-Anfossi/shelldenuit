@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 15:36:07 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 01:36:52 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,8 @@ int 	combiendetoks(t_token **t);
 char	*ms_pathup(char *path);
 int		check_redirs(t_job *jobs);
 int		is_executable(char *path);
+int		ms_setenv(char *env, char *str, t_shell *s);
+
 
 //COMMANDS
 int	select_command(t_job *jobs, t_shell *s);
