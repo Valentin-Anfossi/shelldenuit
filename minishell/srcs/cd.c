@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 03:14:41 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 04:26:07 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	cd_error(t_shell *s, char *path)
 		write(STDERR_FILENO,path,ft_strlen(path));
 		write(STDERR_FILENO,"\n",1);			
 	}
+	else
+		write(STDERR_FILENO,"cd: ERROR \n",12);
 }
 
 void cd_previous(t_shell *s)
