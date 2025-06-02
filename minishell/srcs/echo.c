@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:09:39 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 03:25:59 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 08:54:54 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ void	command_echo_skip(t_job *j, int *i, int *n)
 	}
 }
 
-void	command_echo(t_job *j)
+int	command_echo(t_job *j)
 {
 	int	i;
 	int	n;
 
 	i = 1;
 	n = 0;
+	if(ms_charraylen(j->args) < 2)
+		return(1);
 	command_echo_skip(j, &i, &n);
 	while (j->args[i])
 	{
@@ -45,4 +47,5 @@ void	command_echo(t_job *j)
 	}
 	if (!n)
 		printf("\n");
+	return(0);
 }

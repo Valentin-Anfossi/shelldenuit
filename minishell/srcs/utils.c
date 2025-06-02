@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 01:36:38 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 08:56:18 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ char **ms_cmdlst()
 	cmdlst[4] = "unset";
 	cmdlst[5] = "env";
 	cmdlst[6] = "exit";
-	cmdlst[7] = NULL;
+	cmdlst[7] = "$?";
+	cmdlst[8] = NULL;
 
 	return (cmdlst);
 }

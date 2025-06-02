@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 01:36:52 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/02 08:54:21 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,32 +158,34 @@ char	*ms_pathup(char *path);
 int		check_redirs(t_job *jobs);
 int		is_executable(char *path);
 int		ms_setenv(char *env, char *str, t_shell *s);
+int 	ms_charraylen(char **ar);
+
 
 
 //COMMANDS
 int	select_command(t_job *jobs, t_shell *s);
 
 //COMMANDS: CD
-void	command_cd(t_job *j, t_shell *s);
+int		command_cd(t_job *j, t_shell *s);
 
 //COMMANDS: PWD
-void	command_pwd(t_shell *s);
+int	command_pwd(t_shell *s);
 
 //COMMANDS: ECHO
-void	command_echo(t_job *j);
+int		command_echo(t_job *j);
 
 //COMMANDS: EXPORT
-void	command_export(t_job *j, t_shell *s);
+int		command_export(t_job *j, t_shell *s);
 void	modif_export(t_shell *s, char *vars, char *newstr);
 void	add_to_env(t_shell *s, char *add_env);
 int		check_export(char **vars, t_shell *shell, char *str);
 
 //COMMANDS: UNSET
-void	command_unset(t_job *j, t_shell *s);
-void	unset_env(t_shell *s, char *str);
+int	command_unset(t_job *j, t_shell *s);
+int	unset_env(t_shell *s, char *str);
 
 //COMMANDS: ENV
-void	command_env(t_shell *shell);
+int	command_env(t_shell *shell);
 
 //COMMANDS : EXIT
 void	command_exit(t_shell *s);
@@ -194,7 +196,7 @@ int		execute_jobs(t_job *jobs, t_shell *shell);
 void	execute_prog(t_job *j, t_shell *s);
 
 //COMMANDS : STATUS
-int command_status(t_job *j, t_shell *s);
+int command_status(t_shell *s);
 
 //ERRORS
 int		err_exp_ident(char *str);
