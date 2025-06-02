@@ -25,6 +25,7 @@ t_shell	*create_shell(void)
 	pid_main = getpid();
 	i = 0;
 	s = (t_shell *)malloc(sizeof(t_shell));
+	s->cwd = NULL;
 	while (environ[i])
 		i++;
 	s->env = (char **)malloc(sizeof(char *) * (i + 2));
@@ -35,8 +36,7 @@ t_shell	*create_shell(void)
 		s->env[i] = ft_strdup(environ[i]);
 		i++;
 	}
-	s->env[i] = ft_strdup("MINISHELL=trobien");
-	s->env[i + 1] = NULL;
+	s->env[i] = NULL;
 	s->cwd = getcwd(s->cwd,PATH_MAX);
 	s->exit_code = 0;
 	return (s);

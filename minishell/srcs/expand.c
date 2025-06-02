@@ -18,10 +18,9 @@ char	*expand_token_env(char *s, t_shell *shell)
 	int		j;
 	char	*out;
 	char	*env;
-	char	*to_add;
+	char	to_add[2];
 	char	*temp;
 
-	to_add = (char *)malloc(2);
 	out = NULL;
 	i = 0;
 	j = 0;
@@ -46,21 +45,58 @@ char	*expand_token_env(char *s, t_shell *shell)
 				env = ms_getenv(temp, shell);
 				free(temp);
 				if (env)
+				{
+					temp = out;
 					out = ft_strjoin(out, env);
+					free(temp);
+				}
 				i = j - 1;
 			}
 			else
+			{
+				temp = out;
 				out = ft_strjoin(out, "$");
+				free(temp);
+			}
 		}
 		else
 		{
 			to_add[0] = s[i];
 			to_add[1] = '\0';
+			temp = out;
 			out = ft_strjoin(out, to_add);
+			free(temp);
 		}
 		i++;
 	}
+	free(s);
 	return (out);
+}
+
+char	*is_exit_code(char *s, t_shell *shell)
+{
+	int	i;
+	int	j;
+	char	*temp;
+
+	temp = (char *)ft_calloc((ft_strlen(s) + ft_get_intlen(shell->exit_code)), 1);
+	i = 0;
+	j = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i + 1] && s[i] == '$' && s[i + 1] == '?')
+		{
+			
+			temp = ft_strjoin(temp, ft_itoa(shell->exit_code));
+			i  = i + 2;
+			j = j + ft_get_intlen(shell->exit_code);
+			continue;
+		}
+		temp[j] = s[i];
+		i++;
+		j++;
+	}
+	return (temp);
 }
 
 void	check_env(t_token **tokens, t_shell *shell)
@@ -70,9 +106,10 @@ void	check_env(t_token **tokens, t_shell *shell)
 	tok = *tokens;
 	while (tok)
 	{
-		tok->content = ft_strtrim(tok->content, "\"'");
+		tok->content = ft_strtrim(tok->content, "'");
 		if (tok->type == 7 || tok->type == 1)
 		{
+			tok->content = is_exit_code(tok->content, shell);
 			tok->content = expand_token_env(tok->content, shell);
 		}
 		tok = tok->next;

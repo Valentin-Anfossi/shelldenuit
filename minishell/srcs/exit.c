@@ -16,6 +16,6 @@ void command_exit(t_shell *s)
 {
 	//free_jobs(j);
 	free_shell(s);
-	ft_printf("Bye !\n");
-	exit(EXIT_SUCCESS);
+	ft_putstr_fd(ft_itoa(s->exit_code), 2);
+	exit(1);
 }
