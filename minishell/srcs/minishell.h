@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 08:54:21 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/03 06:02:55 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ int	unset_env(t_shell *s, char *str);
 int	command_env(t_shell *shell);
 
 //COMMANDS : EXIT
-void	command_exit(t_shell *s);
+void	command_exit(t_shell *s, t_job *j);
 
 //COMMANDS : EXECUTE
 void	command_execute(t_job *j, t_shell *s);

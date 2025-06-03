@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 09:00:01 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/03 06:37:12 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,8 @@ int execute_jobs(t_job *j, t_shell *s)
 	while(h < i) //ON WAIT TOUT LES CHILDS
 	{
 		waitpid(child_pids[h],&status,WUNTRACED);
-		s->exit_code = status;
+		if(status % 256 != 0)
+			s->exit_code = status % 256;
 		h ++;
 	}
 	free(child_pids);

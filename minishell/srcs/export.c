@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:20:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 08:41:12 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/03 05:56:59 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	command_export(t_job *j, t_shell *s)
 {
 	char	**vars;
 	int		k;
+	int		check;
 
 	k = 1;
 	while (j->args[k])
@@ -104,5 +105,5 @@ int	command_export(t_job *j, t_shell *s)
 		}
 		k ++;
 	}
-	return (1);
+	return (0);
 }
