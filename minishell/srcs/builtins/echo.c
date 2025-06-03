@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	command_echo_skip(t_job *j, int *i, int *n)
 {
@@ -18,7 +18,7 @@ void	command_echo_skip(t_job *j, int *i, int *n)
 	{
 		if (ms_strcmp(j->args[*i], "-n"))
 			*n = 1;
-		(*i) ++;
+		(*i)++;
 	}
 }
 
@@ -29,8 +29,8 @@ int	command_echo(t_job *j)
 
 	i = 1;
 	n = 0;
-	if(ms_charraylen(j->args) < 2)
-		return(1);
+	if (ms_charraylen(j->args) < 2)
+		return (1);
 	command_echo_skip(j, &i, &n);
 	while (j->args[i])
 	{
@@ -47,5 +47,5 @@ int	command_echo(t_job *j)
 	}
 	if (!n)
 		printf("\n");
-	return(0);
+	return (0);
 }

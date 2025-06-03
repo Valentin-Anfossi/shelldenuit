@@ -12,14 +12,20 @@
 
 #include "minishell.h"
 
-int err_exp_ident(char *str)
+int err_exp_ident(char *str, t_shell *shell)
 {
-	ft_printf("minishell: export: '%s': not a valid identifier\n",str);
-	return (0);
+	ft_putstr_fd("minishell: export: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
+	shell->exit_code = 1;
+	return (1);
 }
 
-int err_cmd_nfound(char *str)
+int err_cmd_nfound(char *str, t_shell *shell)
 {
-	ft_printf("minishell: %s : command not found\n",str);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	shell->exit_code = 127;
 	return (0);
 }

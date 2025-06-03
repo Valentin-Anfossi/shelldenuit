@@ -169,7 +169,7 @@ int	select_command(t_job *jobs, t_shell *s);
 int		command_cd(t_job *j, t_shell *s);
 
 //COMMANDS: PWD
-int	command_pwd(t_shell *s);
+int	command_pwd(void);
 
 //COMMANDS: ECHO
 int		command_echo(t_job *j);
@@ -199,5 +199,5 @@ void	execute_prog(t_job *j, t_shell *s);
 int command_status(t_shell *s);
 
 //ERRORS
-int		err_exp_ident(char *str);
-int		err_cmd_nfound(char *str);
+int		err_exp_ident(char *str, t_shell *shell);
+int		err_cmd_nfound(char *str, t_shell *shell);

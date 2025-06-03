@@ -24,7 +24,6 @@ char	*expand_token_env(char *s, t_shell *shell)
 	out = NULL;
 	i = 0;
 	j = 0;
-	s = ft_strtrim(s,"\"");
 	out = ft_strdup ("");
 
 	while (s[i])
@@ -96,6 +95,7 @@ char	*is_exit_code(char *s, t_shell *shell)
 		i++;
 		j++;
 	}
+	temp[j] = '\0';
 	return (temp);
 }
 
@@ -106,7 +106,10 @@ void	check_env(t_token **tokens, t_shell *shell)
 	tok = *tokens;
 	while (tok)
 	{
-		tok->content = ft_strtrim(tok->content, "'");
+		if (tok->type == DBQ)
+			tok->content = ft_strtrim(tok->content, "\"");
+		if (tok->type == SQ)
+			tok->content = ft_strtrim(tok->content, "'");
 		if (tok->type == 7 || tok->type == 1)
 		{
 			tok->content = is_exit_code(tok->content, shell);

@@ -78,9 +78,9 @@ int	main(void)
 		else
 			continue;
 		tokens_start(tokens,shell);
-		//debug_print_tokens(tokens);
+	//	debug_print_tokens(tokens);
 		jobs = create_job(tokens);
-		//debug_print_job(jobs);
+	//	debug_print_job(jobs);
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
 		//debug_print_job(jobs);

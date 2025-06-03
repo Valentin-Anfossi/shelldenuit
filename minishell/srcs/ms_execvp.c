@@ -33,7 +33,7 @@ int ms_execvp(char *file, char **argv,t_shell *s)
 	char *path;
 	char **dirs;
 	int i;
-	int temp_errno;
+	//int temp_errno;
 	
 	i = 0;
 	if(ft_strchr(file, '/'))

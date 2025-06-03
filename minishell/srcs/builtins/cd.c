@@ -10,25 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int ms_charraylen(char **ar)
+int	ms_charraylen(char **ar)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	if(!ar)
+	if (!ar)
 		return (0);
-	while(ar[i])
+	while (ar[i])
 		i++;
 	return (i);
 }
 
-int is_cd_valid(t_job *j, t_shell *s)
+int	is_cd_valid(t_job *j, t_shell *s)
 {
 	if (ms_charraylen(j->args) > 2)
 	{
-		write(STDERR_FILENO,"minishell : cd: too many arguments\n",36);
+		ft_putstr_fd("minishell : cd: too many arguments\n", STDERR_FILENO);
 		s->exit_code = 1;
 		return (0);
 	}
@@ -38,34 +38,36 @@ int is_cd_valid(t_job *j, t_shell *s)
 
 void	cd_error(t_shell *s, char *path)
 {
-	if(errno == EACCES)
+	if (errno == EACCES)
 	{
-		write(STDERR_FILENO,"cd: Permission denied: ",23);
-		write(STDERR_FILENO,path,ft_strlen(path));
-		write(STDERR_FILENO,"\n",1);			
+		ft_putstr_fd("minishell: cd: Permission denied: ", STDERR_FILENO);
+		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		s->exit_code = 1;
 	}
-	if(errno == ENOENT)
+	if (errno == ENOENT)
 	{
-		write(STDERR_FILENO,"cd: No such directory: ",24);
-		write(STDERR_FILENO,path,ft_strlen(path));
-		write(STDERR_FILENO,"\n",1);			
+		ft_putstr_fd("minishell: cd:", STDERR_FILENO);
+		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		s->exit_code = 1;
 	}
-	if(errno == ENOTDIR)
+	if (errno == ENOTDIR)
 	{
-		write(STDERR_FILENO,"cd: Not a directory: ",22);
-		write(STDERR_FILENO,path,ft_strlen(path));
-		write(STDERR_FILENO,"\n",1);			
+		ft_putstr_fd("minishell: cd:", STDERR_FILENO);
+		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
+		s->exit_code = 1;
 	}
 }
 
-int cd_previous(t_shell *s)
+int	cd_previous(t_shell *s)
 {
-	char *tmp;
-	char *tmp_old;
+	char	*tmp;
+	char	*tmp_old;
 
-	tmp = ms_getenv("PWD",s);
-	tmp_old = ms_getenv("OLDPWD",s);
-
+	tmp = ms_getenv("PWD", s);
+	tmp_old = ms_getenv("OLDPWD", s);
 	ms_setenv("PWD", tmp_old, s);
 	ms_setenv("OLDPWD", tmp, s);
 	free(s->cwd);
@@ -76,14 +78,14 @@ int cd_previous(t_shell *s)
 	return (0);
 }
 
-int cd_home(t_job *j, t_shell *s)
-{	
-	if (!j->args[1]) //NO ARGS == CD $HOME
+int	cd_home(t_job *j, t_shell *s)
+{
+	if (!j->args[1])
 	{
-		ms_setenv("OLDPWD",s->cwd,s);
-		ms_setenv("PWD",ms_getenv("HOME",s),s);
+		ms_setenv("OLDPWD", s->cwd, s);
+		ms_setenv("PWD", ms_getenv("HOME", s), s);
 		free(s->cwd);
-		s->cwd = ms_getenv("HOME",s);
+		s->cwd = ms_getenv("HOME", s);
 		chdir(s->cwd);
 		return (0);
 	}
@@ -94,34 +96,30 @@ int cd_home(t_job *j, t_shell *s)
 // A FINIR
 int	command_cd(t_job *j, t_shell *s)
 {
-	char *path;
-	char **p;
-	int i;
-
-	i = 0;
-	if(!is_cd_valid(j,s))
+	if (!is_cd_valid(j, s))
 		return (1);
-	if(!j->args[1])
+	if (!j->args[1])
 		return (cd_home(j, s));
-	if(ms_strcmp(j->args[1],"-"))
+	if (ms_strcmp(j->args[1], "-"))
 		return (cd_previous(s));
-	if(chdir(j->args[1]) == -1)
+	if (chdir(j->args[1]) == -1)
 	{
-		cd_error(s,j->args[1]);
-		return(errno) ;
+		cd_error(s, j->args[1]);
+		return (1);
 	}
-	ms_setenv("OLDPWD",s->cwd,s);
-	s->cwd = getcwd(s->cwd,PATH_MAX);
-	ms_setenv("PWD",s->cwd,s);
-	printf("%s",s->cwd);
+	ms_setenv("OLDPWD", s->cwd, s);
+	s->cwd = getcwd(s->cwd, PATH_MAX);
+	ms_setenv("PWD", s->cwd, s);
+	printf("%s", s->cwd);
 	return (0);
 }
 
-int	command_pwd(t_shell *s)
+int	command_pwd(void)
 {
-	char *buff;
-	buff = getcwd(NULL,PATH_MAX);
-	ft_printf("%s\n",buff);
+	char	*buff;
+
+	buff = getcwd(NULL, PATH_MAX);
+	ft_printf("%s\n", buff);
 	free(buff);
 	return (0);
 }

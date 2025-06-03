@@ -10,36 +10,40 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	check_export(char **vars, t_shell *shell, char *str)
 {
 	int		i;
 	char	*env;
 
-	i = 0;
+	i = -1;
+	if (str[0] == '=')
+		return (err_exp_ident(str, shell));
+	while (str[++i] != '=' && str[i] != '\0')
+		if ((!ft_isalpha(str[i]) && str[i] != '_'))
+			return (err_exp_ident(str, shell));
 	if (!vars)
 		return (0);
 	if (vars && vars[0] && vars[1])
 	{
-		if (vars[0][0] >= '0' && vars[0][0] <='9')
-			return (err_exp_ident(str));
+		if (vars[0][0] >= '0' && vars[0][0] <= '9')
+			return (1);
 		i = 1;
 		env = ms_getenv(vars[0], shell);
 		if (env)
 			return (2);
 		else if (!ft_isalpha(vars[0][0]))
-			return (0);
+			return (err_exp_ident(str, shell));
 		while (vars[0][i])
 		{
 			if (!ft_isalnum(vars[0][i]) && vars[0][i] != '_')
-				return (0);
+				return (err_exp_ident(str, shell));
 			i ++;
 		}
 	}
-	return (1);
+	return (0);
 }
-
 
 void	add_to_env(t_shell *s, char *add_env)
 {
@@ -90,20 +94,19 @@ int	command_export(t_job *j, t_shell *s)
 	while (j->args[k])
 	{
 		vars = ms_split(j->args[k], '=');
-		if (check_export(vars, s, j->args[k]))
+		check = check_export(vars, s, j->args[k]);
+		if (check == 2)
 		{
-			if (check_export(vars, s, j->args[k]) == 2)
-			{
-				modif_export(s, vars[0], j->args[k]);
-				return (0);
-			}
-			else
-			{
+			modif_export(s, vars[0], j->args[k]);
+			return (0);
+		}
+		else if (check == 0)
+		{
+			if (vars)
 				add_to_env(s, j->args[k]);
-				return (0);
-			}
+			return (0);
 		}
 		k ++;
 	}
-	return (0);
+	return (1);
 }

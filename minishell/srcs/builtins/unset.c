@@ -6,19 +6,19 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:25:00 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 08:38:22 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:57:54 by jelucian         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	remove_env(t_shell *s, int index)
 {
-	if (s->env[index+1])
+	if (s->env[index + 1])
 	{
-		s->env[index] = ft_strdup(s->env[index+1]);
+		s->env[index] = ft_strdup(s->env[index + 1]);
 		index ++;
-		while(s->env[index])
+		while (s->env[index])
 		{
 			s->env[index] = ft_strdup(s->env[index + 1]);
 			index ++;
@@ -57,9 +57,9 @@ int	command_unset(t_job *j, t_shell *s)
 	k = 1;
 	while (j->args[k])
 	{
-		if(unset_env(s, j->args[k]))
+		if (unset_env(s, j->args[k]))
 			return (0);
 		k ++;
 	}
-	return (1);
+	return (0);
 }
