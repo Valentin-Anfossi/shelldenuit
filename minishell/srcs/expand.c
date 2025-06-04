@@ -25,7 +25,6 @@ char	*expand_token_env(char *s, t_shell *shell)
 	i = 0;
 	j = 0;
 	out = ft_strdup ("");
-
 	while (s[i])
 	{
 		if (s[i] == '$')
@@ -74,22 +73,22 @@ char	*expand_token_env(char *s, t_shell *shell)
 
 char	*is_exit_code(char *s, t_shell *shell)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*temp;
 
-	temp = (char *)ft_calloc((ft_strlen(s) + ft_get_intlen(shell->exit_code)), 1);
+	temp = (char *)ft_calloc((ft_strlen(s)
+				+ ft_get_intlen(shell->exit_code)), 1);
 	i = 0;
 	j = 0;
 	while (s[i] != '\0')
 	{
 		if (s[i + 1] && s[i] == '$' && s[i + 1] == '?')
 		{
-			
 			temp = ft_strjoin(temp, ft_itoa(shell->exit_code));
-			i  = i + 2;
+			i = i + 2;
 			j = j + ft_get_intlen(shell->exit_code);
-			continue;
+			continue ;
 		}
 		temp[j] = s[i];
 		i++;

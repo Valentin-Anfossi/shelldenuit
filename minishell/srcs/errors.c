@@ -12,20 +12,30 @@
 
 #include "minishell.h"
 
-int err_exp_ident(char *str, t_shell *shell)
+int	err_exp_ident(char *str, t_shell *shell)
 {
 	ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
 	shell->exit_code = 1;
-	return (1);
+	return (shell->exit_code);
 }
 
-int err_cmd_nfound(char *str, t_shell *shell)
+int	err_cmd_nfound(char *str, t_shell *shell)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	shell->exit_code = 127;
-	return (0);
+	if (is_str_exec(str) && is_folder(str))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		shell->exit_code = 126;
+	}
+	else
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		shell->exit_code = 127;
+	}
+	return (shell->exit_code);
 }

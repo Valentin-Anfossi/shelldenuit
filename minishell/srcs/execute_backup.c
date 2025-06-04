@@ -156,10 +156,10 @@ void	process_parent(t_shell *s, t_job *j, int *tuyau)
 
 void execute_fork(t_shell *s, t_job *j, int *tuyau)
 {
-	gl_pid = fork();
-	if(gl_pid < 0)
+	g_pid = fork();
+	if(g_pid < 0)
 		exit_all(s, j);
-	else if (gl_pid == 0)
+	else if (g_pid == 0)
 		process_child(s, j, tuyau);
 	else
 		process_parent(s, j, tuyau);

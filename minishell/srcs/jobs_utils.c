@@ -14,10 +14,10 @@
 
 t_job	*malloc_job(int lestoks)
 {
-	t_job *job;
-	
-	job = (t_job *)ft_calloc(1,sizeof(t_job));
-	job->args = (char **)ft_calloc(lestoks,sizeof(char *));
+	t_job	*job;
+
+	job = (t_job *)ft_calloc(1, sizeof(t_job));
+	job->args = (char **)ft_calloc(lestoks, sizeof(char *));
 	*job->args = NULL;
 	job->redir = NULL;
 	job->cmd = NULL;
@@ -29,31 +29,30 @@ t_job	*malloc_job(int lestoks)
 	return (job);
 }
 
-
 //Prints errors, return 1 if an error is present
-int check_jobs(t_job *jobs, t_shell *s)
+int	check_jobs(t_job *jobs, t_shell *s)
 {
-	t_job *j;
-	int re;
-	int i;
+	t_job	*j;
+	int		re;
+	int		i;
 
 	i = 0;
 	re = 0;
-	if(!jobs)
+	if (!jobs)
 		return (1);
 	j = jobs;
-	while(j)
+	while (j)
 	{
 		if (!j->cmd && j->args[i])
 		{
-			while(ms_strcmp(j->args[i], " "))
+			while (ms_strcmp(j->args[i], " "))
 				i++;
 			j->cmd = j->args[i];
-			if(!re)
-				ft_printf("%s: command not found\n",ft_strtrim(jobs->args[i],"\"\'"));
+			if (!re)
+				ft_printf("%s: command not found\n", ft_strtrim(jobs->args[i], "\"\'"));
 			re = 1;
 		}
-		else if(j->error == ERR_NEWLINE)
+		else if (j->error == ERR_NEWLINE)
 		{
 			if (!re)
 				ft_printf("syntax error near unexpected token `newline'\n");
@@ -76,9 +75,6 @@ void	free_jobs(t_job *jobs)
 	while (jobs)
 	{
 		i = 0;
-		// if (jobs->cmd)
-		// 	free(jobs->cmd);
-
 		while (jobs->redir)
 		{
 			r = jobs->redir->next;

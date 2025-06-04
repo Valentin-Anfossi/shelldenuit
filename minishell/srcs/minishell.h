@@ -35,20 +35,20 @@ typedef struct s_token	t_token;
 typedef struct s_job	t_job;
 typedef struct s_redir	t_redir;
 
-extern pid_t gl_pid;
+extern pid_t	g_pid;
 
 #ifndef BUFFER_SIZE
 	#define BUFFER_SIZE 128;
 #endif
 
-enum Error
+enum e_error
 {
 	NO_ERROR,
 	ERR_CMD,
 	ERR_NEWLINE
 };
 
-enum Redirs
+enum e_redirs
 {
 	R_IN,
 	R_OUT,
@@ -56,7 +56,7 @@ enum Redirs
 	R_HEREDOC
 };
 
-enum Types
+enum e_types
 {
 	SPC,
 	DBQ,
@@ -130,7 +130,7 @@ t_job	*malloc_job(int lestoks);
 int		get_redir_type(t_token *t);
 int		check_jobs(t_job *jobs, t_shell *s);
 void	free_jobs(t_job *jobs);
-void 	execute_fork(t_shell *s, t_job *j, int *tuyau);
+void	execute_fork(t_shell *s, t_job *j, int *tuyau);
 
 //EXECUTE
 void		exit_all(t_shell *s, t_job *j);

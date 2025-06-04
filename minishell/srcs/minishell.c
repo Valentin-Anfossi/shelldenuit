@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -13,7 +12,7 @@
 
 #include "minishell.h"
 
-pid_t gl_pid;
+pid_t	g_pid;
 
 t_shell	*create_shell(void)
 {
@@ -37,7 +36,7 @@ t_shell	*create_shell(void)
 		i++;
 	}
 	s->env[i] = NULL;
-	s->cwd = getcwd(s->cwd,PATH_MAX);
+	s->cwd = getcwd(s->cwd, PATH_MAX);
 	s->exit_code = 0;
 	return (s);
 }
@@ -51,7 +50,7 @@ int	is_tok_quoted(t_token *tok)
 		return (0);
 }
 
-void tokens_start(t_token **t, t_shell *s)
+void	tokens_start(t_token **t, t_shell *s)
 {
 	typing_tokens(t);
 	check_env(t, s);
@@ -69,6 +68,7 @@ int	main(void)
 	shell = create_shell();
 	while (1)
 	{
+		handle_signals();
 		line = readline("☠️  Minishell: ");
 		if (line[0])
 		{
@@ -76,15 +76,14 @@ int	main(void)
 			add_history(line);
 		}
 		else
-			continue;
-		tokens_start(tokens,shell);
+			continue ;
+		tokens_start(tokens, shell);
 	//	debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 	//	debug_print_job(jobs);
 		if (!check_jobs(jobs, shell))
 			execute_jobs(jobs, shell);
 		//debug_print_job(jobs);
-		handle_signals();
 		free_jobs(jobs);
 		free(line);
 		//exit(0);

@@ -35,22 +35,22 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-int n_jobs(t_job *j)
+int	n_jobs(t_job *j)
 {
-	int n;
-	t_job *job;
+	int		n;
+	t_job	*job;
 
 	n = 1;
 	job = j;
-	while(job->piped_job)
+	while (job->piped_job)
 	{
-		n ++;
-		job = job->piped_job;	
+		n++;
+		job = job->piped_job;
 	}
 	return (n);
 }
 
-void	wait_all(t_shell* s, t_job *j)
+void	wait_all(t_shell *s, t_job *j)
 {
 	int		status;
 	int		pid;
@@ -62,7 +62,7 @@ void	wait_all(t_shell* s, t_job *j)
 	while (n--)
 	{
 		pid = waitpid(0, &status, 0);
-		if (pid == gl_pid)
+		if (pid == g_pid)
 		{
 			if (WIFEXITED(status))
 				s->exit_code = WEXITSTATUS(status);
