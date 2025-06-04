@@ -110,7 +110,6 @@ int	command_cd(t_job *j, t_shell *s)
 	ms_setenv("OLDPWD", s->cwd, s);
 	s->cwd = getcwd(s->cwd, PATH_MAX);
 	ms_setenv("PWD", s->cwd, s);
-	printf("%s", s->cwd);
 	return (0);
 }
 

@@ -83,8 +83,8 @@ t_job *create_job(t_token **tokens)
 	while(t)
 	{
 		if(is_tok_redir(t))
-			if(is_tok_arg(t->next))
-				t = add_to_job_redir(t,j);
+			if(is_tok_arg(t->next)) // IS_TOK_ARG probleme car check is_tok_cmd fait foirer (path et cmd commencent par ./)
+				t = add_to_job_redir(t, j);
 			else
 			{
 				j->error = ERR_NEWLINE;

@@ -128,7 +128,7 @@ t_job	**create_lst_job(t_token **tokens);
 t_job	*create_job(t_token **tokens);
 t_job	*malloc_job(int lestoks);
 int		get_redir_type(t_token *t);
-int		check_jobs(t_job *jobs);
+int		check_jobs(t_job *jobs, t_shell *s);
 void	free_jobs(t_job *jobs);
 void 	execute_fork(t_shell *s, t_job *j, int *tuyau);
 
@@ -201,3 +201,4 @@ int command_status(t_shell *s);
 //ERRORS
 int		err_exp_ident(char *str, t_shell *shell);
 int		err_cmd_nfound(char *str, t_shell *shell);
+void	handle_signals(void);

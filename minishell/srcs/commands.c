@@ -30,8 +30,6 @@ int	select_command(t_job *jobs, t_shell *s)
 			return(command_pwd());
 		else if (ms_strcmp(jobs->cmd, "exit"))
 			return (command_exit(s, jobs), 0);
-		else if (ms_strcmp(jobs->cmd, "$?"))
-			return(command_status(s));
 	}
-	return (ERR_CMD);
+	return (err_cmd_nfound(jobs->cmd, s));
 }

@@ -81,9 +81,10 @@ int	main(void)
 	//	debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 	//	debug_print_job(jobs);
-		if (!check_jobs(jobs))
+		if (!check_jobs(jobs, shell))
 			execute_jobs(jobs, shell);
 		//debug_print_job(jobs);
+		handle_signals();
 		free_jobs(jobs);
 		free(line);
 		//exit(0);

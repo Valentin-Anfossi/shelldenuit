@@ -58,7 +58,7 @@ void	check_tokens(t_token **tokens)
 		{
 			while(t->next->type == 0)
 				t = t->next;
-			if(t->next->type == ARG)
+			if(t->next->type == ARG || t->next->type == DBQ || t->next->type == SQ)
 				t = t->next->next;
 		}
 		else if (t->next && is_tok_arg(t->next) && t->type != 0)

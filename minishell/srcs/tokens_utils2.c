@@ -25,7 +25,7 @@ int	is_tok_arg(t_token *t)
 	}
 	if (!t)
 		return (0);
-	if (!is_tok_redir(t) && !is_tok_cmd(t) && !is_tok_pipe(t))
+	if (!is_tok_redir(t) && !is_tok_pipe(t)) // is_tok_cmd vraiment utile ?????
 		return (1);
 	else
 		return (0);

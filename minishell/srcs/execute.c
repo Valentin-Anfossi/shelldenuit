@@ -54,7 +54,7 @@ void execute_set_redirs(t_job *j)
             in_fd = open(r->target, O_RDONLY);
             if (in_fd < 0)
 			{ 
-				perror("open"); 
+				perror(r->target); 
 				exit(1); 
 			}
             dup2(in_fd, STDIN_FILENO);
@@ -187,8 +187,8 @@ int execute_jobs(t_job *j, t_shell *s)
 	while(h < i) //ON WAIT TOUT LES CHILDS
 	{
 		waitpid(child_pids[h],&status,WUNTRACED);
-		if(status % 256 != 0)
-			s->exit_code = status % 256;
+		if(status == 256)	// J'ai pas compris le % 256 : du coup code tout le temps a 0 avec le modulo
+			s->exit_code = 1;
 		h ++;
 	}
 	free(child_pids);

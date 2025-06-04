@@ -31,7 +31,7 @@ t_job	*malloc_job(int lestoks)
 
 
 //Prints errors, return 1 if an error is present
-int check_jobs(t_job *jobs)
+int check_jobs(t_job *jobs, t_shell *s)
 {
 	t_job *j;
 	int re;
@@ -40,13 +40,13 @@ int check_jobs(t_job *jobs)
 	i = 0;
 	re = 0;
 	if(!jobs)
-		return 1;
+		return (1);
 	j = jobs;
 	while(j)
 	{
-		if(!j->cmd && j->args[i])
+		if (!j->cmd && j->args[i])
 		{
-			while(ms_strcmp(j->args[i]," "))
+			while(ms_strcmp(j->args[i], " "))
 				i++;
 			j->cmd = j->args[i];
 			if(!re)

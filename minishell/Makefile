@@ -21,6 +21,7 @@ SRCS = \
 	srcs/ms_execvp.c		\
 	srcs/execute.c			\
 	srcs/execute_utils.c	\
+ 	srcs/signals.c			\
  	srcs/minishell.c
 
 BUILD_DIR = build/Debug
