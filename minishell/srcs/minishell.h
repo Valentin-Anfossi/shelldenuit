@@ -202,4 +202,6 @@ int command_status(t_shell *s);
 //ERRORS
 int		err_exp_ident(char *str, t_shell *shell);
 int		err_cmd_nfound(char *str, t_shell *shell);
+int 	is_permited(char *path);
+int		is_file(char *path);
 void	handle_signals(void);

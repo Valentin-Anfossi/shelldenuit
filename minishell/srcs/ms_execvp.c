@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+int is_permited(char *path)
+{
+	struct stat st;
+	if(stat(path, &st) == -1)
+		return (0);
+	return(st.st_mode & S_IXUSR);
+}
+
+int is_file(char *path)
+{
+	struct stat st;
+	if(stat(path, &st) == -1)
+		return (0);
+	return(S_ISREG(st.st_mode));
+}
+
 int is_executable(char *path)
 {
 	struct stat st;

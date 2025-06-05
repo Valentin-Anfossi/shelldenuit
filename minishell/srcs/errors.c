@@ -24,22 +24,25 @@ int	err_exp_ident(char *str, t_shell *shell)
 int	err_cmd_nfound(char *str, t_shell *shell)
 {
 	if(ft_strlen(str) == 0)
-	{
-		shell->exit_code = 0;
 		return (shell->exit_code);
-	}
-	if (is_str_exec(str) && is_folder(str))
+	if (is_str_exec(str) && is_folder(str) >= 0)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		if (!is_permited(str))
+			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+		else
+			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
 		shell->exit_code = 126;
 	}
 	else
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		if (is_str_exec(str) && is_file(str) == 0)
+		 	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		else
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		shell->exit_code = 127;
 	}
 	return (shell->exit_code);

@@ -69,7 +69,7 @@ int	main(void)
 	while (1)
 	{
 		handle_signals();
-		line = readline("☠️  Minishell: ");
+		line = readline("☠️  MinisHell: ");
 		if (line[0])
 		{
 			tokens = create_lst_tokens(line);
