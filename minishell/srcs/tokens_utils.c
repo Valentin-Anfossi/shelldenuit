@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:15:50 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/24 11:48:10 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/05 03:35:38 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ void typing_tokens(t_token **tokens)
 			t->type = APP;
 		else if (ms_strcmp(t->content, "<<"))
 			t->type = HER;
+		else if (ms_strcmp(t->content, "|"))
+			t->type = PIP;
 		else
 			t->type = ARG;
 	t = t->next;

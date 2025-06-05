@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/29 13:36:35 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/05 06:29:34 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	tokens_start(t_token **t, t_shell *s)
 {
 	typing_tokens(t);
 	check_env(t, s);
+	//debug_print_tokens(t);
 	check_tokens(t);
-	//debug_print_tokens(tokens);
 }
 
 int	main(void)
@@ -78,9 +78,9 @@ int	main(void)
 		else
 			continue ;
 		tokens_start(tokens, shell);
-	//	debug_print_tokens(tokens);
+		//debug_print_tokens(tokens);
 		jobs = create_job(tokens);
-	//	debug_print_job(jobs);
+		//debug_print_job(jobs);
 		if (!check_jobs(jobs, shell))
 			execute_jobs(jobs, shell);
 		//debug_print_job(jobs);

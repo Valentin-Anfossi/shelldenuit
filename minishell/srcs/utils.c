@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 08:56:18 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:58:07 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ int	is_str_cmd(char *t)
 		if (ms_strcmp(ms_cmdlst()[i], ft_strtrim(t, "\'\"")))
 			return (1);
 		else if (is_str_exec(t))
-			return (1);
+			return (0);
 		i ++;
 	}
 	return (0);

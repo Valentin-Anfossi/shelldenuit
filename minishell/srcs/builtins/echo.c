@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:09:39 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/02 08:54:54 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:08:02 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	command_echo(t_job *j)
 	i = 1;
 	n = 0;
 	if (ms_charraylen(j->args) < 2)
-		return (1);
+		return (0);
 	command_echo_skip(j, &i, &n);
 	while (j->args[i])
 	{

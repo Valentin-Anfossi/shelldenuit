@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/03 06:37:12 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/05 05:49:08 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,8 @@ int	execute_jobs(t_job *j, t_shell *s)
 				exit(s->exit_code);
 			}
 			exit_status = ms_execvp(j->cmd, j->args, s);
+			// if(exit_status > 255)
+			// 	exit_status %= 256;
 			if (exit_status)
 				exit_status = err_cmd_nfound(j->cmd, s);
 			exit(exit_status);
@@ -185,8 +187,10 @@ int	execute_jobs(t_job *j, t_shell *s)
 	while (h < i) //ON WAIT TOUT LES CHILDS
 	{
 		waitpid(child_pids[h], &status, WUNTRACED);
-		if (status / 256 != 0) // J'ai pas compris le % 256 : du coup code tout le temps a 0 avec le modulo
-			s->exit_code = status / 256;
+		if(WEXITSTATUS(status))
+			s->exit_code = WEXITSTATUS(status);
+		else
+			s->exit_code = 0;
 		h ++;
 	}
 	free(child_pids);

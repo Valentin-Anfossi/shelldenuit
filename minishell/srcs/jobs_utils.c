@@ -6,18 +6,18 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:28:18 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 04:17:10 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/05 06:10:06 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_job	*malloc_job(int lestoks)
+t_job	*malloc_job(int toks)
 {
 	t_job	*job;
 
 	job = (t_job *)ft_calloc(1, sizeof(t_job));
-	job->args = (char **)ft_calloc(lestoks, sizeof(char *));
+	job->args = (char **)ft_calloc(toks, sizeof(char *));
 	*job->args = NULL;
 	job->redir = NULL;
 	job->cmd = NULL;

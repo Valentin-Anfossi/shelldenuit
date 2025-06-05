@@ -27,6 +27,8 @@ int	is_tok_arg(t_token *t)
 		return (0);
 	if (!is_tok_redir(t) && !is_tok_pipe(t)) // is_tok_cmd vraiment utile ?????
 		return (1);
+	else if(t->type > 0 && t->type < 3)
+		return (1);
 	else
 		return (0);
 }

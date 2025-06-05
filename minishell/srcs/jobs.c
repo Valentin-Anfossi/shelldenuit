@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 04:24:02 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/05 06:30:56 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_job	*create_job(t_token **tokens)
 				break ;
 			}
 		}
-		else if (!j->cmd)
+		else if (!j->cmd && ft_strlen(t->content) > 0 && t->type != SPC)
 		{
 			add_to_job_cmd(t, j);
 			t = add_to_job_arg(t, j); // NEEDED FOR EXCVE
@@ -101,10 +101,12 @@ t_job	*create_job(t_token **tokens)
 			j ->piped_job = create_job(&t);
 			break ;
 		}
-		else if (t->type != SPC) //REMOVED SPACES (FRANCHEMENT JE SAIS PLUS POURQUOI MAIS CA VA NOUS FAIRE CHIER APRES)
+		else if (t->type != SPC && ft_strlen(t->content) > 0) //REMOVED SPACES (FRANCHEMENT JE SAIS PLUS POURQUOI MAIS CA VA NOUS FAIRE CHIER APRES)
 			t = add_to_job_arg(t, j);
 		else
 			t = t->next;
 	}
+	if(!j->cmd)
+		j->cmd = ft_strdup("");
 	return (j);
 }

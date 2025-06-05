@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/03 06:02:55 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/05 06:05:52 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ enum e_types
 	IN,
 	APP,
 	HER,
-	ARG
+	ARG,
+	PIP
 };
 
 typedef struct s_shell
@@ -126,7 +127,7 @@ void	check_env(t_token **tokens, t_shell *shell);
 //JOBS
 t_job	**create_lst_job(t_token **tokens);
 t_job	*create_job(t_token **tokens);
-t_job	*malloc_job(int lestoks);
+t_job	*malloc_job(int toks);
 int		get_redir_type(t_token *t);
 int		check_jobs(t_job *jobs, t_shell *s);
 void	free_jobs(t_job *jobs);
