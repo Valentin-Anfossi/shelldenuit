@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 00:43:57 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/31 03:30:25 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/06 09:17:31 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,29 +48,4 @@ int	n_jobs(t_job *j)
 		job = job->piped_job;
 	}
 	return (n);
-}
-
-void	wait_all(t_shell *s, t_job *j)
-{
-	int		status;
-	int		pid;
-	int		n;
-	t_job	*job;
-
-	n = n_jobs(j);
-	job = j;
-	while (n--)
-	{
-		pid = waitpid(0, &status, 0);
-		if (pid == g_pid)
-		{
-			if (WIFEXITED(status))
-				s->exit_code = WEXITSTATUS(status);
-		}
-		if (job->fd_outfile >= 0)
-			close(j->fd_outfile);
-		if (job->fd_infile >= 0)
-			close(j->fd_infile);
-		job = job->piped_job;
-	}
 }

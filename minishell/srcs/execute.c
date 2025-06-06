@@ -6,11 +6,38 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/05 05:49:08 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/06 09:32:39 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void redir_heredoc(t_redir *r, int *fd)
+{
+	char *nline;
+
+	*fd = open(".tmp", O_RDWR | O_CREAT | O_TRUNC, 0755);
+	close(*fd);
+	while(1)
+	{
+		*fd = open(".tmp", O_APPEND | O_RDWR);
+		nline = readline("> ");
+		if(!nline)
+		{
+			printf("☠️  MinisHell: warning: here-document delimited by end of file (wanted '%s')\n",r->target);
+			break;
+		}
+		if(ms_strcmp(r->target,nline))
+			break;
+		ft_putstr_fd(nline,*fd);
+		ft_putstr_fd("\n",*fd);
+	}
+	close(*fd);
+	*fd = open(".tmp", O_RDONLY);
+	dup2(*fd, STDIN_FILENO);
+	unlink(".tmp");
+	close(*fd);
+}
 
 void	execute_set_redirs(t_job *j)
 {
@@ -60,6 +87,10 @@ void	execute_set_redirs(t_job *j)
 			}
 			dup2(in_fd, STDIN_FILENO);
 			close(in_fd);
+		}
+		else if(r->type == R_HEREDOC)
+		{
+			redir_heredoc(r,&in_fd);
 		}
 		r = r->next;
 	}

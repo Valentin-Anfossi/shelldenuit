@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/05 05:58:07 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/06 09:56:13 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ char **ms_cmdlst()
 	cmdlst[4] = "unset";
 	cmdlst[5] = "env";
 	cmdlst[6] = "exit";
-	cmdlst[7] = "$?";
-	cmdlst[8] = NULL;
+	cmdlst[7] = NULL;
 
 	return (cmdlst);
 }
@@ -202,6 +201,7 @@ int	is_str_cmd(char *t)
 	int	i;
 
 	i = 0;
+	
 	while (ms_cmdlst()[i])
 	{
 		if (ms_strcmp(ms_cmdlst()[i], ft_strtrim(t, "\'\"")))
@@ -223,21 +223,19 @@ char **ms_fix_args(t_job *job)
 
 	while(job->args[i])
 		i ++;
-	args = (char **)malloc(sizeof(char *) * i + 1);
+	args = (char **)malloc(sizeof(char *) * i + 2);
 	i = 0;
 	args[j] = ft_strdup(job->cmd);
-	j ++;
+	j++;
 	while(job->args[i])
 	{
 		if(!ms_strcmp(" ",job->args[i]))
 		{
 			args[j] = ft_strdup(job->args[i]);
-			//printf("%s\n",args[j]);
 			j ++;
 		}
 		i ++;
 	}
-	//printf("CMD:%s",job->cmd);
 	args[j] = NULL;
 	return (args);
 }
@@ -265,6 +263,27 @@ int	ms_setenv(char *env, char *str, t_shell *s)
 			free(split);
 			return (1);
 		}
+		i ++;
+	}
+	return (0);
+}
+
+int ms_isstrinstr(char *s, char *tofind)
+{
+	int i;
+	int j;
+
+	if(!s || !tofind)
+		return (0);
+	while(s[i])
+	{
+		while (s[i] == tofind[j])
+		{
+			i++;
+			j++;
+		}
+		if(j == ft_strlen(tofind) - 1)
+			return (1);
 		i ++;
 	}
 	return (0);

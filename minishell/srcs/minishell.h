@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/05 06:05:52 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/06 09:17:00 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@
 typedef struct s_token	t_token;
 typedef struct s_job	t_job;
 typedef struct s_redir	t_redir;
-
-extern pid_t	g_pid;
 
 #ifndef BUFFER_SIZE
 	#define BUFFER_SIZE 128;

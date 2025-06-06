@@ -6,13 +6,13 @@ int open_heredoc(char *target) // A FAIRE
 	// char *buf;
 
 	// buf = readline(">");
-	// fd_hdoc = open("tmp_heredoc.txt", O_CREAT | O_RDWR, 777);
+	// fd_hdoc = open("tmp_heredoc.txt", O_CREAT | O_RDWR, 0777);
 	// while (buf != target)
 	// {
 	// 	ft_strjoin(buf, "\n");
 	// 	ft_putstr_fd(buf, fd_hdoc);
 	// }
-	// dup2(fd_hdoc, STDIN_FILENO);
+	// dup2(fd_hdoc, STDIN_FILENO);.
 	(void)target;
 	return (0);
 }

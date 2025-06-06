@@ -6,13 +6,11 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/05 06:29:34 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/06 09:17:31 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-pid_t	g_pid;
 
 t_shell	*create_shell(void)
 {
@@ -70,13 +68,22 @@ int	main(void)
 	{
 		handle_signals();
 		line = readline("☠️  MinisHell: ");
-		if (line[0])
+		if(!line)
+		{
+			printf("CTRL+D : exiting minishell\n");
+			exit(0);
+		}
+		if (ft_strlen(line) > 0)
 		{
 			tokens = create_lst_tokens(line);
 			add_history(line);
 		}
 		else
+		{
+			free(line);
+			line = NULL;
 			continue ;
+		}
 		tokens_start(tokens, shell);
 		//debug_print_tokens(tokens);
 		jobs = create_job(tokens);

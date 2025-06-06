@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/05/21 10:56:43 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/06 09:27:09 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void signal_sigint(int sig)
 static void signal_sigsegv(int sig)
 {
 	(void)sig;
-	ft_printf("Segmentation fault\n");
+	ft_printf("Segue fault\n");
 	exit(SIGSEGV);
 }
 
@@ -34,10 +34,15 @@ static void signal_sigabrt(int sig)
 	ft_printf("abort\n");
 }
 
+static void signal_eof(int sig)
+{
+	printf("MOI LE EOF");
+}
+
 void handle_signals(void)
 {
 	signal(SIGINT, signal_sigint);
 	signal(SIGSEGV, signal_sigsegv);
-//	signal(SIGABRT, signal_sigabrt);
+	signal(SIGABRT, signal_sigabrt);
 	signal(SIGQUIT, SIG_IGN);
 }

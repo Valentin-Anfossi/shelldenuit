@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:16:56 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/05 06:13:45 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/06 09:20:06 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,17 @@ int	err_cmd_nfound(char *str, t_shell *shell)
 	}
 	else
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(str, STDERR_FILENO);
 		if (is_str_exec(str) && is_file(str) == 0)
-		 	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(str, STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		}
 		else
+		{
+			ft_putstr_fd(str, STDERR_FILENO);
 			ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		}
 		shell->exit_code = 127;
 	}
 	return (shell->exit_code);
