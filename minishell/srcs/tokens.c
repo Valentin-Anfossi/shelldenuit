@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:08:45 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/05 05:04:52 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:24:50 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	check_tokens(t_token **tokens)
 		if (t->next && ms_strcmp(t->content, "$") && t->type != DBQ
 			&& !ms_strcmp(t->next->content, " "))
 		{
+			free(t->content);
 			t->content = ft_strdup("");
 			t = t->next->next;
 		}

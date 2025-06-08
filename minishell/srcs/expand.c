@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:10:08 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/08 19:06:05 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:18:15 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char	*expand_token_env(char *s, t_shell *shell)
 	out = NULL;
 	i = 0;
 	j = 0;
+	out = ft_strdup ("");
 	while (s[i])
 	{
 		if (s[i] == '$')
@@ -47,7 +48,6 @@ char	*expand_token_env(char *s, t_shell *shell)
 					out = ft_strjoin(out, env);
 					free(temp);
 				}
-				free(env);
 				i = j - 1;
 			}
 			else
@@ -101,7 +101,6 @@ char	*is_exit_code(char *s, t_shell *shell)
 void	check_env(t_token **tokens, t_shell *shell)
 {
 	t_token	*tok;
-	char *temp;
 
 	tok = *tokens;
 	while (tok)

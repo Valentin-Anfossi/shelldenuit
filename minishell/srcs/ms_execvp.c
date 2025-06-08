@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 22:11:44 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/03 06:38:13 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:21:11 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int ms_execvp(char *file, char **argv,t_shell *s)
 		return (127);
 	}
 	dirs = ft_split(path,':');
+	free(path);
 	while(dirs[i])
 	{
 		path = ft_strjoin(dirs[i],ft_strjoin("/",file));
