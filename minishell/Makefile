@@ -22,7 +22,8 @@ SRCS = \
 	srcs/execute.c			\
 	srcs/execute_utils.c	\
  	srcs/signals.c			\
- 	srcs/minishell.c
+ 	srcs/minishell.c		\
+	srcs/free.c
 
 BUILD_DIR = build/Debug
 OUT_DEBUG = $(BUILD_DIR)/outDebug
@@ -30,7 +31,7 @@ OUT_DEBUG = $(BUILD_DIR)/outDebug
 all: $(NAME)
 # -fsanitize=address,undefined
 $(NAME): $(SRCS) $(LIBFT)
-	@gcc -g  -Wall -Wextra -I./libft $^ -L./libft -lft -lreadline -o $@
+	@gcc -g -fsanitize=address,undefined -Wall -Wextra -I./libft $^ -L./libft -lft -lreadline -o $@
 	@echo "compilation reussie !"
 
 $(LIBFT):

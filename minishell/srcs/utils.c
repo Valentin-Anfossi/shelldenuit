@@ -6,16 +6,15 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/06 09:56:13 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/08 19:06:41 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **ms_cmdlst()
+char	**ms_cmdlst(void)
 {
-	char **cmdlst;
-	cmdlst = (char **)malloc(sizeof(char *) * 8);
+	static char	*cmdlst[8];
 
 	cmdlst[0] = "echo";
 	cmdlst[1] = "cd";
@@ -25,9 +24,9 @@ char **ms_cmdlst()
 	cmdlst[5] = "env";
 	cmdlst[6] = "exit";
 	cmdlst[7] = NULL;
-
 	return (cmdlst);
 }
+
 //Compare 2 strings, return 0 = different 1 = same
 int ms_strcmp(char *str1, const char *str2)
 {
@@ -133,8 +132,8 @@ char	**ms_split(char *string, int c)
 		i ++;
 	if (i + 1 >= (int)ft_strlen(string))
 		return (NULL);
-	out = malloc(sizeof(char **));
-	out[0] = malloc(i+2);
+	out = (char **)malloc(sizeof(char *) * 2);
+	out[0] = (char *)malloc(i+2);
 	ft_strlcpy(out[0], string, i+1);
 	string ++;
 	string+=i;
@@ -156,25 +155,33 @@ char	*ms_getenv(char *key, t_shell *s)
 		actual = ms_split(s->env[i], '=');
 		if (actual && ms_strcmp(actual[0], key))
 		{
-			out = actual[1];
+			out = ft_strdup(actual[1]);
+			free(actual[1]);
+			free(actual[0]);
+			free(actual);
 			break ;
 		}
+		free(actual[1]);
+		free(actual[0]);
+		free(actual);
 		i++;
 	}
-	//free(actual);
 	return (out);
 }
 
 void	free_shell(t_shell *s)
 {
 	int i;
-	
+
 	i = 0;
 	while(s->env[i])
 	{
 		free(s->env[i]);
 		i ++;
 	}
+	free(s->env);
+	if(s->cwd)
+		free(s->cwd);
 	free(s);
 }
 
@@ -199,17 +206,25 @@ int startswith(char *s, char *start)
 int	is_str_cmd(char *t)
 {
 	int	i;
-
+	char *s;
 	i = 0;
-	
+
+	s = ft_strtrim(t, "\'\"");
 	while (ms_cmdlst()[i])
 	{
-		if (ms_strcmp(ms_cmdlst()[i], ft_strtrim(t, "\'\"")))
+		if (ms_strcmp(ms_cmdlst()[i],s))
+		{
+			free(s);
 			return (1);
+		}
 		else if (is_str_exec(t))
+		{
+			free(s);
 			return (0);
+		}
 		i ++;
 	}
+	free(s);
 	return (0);
 }
 char **ms_fix_args(t_job *job)
@@ -221,9 +236,7 @@ char **ms_fix_args(t_job *job)
 	i = 0;
 	j = 0;
 
-	while(job->args[i])
-		i ++;
-	args = (char **)malloc(sizeof(char *) * i + 2);
+	args = (char **)malloc(sizeof(char *) * (ms_charraylen(job->args) + 2));
 	i = 0;
 	args[j] = ft_strdup(job->cmd);
 	j++;
@@ -234,6 +247,7 @@ char **ms_fix_args(t_job *job)
 			args[j] = ft_strdup(job->args[i]);
 			j ++;
 		}
+		free(job->args[i]);
 		i ++;
 	}
 	args[j] = NULL;

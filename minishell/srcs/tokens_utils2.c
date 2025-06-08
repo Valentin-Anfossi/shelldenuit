@@ -47,10 +47,18 @@ int	is_str_exec(char *t)
 		while (s[i] == '.')
 			i ++;
 		if (s[i] == '/')
+		{
+			free(s);
 			return (1);
+		}
 		else
+		{
+			free(s);
 			return (0);
+		}
 	}
+	if(s)
+		free(s);
 	return (0);
 }
 

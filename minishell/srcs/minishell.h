@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/06 09:17:00 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/08 18:39:28 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ int		check_redirs(t_job *jobs);
 int		is_executable(char *path);
 int		ms_setenv(char *env, char *str, t_shell *s);
 int 	ms_charraylen(char **ar);
+void	free_tokens(t_token **t);
 
 
 

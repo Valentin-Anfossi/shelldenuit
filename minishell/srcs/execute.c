@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/08 05:13:44 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/08 05:21:33 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	execute_reset_redirs(t_job *j)
 int	execute_single_builtin(t_job *j, t_shell *s)
 {
 	execute_set_redirs(j);
-	ms_fix_args(j);
+	//ms_fix_args(j);
 	s->exit_code = select_command(j, s);
 	execute_reset_redirs(j);
 	return (1);
@@ -186,7 +186,7 @@ int	execute_jobs(t_job *j, t_shell *s)
 				}
 			}
 			//ON EXECUTE
-			ms_fix_args(j);
+			//ms_fix_args(j);
 			if (is_str_cmd(j->cmd))
 			{
 				s->exit_code = select_command(j, s);

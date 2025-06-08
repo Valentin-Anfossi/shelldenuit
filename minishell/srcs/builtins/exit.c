@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 11:51:25 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/06 08:28:09 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/08 05:46:32 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 void	command_exit(t_shell *s, t_job *j)
 {
 	int	i;
+	int exit_code;
 
-	i = 0;
+	exit_code = s->exit_code;
 	free_shell(s);
+	i = 0;
 	if (ms_charraylen(j->args) > 2)
 	{
 		ft_putstr_fd("exit : too many arguments\n", STDERR_FILENO);
@@ -34,8 +36,11 @@ void	command_exit(t_shell *s, t_job *j)
 			}
 			i ++;
 		}
+		free_shell(s);
+		exit_code = ft_atoi(j->args[1]);
+		free_jobs(j);
 		exit(ft_atoi(j->args[1]));
 	}
 	else
-		exit(s->exit_code);
+		exit(exit_code);
 }
