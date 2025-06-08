@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/06 09:32:39 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/08 05:13:44 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void redir_heredoc(t_redir *r, int *fd)
 	char *nline;
 
 	*fd = open(".tmp", O_RDWR | O_CREAT | O_TRUNC, 0755);
+	if(*fd < 0)
+		exit(1);
 	close(*fd);
 	while(1)
 	{
