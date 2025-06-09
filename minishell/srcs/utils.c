@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/08 20:28:01 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 08:54:50 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,12 @@ char	*ms_getenv(char *key, t_shell *s)
 		{
 			out = ft_strdup(actual[1]);
 			break ;
+		}
+		else
+		{
+			free(actual[0]);
+			free(actual[1]);
+			free(actual);
 		}
 		i++;
 	}

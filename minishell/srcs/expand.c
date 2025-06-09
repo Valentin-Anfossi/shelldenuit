@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:10:08 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/08 20:18:15 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:47:56 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*expand_token_env(char *s, t_shell *shell)
 				{
 					temp = out;
 					out = ft_strjoin(out, env);
+					free(env);
 					free(temp);
 				}
 				i = j - 1;
@@ -101,18 +102,28 @@ char	*is_exit_code(char *s, t_shell *shell)
 void	check_env(t_token **tokens, t_shell *shell)
 {
 	t_token	*tok;
+	char *tmp;
 
 	tok = *tokens;
 	while (tok)
 	{
 		if (tok->type == DBQ)
-			tok->content = ft_strtrim(tok->content, "\"");
-		if (tok->type == SQ)
-			tok->content = ft_strtrim(tok->content, "'");
-		if (tok->type == 7 || tok->type == 1)
 		{
-			tok->content = is_exit_code(tok->content, shell);
-			tok->content = expand_token_env(tok->content, shell);
+			tmp = ft_strtrim(tok->content, "\"");
+			free(tok->content);
+			tok->content = tmp;
+		}
+		if (tok->type == SQ)
+		{
+			tmp = ft_strtrim(tok->content, "'");
+			free(tok->content);
+			tok->content = tmp;
+		}
+		if (tok->type == ARG || tok->type == DBQ)
+		{
+			tmp = is_exit_code(tok->content, shell);
+			free(tok->content);
+			tok->content = expand_token_env(tmp, shell);
 		}
 		tok = tok->next;
 	}
