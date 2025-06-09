@@ -1,5 +1,7 @@
 TODO
-
+LEAKS :
+1 leak dans les tokens (getenv) mais jarrive pas la free sans segfault
+Leak avec les pipes quand + d'un job (faut close et free les pipes dans les childs et parent)
 
 COMMANDES :
 ECHO OK
