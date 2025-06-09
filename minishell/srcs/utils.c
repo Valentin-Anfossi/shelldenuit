@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 17:06:05 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:34:59 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char	**ms_cmdlst(void)
 int ms_strcmp(char *str1, const char *str2)
 {
 	int i = 0;
+	if(!str1 || !str2)
+		return (0);
 	while (str1[i] && str2[i] && str1[i] == str2[i])
 		i++;
 	if(i == (int)ft_strlen(str1) && i == (int)ft_strlen(str2))

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 05:47:06 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 17:55:32 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:32:54 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void free_tokens(t_token **t)
 	{
 		free(temp);
 	}
+	free(t);
 }
 
 void free_all(t_job *j, t_shell *s, t_token **t)

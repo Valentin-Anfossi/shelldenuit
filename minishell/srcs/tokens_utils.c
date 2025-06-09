@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:15:50 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 18:04:58 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:29:37 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	create_token(char *line, int start, int end, t_token **tokens)
 		return ;
 	new_token = malloc_token();
 	new_token->content = ft_substr(line, start, (end - start));
-	if(!new_token->content)
-		printf("hey");
 	token_add_back(tokens, new_token);
 }
 
