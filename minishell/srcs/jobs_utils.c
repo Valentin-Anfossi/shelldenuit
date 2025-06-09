@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:28:18 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/05 06:10:06 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:07:25 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,13 @@ void	free_jobs(t_job *jobs)
 			free(jobs->args[i]);
 			i ++;
 		}
+		if(jobs->cmd)
+			free(jobs->cmd);
 		free(jobs->args);
 		j = jobs->piped_job;
 		free(jobs);
 		jobs = j;
 	}
+	if(jobs)
+		free(jobs);
 }

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:08:45 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 16:49:06 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:01:18 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,9 @@ void	token_cat(t_token *t, t_token *n)
 {
 	char *tmp;
 	
-	
 	tmp = ft_strjoin(t->content, n->content);
 	free(t->content);
 	t->content = tmp;
-	//ft_printf(" je suis concatener : %s\n", t->content);
 	t->next = n->next;
 	free(n);
 }

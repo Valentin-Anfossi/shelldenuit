@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:10:08 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 16:47:56 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:01:50 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,12 @@ void	check_env(t_token **tokens, t_shell *shell)
 			free(tok->content);
 			tok->content = expand_token_env(tmp, shell);
 		}
+		// else
+		// {
+		// 	tmp = ft_strdup(tok->content);
+		// 	free(tok->content);
+		// 	tok->content = tmp;
+		// }
 		tok = tok->next;
 	}
 }

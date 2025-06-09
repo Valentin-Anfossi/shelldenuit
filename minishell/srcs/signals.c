@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/06 09:27:09 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:50:44 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void signal_eof(int sig)
 void handle_signals(void)
 {
 	signal(SIGINT, signal_sigint);
-	signal(SIGSEGV, signal_sigsegv);
+	// signal(SIGSEGV, signal_sigsegv);
 	signal(SIGABRT, signal_sigabrt);
 	signal(SIGQUIT, SIG_IGN);
 }
