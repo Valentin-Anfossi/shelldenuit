@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:08:45 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 17:01:18 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 09:30:15 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	create_spc_token(t_token **tokens)
 		return ;
 
 	new_token = malloc_token();
-	new_token->content = " ";
+	new_token->content = ft_strdup(" ");
 	token_add_back(tokens, new_token);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/08 05:21:33 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 09:15:50 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,24 @@ int	execute_single_builtin(t_job *j, t_shell *s)
 	return (1);
 }
 
+//Close and free pipes, where n is number of pipes
+void execute_freepipes(int (*pipes)[2], int n)
+{
+	int i;
+
+	if (pipes && n)
+	{
+		i = 0;
+		while (i < n)
+		{
+			close(pipes[i][0]);
+			close(pipes[i][1]);
+			free(pipes[i]);
+			i ++;
+		}
+	}
+}
+
 int	execute_jobs(t_job *j, t_shell *s)
 {
 	int		n_j;
@@ -175,16 +193,7 @@ int	execute_jobs(t_job *j, t_shell *s)
 			if (i < (n_j - 1)) //SI PAS DERNIERE CMD ON CONNECT LE STDOUT AU PIPE
 				dup2(pipes[i][1], STDOUT_FILENO);
 			execute_set_redirs(j); // ON REMPLACE LES PIPES PAR LES REDIRS SI IL Y EN A
-			if (pipes) // ON FERME LES PIPES DANS LE CHILD (VU QUE C UNE COPIE IL HERITE DE TOUT LES PIPES MEME CEUX DONT IL NE SE SERT PAS, DONC FAUT TOUT CLOSE)
-			{
-				h = 0;
-				while (h < n_p)
-				{
-					close(pipes[h][0]);
-					close(pipes[h][1]);
-					h ++;
-				}
-			}
+			execute_freepipes(pipes,n_p);
 			//ON EXECUTE
 			//ms_fix_args(j);
 			if (is_str_cmd(j->cmd))
@@ -206,16 +215,7 @@ int	execute_jobs(t_job *j, t_shell *s)
 	}
 	//PARENT
 	//ON CLOSE LES PIPES
-	if (pipes)
-	{
-		h = 0;
-		while (h < n_p)
-		{
-			close(pipes[h][0]);
-			close(pipes[h][1]);
-			h ++;
-		}
-	}
+	execute_freepipes(pipes, n_p);
 	h = 0;
 	while (h < i) //ON WAIT TOUT LES CHILDS
 	{

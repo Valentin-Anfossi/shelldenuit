@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 05:47:06 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 18:32:54 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 09:30:41 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void free_tokens(t_token **t)
 
 	while(temp)
 	{
-		//free(temp->content);
+		free(temp->content);
 		prev = temp;
 		temp = temp->next;
 		free(prev);

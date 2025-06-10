@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 22:11:44 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/08 20:21:11 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 07:32:32 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,23 @@ int is_folder(char *path)
 	return(S_ISDIR(st.st_mode));
 }
 
+void free_dirs(char **dirs)
+{
+	int i;
+	
+	i = 0;
+	while(dirs[i])
+	{
+		free(dirs[i]);
+		i ++;
+	}
+	free(dirs);
+}
+
 int ms_execvp(char *file, char **argv,t_shell *s)
 {
 	char *path;
+	char *tmp;
 	char **dirs;
 	int i;
 	//int temp_errno;
@@ -58,23 +72,34 @@ int ms_execvp(char *file, char **argv,t_shell *s)
 	path = ms_getenv("PATH",s);
 	if (!path)
 	{
-		printf("PATH doesn't exist.");
+		printf("Minishell : error: $PATH doesn't exist.");
 		return (127);
 	}
 	dirs = ft_split(path,':');
 	free(path);
 	while(dirs[i])
 	{
-		path = ft_strjoin(dirs[i],ft_strjoin("/",file));
+		tmp = ft_strjoin("/",file);
+		path = ft_strjoin(dirs[i],tmp);
+		free(tmp);
 		if(is_executable(path))
 		{
 			if (execve(path,argv,s->env) == -1)
+			{
+				free(path);
+				free_dirs(dirs);
 				return (errno);
+			}
+			free_dirs(dirs);
+			free(path);
 			return (1);
 		}
+		//free_dirs(dirs);
 		free(path);
 		i ++;
 	}
+	i = 0;
+	free_dirs(dirs);
 	return (errno);
 }
 
