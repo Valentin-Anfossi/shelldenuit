@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:10:08 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 16:28:57 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:56:38 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,13 @@ char	*is_exit_code(char *s, t_shell *shell)
 	}
 	else
 	{
-		out = ft_strdup(str[0]);
-		free(str[0]);
+		if(str[0])
+		{
+			out = ft_strdup(str[0]);
+			free(str[0]);
+		}
+		else
+			out = ft_strdup("");
 	}
 	//printf("%s\n",temp);
 	free(str);
