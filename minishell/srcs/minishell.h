@@ -6,9 +6,13 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/08 18:39:28 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:38:00 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#define _XOPEN_SOURCE 700  
+#define _GNU_SOURCE
+#define _POSIX_C_SOURCE 200809L
 
 #include <unistd.h>
 #include <stdio.h>
@@ -38,6 +42,8 @@ typedef struct s_redir	t_redir;
 #ifndef BUFFER_SIZE
 	#define BUFFER_SIZE 128;
 #endif
+
+extern int g_exitcode;
 
 enum e_error
 {
@@ -138,6 +144,13 @@ int			n_jobs(t_job *j);
 void		wait_all(t_shell* s, t_job *j);
 char 		*find_cmd(char *path, t_shell *s, t_job *j);
 
+//SIGNALS
+void		signal_sigquit(int sig);
+void	 	signal_parent_sigaction(void);
+void		signal_child_sigaction(void);
+void		handle_signals(void);
+void		signal_sigquit_child(void);
+
 //UTILS
 void	debug_print_job(t_job *jobs);
 void	debug_print_tokens(t_token **tokens);
@@ -203,4 +216,3 @@ int		err_exp_ident(char *str, t_shell *shell);
 int		err_cmd_nfound(char *str, t_shell *shell);
 int 	is_permited(char *path);
 int		is_file(char *path);
-void	handle_signals(void);

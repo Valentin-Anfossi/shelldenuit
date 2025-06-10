@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 17:50:44 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:40:47 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void signal_sigint(int sig)
 {
 	(void)sig;
-	rl_replace_line("",0);
+	rl_replace_line("", 0);
 	ft_printf("\n");
 	rl_on_new_line();
 	rl_redisplay();
@@ -34,15 +34,18 @@ static void signal_sigabrt(int sig)
 	ft_printf("abort\n");
 }
 
-static void signal_eof(int sig)
+void signal_sigquit(int sig)
 {
-	printf("MOI LE EOF");
+	kill(0,SIGQUIT);
+	ft_putstr_fd(" Mini Quit (core dumped)\n",STDERR_FILENO);
+	exit(131);
 }
 
 void handle_signals(void)
 {
+	
+	signal(SIGQUIT, signal_sigquit);
 	signal(SIGINT, signal_sigint);
-	// signal(SIGSEGV, signal_sigsegv);
+	signal(SIGSEGV, signal_sigsegv);
 	signal(SIGABRT, signal_sigabrt);
-	signal(SIGQUIT, SIG_IGN);
 }

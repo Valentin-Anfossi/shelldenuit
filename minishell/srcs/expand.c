@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:10:08 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 18:01:50 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:28:57 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,28 +76,89 @@ char	*is_exit_code(char *s, t_shell *shell)
 {
 	int		i;
 	int		j;
-	char	*temp;
-
-	temp = (char *)ft_calloc((ft_strlen(s)
-				+ ft_get_intlen(shell->exit_code)), 1);
+	char	**str;
+	char	*out;
+	
 	i = 0;
 	j = 0;
-	while (s[i] != '\0')
+	str = (char **)ft_calloc(5,sizeof(char *));
+	while (s[i])
 	{
 		if (s[i + 1] && s[i] == '$' && s[i + 1] == '?')
 		{
-			temp = ft_strjoin(temp, ft_itoa(shell->exit_code));
-			i = i + 2;
-			j = j + ft_get_intlen(shell->exit_code);
+			str[1] = ft_substr(s,j,i - j);
+			str[2] = ft_itoa(g_exitcode);
+			if (str[0])
+			{
+				str[3] = ft_strjoin(str[0],str[1]);
+				free(str[0]);
+				str[0] = ft_strjoin(str[3],str[2]);
+				free(str[1]);
+				free(str[2]);
+				free(str[3]);
+			}
+			else
+			{
+				str[0] = ft_strjoin(str[1],str[2]);
+				free(str[1]);
+				free(str[2]);
+			}
+			i += 2;
+			j = i;
 			continue ;
 		}
-		temp[j] = s[i];
 		i++;
-		j++;
 	}
-	temp[j] = '\0';
-	return (temp);
+	if(j < i)
+	{
+		str[1] = ft_substr(s,j,(i-j));
+		str[3] = ft_strjoin(str[0],str[1]);
+		free(str[0]);
+		free(str[1]);
+		out = ft_strdup(str[3]);
+		free(str[3]);
+	}
+	else
+	{
+		out = ft_strdup(str[0]);
+		free(str[0]);
+	}
+	//printf("%s\n",temp);
+	free(str);
+	return (out);
 }
+
+
+
+// char	*is_exit_code(char *s, t_shell *shell)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*temp;
+// 	char	*out;
+
+// 	// temp = (char *)ft_calloc((ft_strlen(s)
+// 	// 			+ ft_get_intlen(g_exitcode)) + 1, 1);
+// 	temp = (char *)ft_calloc(9999, 1);
+// 	printf("%d\n",ft_get_intlen(g_exitcode));
+// 	i = 0;
+// 	j = 0;
+// 	while (s[i])
+// 	{
+// 		if (s[i + 1] && s[i] == '$' && s[i + 1] == '?')
+// 		{
+// 			temp[j] = ft_itoa(g_exitcode);
+// 			i = i + 2;
+// 			j = j + ft_get_intlen(g_exitcode);
+// 			continue ;
+// 		}
+// 		temp[j] = s[i];
+// 		i++;
+// 		j++;
+// 	}
+// 	temp[j] = '\0';
+// 	return (temp);
+// }
 
 void	check_env(t_token **tokens, t_shell *shell)
 {

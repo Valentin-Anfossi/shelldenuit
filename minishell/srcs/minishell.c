@@ -6,11 +6,13 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 09:28:18 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:38:42 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_exitcode;
 
 t_shell	*create_shell(void)
 {
@@ -35,7 +37,7 @@ t_shell	*create_shell(void)
 	}
 	s->env[i] = NULL;
 	s->cwd = getcwd(s->cwd, PATH_MAX);
-	s->exit_code = 0;
+	g_exitcode = 0;
 	return (s);
 }
 
@@ -64,13 +66,15 @@ int	main(void)
 	t_job	*jobs;
 
 	shell = create_shell();
+	handle_signals();
 	while (1)
 	{
-		handle_signals();
+		// signal_parent_sigaction();
+		// signal(SIGQUIT,&signal_sigquit);
 		line = readline("☠️  MinisHell: ");
 		if(!line)
 		{
-			printf("CTRL+D : exiting minishell\n");
+			printf("exit\n");
 			exit(0);
 		}
 		if (ft_strlen(line) > 0)
@@ -85,7 +89,7 @@ int	main(void)
 			continue ;
 		}
 		tokens_start(tokens, shell);
-		debug_print_tokens(tokens);
+		//debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		free_tokens(tokens);
 		//free(tokens);

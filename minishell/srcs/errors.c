@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:16:56 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/06 09:20:06 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:28:57 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	err_exp_ident(char *str, t_shell *shell)
 	ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
-	shell->exit_code = 1;
-	return (shell->exit_code);
+	g_exitcode = 1;
+	return (g_exitcode);
 }
 
 int	err_cmd_nfound(char *str, t_shell *shell)
 {
 	if(ft_strlen(str) == 0)
-		return (shell->exit_code);
+		return (g_exitcode);
 	if (is_str_exec(str) && is_folder(str) >= 0)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -33,7 +33,7 @@ int	err_cmd_nfound(char *str, t_shell *shell)
 			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 		else
 			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
-		shell->exit_code = 126;
+		g_exitcode = 126;
 	}
 	else
 	{
@@ -48,7 +48,7 @@ int	err_cmd_nfound(char *str, t_shell *shell)
 			ft_putstr_fd(str, STDERR_FILENO);
 			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		}
-		shell->exit_code = 127;
+		g_exitcode = 127;
 	}
-	return (shell->exit_code);
+	return (g_exitcode);
 }

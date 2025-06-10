@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 11:51:25 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/09 17:55:15 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:49:23 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 void	command_exit(t_shell *s, t_job *j)
 {
 	int	i;
-	int exit_code;
 
-	exit_code = s->exit_code;
 	i = 0;
 	if (ms_charraylen(j->args) > 2)
 	{
@@ -35,15 +33,15 @@ void	command_exit(t_shell *s, t_job *j)
 			}
 			i ++;
 		}
-		exit_code = ft_atoi(j->args[1]);
+		g_exitcode = ft_atoi(j->args[1]);
 		free_shell(s);
 		free_jobs(j);
-		exit(exit_code);
+		exit(g_exitcode);
 	}
 	else
 	{
 		free_shell(s);
 		free_jobs(j);
-		exit(exit_code);
+		exit(g_exitcode);
 	}
 }

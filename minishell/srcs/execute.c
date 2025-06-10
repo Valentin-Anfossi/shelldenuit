@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 09:15:50 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:45:39 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,16 +118,16 @@ int	execute_single_builtin(t_job *j, t_shell *s)
 {
 	execute_set_redirs(j);
 	//ms_fix_args(j);
-	s->exit_code = select_command(j, s);
+	g_exitcode = select_command(j, s);
 	execute_reset_redirs(j);
 	return (1);
 }
 
-//Close and free pipes, where n is number of pipes
-void execute_freepipes(int (*pipes)[2], int n)
+//Close pipes, where n is number of pipes
+void execute_closepipes(int (*pipes)[2], int n, int j)
 {
 	int i;
-
+	
 	if (pipes && n)
 	{
 		i = 0;
@@ -135,11 +135,12 @@ void execute_freepipes(int (*pipes)[2], int n)
 		{
 			close(pipes[i][0]);
 			close(pipes[i][1]);
-			free(pipes[i]);
 			i ++;
 		}
 	}
+	free(pipes);
 }
+
 
 int	execute_jobs(t_job *j, t_shell *s)
 {
@@ -181,49 +182,61 @@ int	execute_jobs(t_job *j, t_shell *s)
 	i = 0;
 	while (i < n_j) // MAIN LOOP FOR FORKS
 	{
-		exit_status = 1;
+		g_exitcode = 1;
 		pid = fork();
 		if (pid < 0)
-			break ;//ERROR FORK
+			break ;
 		if (pid == 0) //CHILD
 		{
-			//printf("child\n");
+			//signal_child_sigaction();
+
+
+
+
+
+
+			
 			if (i > 0) //SI PAS 1ERE CMD ON CONNECT LA STDIN AU PIPE PRECEDENT
 				dup2(pipes[i - 1][0], STDIN_FILENO);
 			if (i < (n_j - 1)) //SI PAS DERNIERE CMD ON CONNECT LE STDOUT AU PIPE
 				dup2(pipes[i][1], STDOUT_FILENO);
+			execute_closepipes(pipes,n_p,i);
 			execute_set_redirs(j); // ON REMPLACE LES PIPES PAR LES REDIRS SI IL Y EN A
-			execute_freepipes(pipes,n_p);
 			//ON EXECUTE
-			//ms_fix_args(j);
 			if (is_str_cmd(j->cmd))
 			{
-				s->exit_code = select_command(j, s);
-				exit(s->exit_code);
+				g_exitcode = select_command(j, s);
+				exit(g_exitcode);
 			}
-			exit_status = ms_execvp(j->cmd, j->args, s);
-			// if(exit_status > 255)
-			// 	exit_status %= 256;
-			if (exit_status)
-				exit_status = err_cmd_nfound(j->cmd, s);
-			exit(exit_status);
+			g_exitcode = ms_execvp(j->cmd, j->args, s);
+			if (g_exitcode)
+				g_exitcode = err_cmd_nfound(j->cmd, s);
+			exit(g_exitcode);
 		}
 		else //PARENT
+		{
+			
 			child_pids[i] = pid; // ON SAVE LE PID DU CHILD
+			if(i > 0)
+			{
+				close(pipes[i-1][1]);
+				close(pipes[i-1][0]);
+			}
+		}
 		i ++;
 		j = j->piped_job;
 	}
 	//PARENT
 	//ON CLOSE LES PIPES
-	execute_freepipes(pipes, n_p);
 	h = 0;
+	execute_closepipes(pipes, n_p, i);
 	while (h < i) //ON WAIT TOUT LES CHILDS
 	{
 		waitpid(child_pids[h], &status, WUNTRACED);
 		if(WEXITSTATUS(status))
-			s->exit_code = WEXITSTATUS(status);
+			g_exitcode = WEXITSTATUS(status);
 		else
-			s->exit_code = 0;
+			g_exitcode= 0;
 		h ++;
 	}
 	free(child_pids);
