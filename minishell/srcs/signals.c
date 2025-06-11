@@ -6,11 +6,25 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 18:40:47 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:49:21 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void signal_sigsegv(int sig)
+{
+	(void)sig;
+	ft_printf("Segue fault\n");
+	kill(-1,SIGSEGV);
+	exit(SIGSEGV);
+}
+
+static void signal_sigabrt(int sig)
+{	
+	(void)sig;
+	ft_printf("abort\n");
+}
 
 static void signal_sigint(int sig)
 {
@@ -21,31 +35,17 @@ static void signal_sigint(int sig)
 	rl_redisplay();
 }
 
-static void signal_sigsegv(int sig)
-{
-	(void)sig;
-	ft_printf("Segue fault\n");
-	exit(SIGSEGV);
-}
-
-static void signal_sigabrt(int sig)
+void handle_signals_child(void)
 {	
-	(void)sig;
-	ft_printf("abort\n");
-}
-
-void signal_sigquit(int sig)
-{
-	kill(0,SIGQUIT);
-	ft_putstr_fd(" Mini Quit (core dumped)\n",STDERR_FILENO);
-	exit(131);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT,130);
 }
 
 void handle_signals(void)
-{
-	
-	signal(SIGQUIT, signal_sigquit);
+{	
 	signal(SIGINT, signal_sigint);
-	signal(SIGSEGV, signal_sigsegv);
-	signal(SIGABRT, signal_sigabrt);
+	signal(SIGABRT,SIG_IGN);
+	signal(SIGQUIT,SIG_IGN);
+	//if (g_exitcode)
+	//	signal(SIGQUIT,signal_sigquit);	
 }

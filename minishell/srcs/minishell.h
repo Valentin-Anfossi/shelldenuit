@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 18:38:00 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:45:07 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_shell
 	char	*cwd;
 	char	**env;
 	int		exit_code;
+	pid_t	*child_pids;
 	pid_t	mainpid;
 }	t_shell;
 
@@ -148,8 +149,9 @@ char 		*find_cmd(char *path, t_shell *s, t_job *j);
 void		signal_sigquit(int sig);
 void	 	signal_parent_sigaction(void);
 void		signal_child_sigaction(void);
-void		handle_signals(void);
-void		signal_sigquit_child(void);
+void 		handle_signals(void);
+void 		handle_signals_child(void);
+void		signal_sigquit_child(int sig);
 
 //UTILS
 void	debug_print_job(t_job *jobs);

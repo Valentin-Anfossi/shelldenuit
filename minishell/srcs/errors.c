@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:16:56 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 16:28:57 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/11 10:36:30 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	err_exp_ident(char *str, t_shell *shell)
 int	err_cmd_nfound(char *str, t_shell *shell)
 {
 	if(ft_strlen(str) == 0)
-		return (g_exitcode);
+		return (0);
 	if (is_str_exec(str) && is_folder(str) >= 0)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);

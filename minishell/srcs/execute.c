@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 20:23:17 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:47:38 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ void execute_closepipes(int (*pipes)[2], int n, int j)
 			i ++;
 		}
 	}
-	free(pipes);
 }
 
 
@@ -158,10 +157,9 @@ int	execute_jobs(t_job *j, t_shell *s)
 	n_p = n_j - 1;
 	if (n_j == 1 && is_str_cmd(j->cmd)) // IF ONE JOB && BUILTIN WE DONT FORK (WHY ? WE SHOULD FORK IF ITS NOT A BUILTIN BECAUSE EXECVE REPLACES THE CURRENT PROCESS, SO IT CLOSES THE SHELL WHEN ITS DONE (AND WE DONT WANT THAT), BUT IF WE FORK IT WE CANT MODIFY THE ENV VARIABLES (AND BASH DOESNT DO IT EITHER), SO, SINCE WE HAVE TO BUILTIN THE TWO COMMANDS THAT CAN MODIFIY THE ENV VARIABLES, WE CAN SIMPLY NOT FORK AND EXECUTE EVERYTHING IN THE PARENT PROCESS AND IT WORKS ca va la forme ? pti ☕ ?)
 		return (execute_single_builtin(j, s));
-	// WE CREATE ALL THE PIPES (n jobs -1) BEFORE
 	pipes = (int (*)[2])malloc((n_p) * sizeof(int [2]));
 	if (!pipes)
-		return (-1); //ERROR MALLOC
+		return (-1);
 	i = 0;
 	h = 0;
 	while (i < n_p)
@@ -182,31 +180,25 @@ int	execute_jobs(t_job *j, t_shell *s)
 	i = 0;
 	while (i < n_j) // MAIN LOOP FOR FORKS
 	{
-		g_exitcode = 1;
 		pid = fork();
+		g_exitcode = pid;
 		if (pid < 0)
 			break ;
 		if (pid == 0) //CHILD
 		{
-			//signal_child_sigaction();
-
-
-
-
-
-
-			
+			g_exitcode = -1;
+			handle_signals_child();
 			if (i > 0) //SI PAS 1ERE CMD ON CONNECT LA STDIN AU PIPE PRECEDENT
 				dup2(pipes[i - 1][0], STDIN_FILENO);
 			if (i < (n_j - 1)) //SI PAS DERNIERE CMD ON CONNECT LE STDOUT AU PIPE
 				dup2(pipes[i][1], STDOUT_FILENO);
-			execute_closepipes(pipes,n_p,i);
 			execute_set_redirs(j); // ON REMPLACE LES PIPES PAR LES REDIRS SI IL Y EN A
+			execute_closepipes(pipes,n_p,i);
 			//ON EXECUTE
 			if (is_str_cmd(j->cmd))
 			{
-				// g_exitcode = select_command(j, s);
-				exit(select_command(j, s));
+				g_exitcode = select_command(j, s);
+				exit(g_exitcode);
 			}
 			g_exitcode = ms_execvp(j->cmd, j->args, s);
 			if (g_exitcode)
@@ -215,8 +207,8 @@ int	execute_jobs(t_job *j, t_shell *s)
 		}
 		else //PARENT
 		{
-			
 			child_pids[i] = pid; // ON SAVE LE PID DU CHILD
+			//kill(child_pids[i],SIGQUIT);
 			if(i > 0)
 			{
 				close(pipes[i-1][1]);
@@ -226,17 +218,32 @@ int	execute_jobs(t_job *j, t_shell *s)
 		i ++;
 		j = j->piped_job;
 	}
+	s->child_pids = child_pids;
 	//PARENT
 	//ON CLOSE LES PIPES
 	h = 0;
+
+	/*
+	signal(SIGQUIT, SIG_IGN);
+	printf("Processus parent (PID: %d) envoie un signal SIGQUIT au processus enfant (PID: %d)\n", getpid(), pid);
+    sleep(1); // Attendre un peu pour s'assurer que le processus enfant est prêt
+    kill(pid, SIGQUIT); // Envoyer le signal SIGQUIT au processus enfant
+    wait(NULL); // Attendre que le processus enfant se termine
+	*/
+	
 	execute_closepipes(pipes, n_p, i);
 	while (h < i) //ON WAIT TOUT LES CHILDS
 	{
 		waitpid(child_pids[h], &status, WUNTRACED);
-		if(WEXITSTATUS(status))
-			g_exitcode = WEXITSTATUS(status);
+		printf("%d\n",status);
+		printf("%d\n",WEXITSTATUS(status));
+		// if(!status % 256)
+		// 	g_exitcode = WEXITSTATUS(status);
+		// else
+		if(status >= 256)
+			g_exitcode = status / 256;
 		else
-			g_exitcode= 0;
+			g_exitcode = status;
 		h ++;
 	}
 	free(child_pids);

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 20:29:17 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:08:47 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ t_shell	*create_shell(void)
 {
 	extern char	**environ;
 	t_shell		*s;
-	pid_t		pid_main;
 	int			i;
 
-	pid_main = getpid();
 	i = 0;
 	s = (t_shell *)malloc(sizeof(t_shell));
 	s->cwd = NULL;
@@ -29,7 +27,6 @@ t_shell	*create_shell(void)
 		i++;
 	s->env = (char **)malloc(sizeof(char *) * (i + 2));
 	i = 0;
-	s->mainpid = pid_main;
 	while (environ[i])
 	{
 		s->env[i] = ft_strdup(environ[i]);
