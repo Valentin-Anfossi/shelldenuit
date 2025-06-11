@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/11 16:47:38 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:33:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void redir_heredoc(t_redir *r, int *fd)
 	close(*fd);
 }
 
-void	execute_set_redirs(t_job *j)
+int	execute_set_redirs(t_job *j)
 {
 	t_redir	*r;
 	int		out_fd;
@@ -62,8 +62,9 @@ void	execute_set_redirs(t_job *j)
 			out_fd = open(r->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (out_fd < 0)
 			{
-				perror("open");
-				exit(1);
+				perror(r->target);
+				g_exitcode = 1;
+				return (1);
 			}
 			dup2(out_fd, STDOUT_FILENO);
 			close(out_fd);
@@ -73,8 +74,9 @@ void	execute_set_redirs(t_job *j)
 			out_fd = open(r->target, O_WRONLY | O_APPEND | O_CREAT, 0644);
 			if (out_fd < 0)
 			{
-				perror("open");
-				exit(1);
+				perror(r->target);
+				g_exitcode = 1;
+				return (1);
 			}
 			dup2(out_fd, STDOUT_FILENO);
 			close(out_fd);
@@ -85,7 +87,8 @@ void	execute_set_redirs(t_job *j)
 			if (in_fd < 0)
 			{
 				perror(r->target);
-				exit(1);
+				g_exitcode = 1;
+				return (1);
 			}
 			dup2(in_fd, STDIN_FILENO);
 			close(in_fd);
@@ -116,7 +119,8 @@ void	execute_reset_redirs(t_job *j)
 
 int	execute_single_builtin(t_job *j, t_shell *s)
 {
-	execute_set_redirs(j);
+	if(execute_set_redirs(j))
+		return (g_exitcode);
 	//ms_fix_args(j);
 	g_exitcode = select_command(j, s);
 	execute_reset_redirs(j);
@@ -192,7 +196,8 @@ int	execute_jobs(t_job *j, t_shell *s)
 				dup2(pipes[i - 1][0], STDIN_FILENO);
 			if (i < (n_j - 1)) //SI PAS DERNIERE CMD ON CONNECT LE STDOUT AU PIPE
 				dup2(pipes[i][1], STDOUT_FILENO);
-			execute_set_redirs(j); // ON REMPLACE LES PIPES PAR LES REDIRS SI IL Y EN A
+			if(execute_set_redirs(j))
+				exit(g_exitcode); // ON REMPLACE LES PIPES PAR LES REDIRS SI IL Y EN A
 			execute_closepipes(pipes,n_p,i);
 			//ON EXECUTE
 			if (is_str_cmd(j->cmd))
@@ -235,12 +240,12 @@ int	execute_jobs(t_job *j, t_shell *s)
 	while (h < i) //ON WAIT TOUT LES CHILDS
 	{
 		waitpid(child_pids[h], &status, WUNTRACED);
-		printf("%d\n",status);
-		printf("%d\n",WEXITSTATUS(status));
-		// if(!status % 256)
-		// 	g_exitcode = WEXITSTATUS(status);
-		// else
-		if(status >= 256)
+		if(WIFSIGNALED(status))
+		{
+			ft_putstr_fd("Quit (core dumped)\n",STDERR_FILENO);
+			g_exitcode = 128 + WTERMSIG(status);
+		}
+		else if(status >= 256)
 			g_exitcode = status / 256;
 		else
 			g_exitcode = status;

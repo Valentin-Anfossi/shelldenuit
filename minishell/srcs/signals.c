@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/11 16:49:21 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:13:19 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void signal_sigabrt(int sig)
 static void signal_sigint(int sig)
 {
 	(void)sig;
-	rl_replace_line("", 0);
+	//rl_replace_line("", 0);
 	ft_printf("\n");
 	rl_on_new_line();
 	rl_redisplay();
@@ -38,7 +38,7 @@ static void signal_sigint(int sig)
 void handle_signals_child(void)
 {	
 	signal(SIGQUIT, SIG_DFL);
-	signal(SIGINT,130);
+	signal(SIGINT,SIG_DFL);
 }
 
 void handle_signals(void)
