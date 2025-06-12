@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/11 20:46:18 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:08:57 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,11 @@ void handle_signals(void)
 	signal(SIGQUIT,SIG_IGN);
 	//if (g_exitcode)
 	//	signal(SIGQUIT,signal_sigquit);	
+}
+
+void handle_signals_ign(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGABRT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);	
 }

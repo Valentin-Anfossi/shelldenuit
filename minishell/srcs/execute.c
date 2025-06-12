@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/11 23:00:11 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:05:39 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	execute_set_redirs(t_job *j)
 	{
 		if (r->type == R_OUT)
 		{
-			out_fd = open(r->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			out_fd = open(r->target, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 			if (out_fd < 0)
 			{
 				perror(r->target);
@@ -71,7 +71,7 @@ int	execute_set_redirs(t_job *j)
 		}
 		else if (r->type == R_APPEND)
 		{
-			out_fd = open(r->target, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			out_fd = open(r->target, O_WRONLY | O_APPEND | O_CREAT, 0777);
 			if (out_fd < 0)
 			{
 				perror(r->target);
@@ -99,6 +99,7 @@ int	execute_set_redirs(t_job *j)
 		}
 		r = r->next;
 	}
+	return (0);
 }
 
 void	execute_reset_redirs(t_job *j)
@@ -182,11 +183,11 @@ int	execute_jobs(t_job *j, t_shell *s)
 		return (-1); //ERROR MALLOC
 	}
 	i = 0;
+	//IGNORE SIGNALS WHILE EXECUTE
+	handle_signals_ign();
 	while (i < n_j) // MAIN LOOP FOR FORKS
 	{
 		pid = fork();
-		g_exitcode = pid;
-		//IGNORE SIGNALS WHILE EXECUTE
 		if (pid < 0)
 			break ;
 		if (pid == 0) //CHILD
@@ -198,7 +199,7 @@ int	execute_jobs(t_job *j, t_shell *s)
 			if (i < (n_j - 1)) //SI PAS DERNIERE CMD ON CONNECT LE STDOUT AU PIPE
 				dup2(pipes[i][1], STDOUT_FILENO);
 			if(execute_set_redirs(j))
-				exit(g_exitcode); // ON REMPLACE LES PIPES PAR LES REDIRS SI IL Y EN A
+				exit(g_exitcode);
 			execute_closepipes(pipes,n_p,i);
 			//ON EXECUTE
 			if (is_str_cmd(j->cmd))
@@ -245,6 +246,8 @@ int	execute_jobs(t_job *j, t_shell *s)
 		{
 			if((128 + WTERMSIG(status)) == 131 && h == (i-1))
 				ft_putstr_fd("Quit (core dumped)\n",STDERR_FILENO);
+			if((128 + WTERMSIG(status)) == 130 && h == (i-1))
+				ft_putstr_fd("\n",STDERR_FILENO);
 			g_exitcode = 128 + WTERMSIG(status);
 		}
 		else if(status >= 256)
@@ -253,6 +256,7 @@ int	execute_jobs(t_job *j, t_shell *s)
 			g_exitcode = status;
 		h ++;
 	}
+	handle_signals();
 	free(child_pids);
 	return (0);
 }
