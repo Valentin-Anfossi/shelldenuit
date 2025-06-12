@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 09:10:26 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/12 22:53:30 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,16 @@ typedef struct s_shell
 	pid_t	*child_pids;
 	pid_t	mainpid;
 }	t_shell;
+
+typedef struct s_tokenlst
+{
+	int	in_doubles;
+	int in_singles;
+	int start;
+	int	end;
+	char *line;
+	t_token *t;
+} t_tokenlst;
 
 typedef struct s_redir
 {
@@ -176,6 +186,7 @@ int		is_executable(char *path);
 int		ms_setenv(char *env, char *str, t_shell *s);
 int 	ms_charraylen(char **ar);
 void	free_tokens(t_token **t);
+t_shell		*create_shell(void);
 
 
 
