@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 11:05:39 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:48:43 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	execute_set_redirs(t_job *j)
 				g_exitcode = 1;
 				return (1);
 			}
-			dup2(out_fd, STDOUT_FILENO);
-			close(out_fd);
+			//dup2(out_fd, STDOUT_FILENO);
+			//close(out_fd);
 		}
 		else if (r->type == R_APPEND)
 		{
@@ -78,8 +78,8 @@ int	execute_set_redirs(t_job *j)
 				g_exitcode = 1;
 				return (1);
 			}
-			dup2(out_fd, STDOUT_FILENO);
-			close(out_fd);
+			//dup2(out_fd, STDOUT_FILENO);
+			//close(out_fd);
 		}
 		else if (r->type == R_IN)
 		{
@@ -90,8 +90,8 @@ int	execute_set_redirs(t_job *j)
 				g_exitcode = 1;
 				return (1);
 			}
-			dup2(in_fd, STDIN_FILENO);
-			close(in_fd);
+			//dup2(in_fd, STDIN_FILENO);
+			//close(in_fd);
 		}
 		else if(r->type == R_HEREDOC)
 		{
@@ -99,6 +99,12 @@ int	execute_set_redirs(t_job *j)
 		}
 		r = r->next;
 	}
+	if(in_fd)
+		dup2(in_fd,STDIN_FILENO);
+	if(out_fd)
+		dup2(out_fd,STDOUT_FILENO);
+	close(out_fd);
+	close(in_fd);
 	return (0);
 }
 
@@ -199,7 +205,10 @@ int	execute_jobs(t_job *j, t_shell *s)
 			if (i < (n_j - 1)) //SI PAS DERNIERE CMD ON CONNECT LE STDOUT AU PIPE
 				dup2(pipes[i][1], STDOUT_FILENO);
 			if(execute_set_redirs(j))
+			{
+				execute_closepipes(pipes,n_p,i);
 				exit(g_exitcode);
+			}
 			execute_closepipes(pipes,n_p,i);
 			//ON EXECUTE
 			if (is_str_cmd(j->cmd))

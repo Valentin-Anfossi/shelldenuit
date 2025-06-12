@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 09:29:16 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:56:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	debug_print_tokens(t_token **tokens)
 {
 	t_token	*cur_token;
 
-	if (!tokens)
+	if (!*tokens)
 	{
 		printf("No token list to print !\n");
 		return ;

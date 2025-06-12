@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/11 16:08:47 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:38:01 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,48 @@ int	is_tok_quoted(t_token *tok)
 		return (0);
 }
 
-void	tokens_start(t_token **t, t_shell *s)
+int	verif_tokens(t_token *token)
 {
+	t_token *t;
+
+	t = token;
+	printf("veriftokens\n");
+	while(t)
+	{
+		if(is_tok_redir(t))
+		{
+			while(t->next && t->next->type == 0)
+				t = t->next;
+			if(t->next && (!is_tok_arg(t->next) || is_tok_redir(t->next)))
+			{
+				printf("Minishell: syntax error near unexpected token '%s'\n",t->next->content);
+				return (1);
+			}
+			else if (!t->next)
+			{
+				printf("Minishell: syntax error near unexpected token `newline'\n");
+				return (1);
+			}
+		}
+		t = t->next;
+	}
+	return (0);
+}
+
+int	tokens_start(t_token **t, t_shell *s)
+{
+	if (!*t)
+	{
+		return (1);
+	}
+	if (!(*t)->next && (ms_strcmp((*t)->content,"!") || ms_strcmp((*t)->content,":")))
+		return (1);
 	typing_tokens(t);
 	check_env(t, s);
-	//debug_print_tokens(t);
+	debug_print_tokens(t);
 	check_tokens(t);
+	return (verif_tokens(*t));
+	return (0);
 }
 
 int	main(void)
@@ -72,11 +108,13 @@ int	main(void)
 		if(!line)
 		{
 			printf("exit\n");
-			exit(0);
+			exit(g_exitcode);
 		}
 		if (ft_strlen(line) > 0)
 		{
+			printf("debut tokens\n");
 			tokens = create_lst_tokens(line);
+			debug_print_tokens(tokens);
 			add_history(line);
 		}
 		else
@@ -85,12 +123,18 @@ int	main(void)
 			line = NULL;
 			continue ;
 		}
-		tokens_start(tokens, shell);
-		//debug_print_tokens(tokens);
+		printf("end create tokens\n");
+		if (tokens_start(tokens, shell))
+		{
+			free(line);			
+			free_tokens(tokens);
+			continue;
+		}
+		debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		free_tokens(tokens);
 		//free(tokens);
-		//debug_print_job(jobs);
+		debug_print_job(jobs);
 		if (!check_jobs(jobs, shell))
 			execute_jobs(jobs, shell);
 		//debug_print_job(jobs);

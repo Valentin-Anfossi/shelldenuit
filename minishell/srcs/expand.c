@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:10:08 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/10 20:09:02 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:19:25 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*expand_token_env(char *s, t_shell *shell)
 		if (s[i] == '$')
 		{
 			j = i + 1;
-			if (s[i + 1] >= '0' && s[i + 1] <= '9')
+			if ((s[i + 1] >= '0' && s[i + 1] <= '9') || s[i + 1] == '$')
 			{
 				i += 2;
 				continue ;
@@ -132,38 +132,6 @@ char	*is_exit_code(char *s, t_shell *shell)
 	free(str);
 	return (out);
 }
-
-
-
-// char	*is_exit_code(char *s, t_shell *shell)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*temp;
-// 	char	*out;
-
-// 	// temp = (char *)ft_calloc((ft_strlen(s)
-// 	// 			+ ft_get_intlen(g_exitcode)) + 1, 1);
-// 	temp = (char *)ft_calloc(9999, 1);
-// 	printf("%d\n",ft_get_intlen(g_exitcode));
-// 	i = 0;
-// 	j = 0;
-// 	while (s[i])
-// 	{
-// 		if (s[i + 1] && s[i] == '$' && s[i + 1] == '?')
-// 		{
-// 			temp[j] = ft_itoa(g_exitcode);
-// 			i = i + 2;
-// 			j = j + ft_get_intlen(g_exitcode);
-// 			continue ;
-// 		}
-// 		temp[j] = s[i];
-// 		i++;
-// 		j++;
-// 	}
-// 	temp[j] = '\0';
-// 	return (temp);
-// }
 
 void	check_env(t_token **tokens, t_shell *shell)
 {

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:36 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/21 05:27:09 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:12:22 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,10 @@ int		ft_fprintf_types(char *form, va_list ptr, int i, int fd);
 char	*get_next_line(int fd);
 char	*get_line_from_buffer(int fd, char *rest, char *buffer);
 char	*get_rest(char *line);
+
+// lespetitstrucsenplus
+
+int	ft_isspace(char c);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 09:08:57 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:59:34 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ static void signal_sigint(int sig)
 	ft_printf("\n");
 	rl_on_new_line();
 	rl_redisplay();
+}
+
+void signal_sigquit(int sig)
+{
+	printf("Minishell exit : babye !");
+	exit(g_exitcode);
 }
 
 void handle_signals_child(void)
