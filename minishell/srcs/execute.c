@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/11 20:33:10 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/11 23:00:11 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ int	execute_jobs(t_job *j, t_shell *s)
 	{
 		pid = fork();
 		g_exitcode = pid;
+		//IGNORE SIGNALS WHILE EXECUTE
 		if (pid < 0)
 			break ;
 		if (pid == 0) //CHILD
@@ -242,7 +243,8 @@ int	execute_jobs(t_job *j, t_shell *s)
 		waitpid(child_pids[h], &status, WUNTRACED);
 		if(WIFSIGNALED(status))
 		{
-			ft_putstr_fd("Quit (core dumped)\n",STDERR_FILENO);
+			if((128 + WTERMSIG(status)) == 131 && h == (i-1))
+				ft_putstr_fd("Quit (core dumped)\n",STDERR_FILENO);
 			g_exitcode = 128 + WTERMSIG(status);
 		}
 		else if(status >= 256)
