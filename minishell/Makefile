@@ -6,6 +6,7 @@ srcs/*.c \
 srcs/utils/*.c				\
 srcs/tokens/*.c \
 srcs/commands/builtins/*.c\
+srcs/debug/*.c
 
 BUILD_DIR = build/Debug
 OUT_DEBUG = $(BUILD_DIR)/outDebug

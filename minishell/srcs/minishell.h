@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 22:53:30 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:32:45 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ enum e_types
 	APP,
 	HER,
 	ARG,
-	PIP
+	PIP,
+	INV
 };
 
 typedef struct s_shell
@@ -89,7 +90,7 @@ typedef struct s_tokenlst
 	int start;
 	int	end;
 	char *line;
-	t_token *t;
+	t_token **t;
 } t_tokenlst;
 
 typedef struct s_redir
@@ -118,6 +119,27 @@ typedef struct s_token
 	int		type;
 	t_token	*next;
 }	t_token;
+
+//MS HEADER
+
+//MS TOKENS
+t_token 	**ms_tokens(char *line, t_shell *s);
+t_token		**ms_lst_tokens(char *line);
+void		ms_lst_types(t_token **t);
+void		ms_lst_doubles(t_tokenlst *tlst);
+void		ms_lst_singles(t_tokenlst *tlst);
+void		ms_lst_spaces(t_tokenlst *tlst);
+t_tokenlst *ms_create_tlst(char *line, t_token **t);
+void 		*ms_free_tlst(t_tokenlst *tlst);
+void		ms_token_split(char *line, int start, int end, t_token **tokens);
+void		ms_token_create(char *line, int start, int end, t_token **tokens);
+void		ms_token_addback(t_token **lst, t_token *token);
+int			ms_is_redirpipe(char *line);
+void		ms_free_tokens(t_token **lst);
+int			ms_quotes(char *s);
+
+//MS DEBUG
+void	ms_debug_print_tokens(t_token **tokens);
 
 //TOKENS
 t_token	**create_lst_tokens(char *line);
@@ -167,7 +189,6 @@ void	 	handle_signals_ign(void);
 
 //UTILS
 void	debug_print_job(t_job *jobs);
-void	debug_print_tokens(t_token **tokens);
 int		ms_strcmp(char *str1, const char *str2);
 int		ms_lstsize(t_token *lst);
 char	**ms_cmdlst(void);

@@ -6,39 +6,12 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:15:50 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:24:07 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:02:40 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	create_token(char *line, int start, int end, t_token **tokens)
-{
-	t_token	*new_token;
-
-	if (end <= start)
-		return ;
-	new_token = malloc_token();
-	new_token->content = ft_substr(line, start, (end - start));
-	token_add_back(tokens, new_token);
-}
-
-
-int	check_redirection_pipe(char *line)
-{
-	if (*line == '>' && *(line + 1) == '>')
-		return (2);
-	else if (*line == '<' && *(line + 1) == '<')
-		return (2);
-	else if (*line == '>')
-		return (1);
-	else if (*line == '<')
-		return (1);
-	else if (*line == '|')
-		return (1);
-	else
-		return (0);
-}
 
 int	get_redir_type(t_token *t)
 {
@@ -65,22 +38,6 @@ t_token	*token_last(t_token *lst)
 	while (list->next)
 		list = list->next;
 	return (list);
-}
-
-//Add token to the back of lst
-void	token_add_back(t_token **lst, t_token *token)
-{
-	t_token	*last;
-
-	if (!lst || !token)
-		return ;
-	if (*lst == 0)
-		*lst = token;
-	else
-	{
-		last = token_last(*lst);
-		last->next = token;
-	}
 }
 
 t_token	*malloc_token(void)

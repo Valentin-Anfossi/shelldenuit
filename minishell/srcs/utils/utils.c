@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:32:13 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:01:05 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,7 @@ int	ms_lstsize(t_token *lst)
 	return (i);
 }
 
-void	debug_print_tokens(t_token *tokens)
-{
-	t_token	*cur_token;
 
-	if (!tokens)
-	{
-		printf("No token list to print !\n");
-		return ;
-	}
-	cur_token = tokens;
-	while (cur_token)
-	{
-		if (!cur_token->content)
-			printf("{%d:NULL}", cur_token->type);
-		else
-			printf("{%d:%s}", cur_token->type, cur_token->content);
-		cur_token = cur_token->next;
-	}
-	printf("\n");
-}
 
 
 void debug_print_job(t_job *jobs)

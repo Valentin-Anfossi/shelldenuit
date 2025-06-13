@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 22:42:02 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 10:56:12 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,13 @@ int ms_tokens_check(t_token *t, t_shell *s)
 	
 }
 
-t_token *ms_tokens(char *line, t_shell *s)
-{
-	t_token *t;
 
-	if (ft_strlen(line) == 0)
-		return (NULL);
-	t = ms_lst_tokens(line);
-	typing_tokens(t);
-	check_env(t,s);
-	if(!ms_tokens_check(t))
-	{
-		free_tokens(t);
-		return (NULL);
-	}
-	debug_print_tokens(tokens);
-	add_history(line);
-	return (t);
-}
 
 int	main(void)
 {
 	t_shell	*shell;
 	char	*line;
-	t_token	*tokens;
+	t_token	**tokens;
 	t_job	*jobs;
 
 	shell = create_shell();
@@ -67,9 +50,11 @@ int	main(void)
 			free(line);
 			continue;
 		}
-		debug_print_tokens(tokens);
-		jobs = create_job(tokens);
-		free_tokens(tokens);
+		ms_debug_print_tokens(tokens);
+		ms_free_tokens(tokens);
+	//	debug_print_tokens(tokens);
+	//	jobs = create_job(tokens);
+	//	free_tokens(tokens);
 		//free(tokens);
 		// debug_print_job(jobs);
 		// if (!check_jobs(jobs, shell))
