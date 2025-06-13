@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:44:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 15:58:32 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:52:02 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int ms_env_length(char *str)
 		i ++;
 	if(ft_isdigit(str[i + 1]))
 		return(i+1);
+	else if(str[i + 1] == '?')
+		return(ft_get_intlen(g_exitcode) + 1);
 	while(ft_isalpha(str[i]) || str[i]=='_')
 		i ++;
 	return (i);
@@ -85,6 +87,8 @@ char *ms_env_get(char *str, char* out, int i, t_shell *s)
 	pos = i;
 	if(str[pos] == '$')
 		return (ft_strdup("GROPIDVA"));
+	if(str[pos] == '?')
+		return (ft_itoa(g_exitcode));
 	if(ft_isdigit(str[pos]))
 		return (ft_strdup("CIRCULEZ"));
 	while(ft_isalpha(str[pos]))

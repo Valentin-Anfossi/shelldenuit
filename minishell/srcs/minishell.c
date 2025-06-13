@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 16:42:11 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:49:31 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(void)
 
 	shell = create_shell();
 	handle_signals();
+	g_exitcode = 0;
 	while (1)
 	{
 		line = readline("☠️  MinisHell: ");
@@ -43,18 +44,16 @@ int	main(void)
 			free(line);
 			continue;
 		}
-		ms_debug_print_tokens(tokens);
-		ms_free_tokens(tokens);
+		// ms_debug_print_tokens(tokens);
+		// ms_free_tokens(tokens);
 		free(line);
-	//	debug_print_tokens(tokens);
-	//	jobs = create_job(tokens);
-	//	free_tokens(tokens);
-		//free(tokens);
+		// debug_print_tokens(tokens);
+		jobs = create_job(tokens);
+		free_tokens(tokens);
 		// debug_print_job(jobs);
-		// if (!check_jobs(jobs, shell))
-		// 	execute_jobs(jobs, shell);
-		// free_jobs(jobs);
-		// free(line);
+		if (!check_jobs(jobs, shell))
+			execute_jobs(jobs, shell);
+		free_jobs(jobs);
 	}
 	clear_history();
 }
