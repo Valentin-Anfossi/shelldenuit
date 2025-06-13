@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:15:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 11:52:46 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:31:52 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ int	ms_token_type(t_token *t)
 		return (HER);
 	else if(ms_strcmp(s,"|"))
 		return (PIP);
-	else if(ms_strcmp(s,"||") || ms_strcmp(s,"&&"))
+	else if(ms_strcmp(s,"||") || ms_strcmp(s,"&&") || ms_strcmp(s,"<>"))
 		return (INV);
+	else if(ms_strcmp(s,"<<<"))
+		return (HERS);
 	else if(ms_quotes(s) == 1)
 		return (SQ);
 	else if(ms_quotes(s) == 2)

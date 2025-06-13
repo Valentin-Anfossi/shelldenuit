@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 08:50:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 16:01:33 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:32:39 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ t_token **ms_tokens(char *line, t_shell *s)
 		return (NULL);
 	t = ms_lst_tokens(line);
 	ms_lst_types(t);
-	ms_lst_concat(t);
 	ms_token_env(t, s);
+	ms_lst_concat(t);
+	ms_rmv_spaces(t);
+	ms_debug_print_tokens(t);
 	if(!ms_tokens_check(t))
 	{
 		free_tokens(t);
@@ -30,6 +32,40 @@ t_token **ms_tokens(char *line, t_shell *s)
 	add_history(line);
 	return (t);
 }
+
+void ms_rmv_spaces(t_token **t)
+{
+    t_token *cur = *t;
+    t_token *prev = NULL;
+    t_token *to_free;
+
+    while (cur)
+    {
+        if (cur->type == SPC)
+        {
+            to_free = cur;
+            
+            // Update links
+            if (prev == NULL)
+                *t = cur->next;    // Update head pointer
+            else
+                prev->next = cur->next;
+            
+            // Move to next node
+            cur = cur->next;
+            
+            // Free the SPC node
+            free(to_free->content);
+            free(to_free);
+        }
+        else
+        {
+            prev = cur;
+            cur = cur->next;
+        }
+    }
+}
+
 t_token	**ms_lst_tokens(char *line)
 {
 	t_tokenlst *tlst;

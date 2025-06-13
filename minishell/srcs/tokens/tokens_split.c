@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 10:16:35 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 11:35:16 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:51:06 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ int	ms_is_redirpipe(char *line)
 {
 	if (*line == '>' && *(line + 1) == '>')
 		return (2);
+	else if(*line == '<' && *(line + 1) == '<' && *(line + 2) == '<')
+		return (3);
 	else if (*line == '<' && *(line + 1) == '<')
 		return (2);
-	else if ((*line == '<') && (*line == '>'))
+	else if (*line == '<' && *(line + 1) == '>')
 		return (2);
 	else if (*line == '>')
 		return (1);

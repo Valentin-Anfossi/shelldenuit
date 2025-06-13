@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 15:53:22 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:31:05 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ enum e_types
 	HER,
 	ARG,
 	PIP,
-	INV
+	INV,
+	HERS
 };
 
 typedef struct s_shell
@@ -147,6 +148,7 @@ char 		*ms_env_append(char *str, char *out, int i);
 char 		*ms_env_get(char *str, char* out, int i, t_shell *s);
 char		**ms_env_split(char *s);
 int 		ms_env_length(char *str);
+void 		ms_rmv_spaces(t_token **t);
 
 
 //MS DEBUG

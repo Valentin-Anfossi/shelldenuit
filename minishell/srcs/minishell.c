@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 15:53:43 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:42:11 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,6 @@ void ms_signal_eof(t_shell *s)
 	printf("Exiting Minishell, Bye !\n");
 	exit(g_exitcode);
 }
-
-int ms_tokens_check(t_token *t, t_shell *s)
-{
-	
-}
-
-
 
 int	main(void)
 {
