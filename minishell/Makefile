@@ -1,36 +1,20 @@
 NAME = minishell
 LIBFT = ./libft/libft.a
-SRCS = \
- 	srcs/utils.c		\
- 	srcs/tokens.c 		\
- 	srcs/tokens_utils.c \
- 	srcs/tokens_utils2.c 	\
-	srcs/expand.c		\
- 	srcs/jobs.c 		\
- 	srcs/jobs_utils.c 	\
- 	srcs/commands.c 	\
- 	srcs/export.c 	\
- 	srcs/minishell.c \
-	srcs/errors.c \
-	srcs/unset.c \
-	srcs/echo.c \
-	srcs/expand.c \
-	srcs/env.c \
-	srcs/cd.c \
-	srcs/exit.c \
-	srcs/execute.c \
-	srcs/ms_execvp.c \
-	srcs/redir.c \
-	srcs/execute_utils.c \
-	srcs/status.c
+SRCS = srcs/commands/*.c	\
+srcs/execute/*.c			\
+srcs/*.c \
+srcs/utils/*.c				\
+srcs/tokens/*.c \
+srcs/commands/builtins/*.c\
+srcs/debug/*.c
 
 BUILD_DIR = build/Debug
 OUT_DEBUG = $(BUILD_DIR)/outDebug
 
 all: $(NAME)
-
+# -fsanitize=address,undefined
 $(NAME): $(SRCS) $(LIBFT)
-	@gcc -g -Wall -Wextra -I./libft $^ -L./libft -lft -lreadline -o $@
+	@gcc -g -fsanitize=address,undefined -Wall -Wextra -I./libft $^ -L./libft -lft -lreadline -o $@
 	@echo "compilation reussie !"
 
 $(LIBFT):

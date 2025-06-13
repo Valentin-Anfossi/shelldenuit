@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,56 +6,21 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/29 13:36:35 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:42:11 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-pid_t gl_pid;
+int g_exitcode;
 
-t_shell	*create_shell(void)
+//Closes MS if CTRL+D (EOF) is pressed on empty line
+void ms_signal_eof(t_shell *s)
 {
-	extern char	**environ;
-	t_shell		*s;
-	pid_t		pid_main;
-	int			i;
-
-	pid_main = getpid();
-	i = 0;
-	s = (t_shell *)malloc(sizeof(t_shell));
-	while (environ[i])
-		i++;
-	s->env = (char **)malloc(sizeof(char *) * (i + 2));
-	i = 0;
-	s->mainpid = pid_main;
-	while (environ[i])
-	{
-		s->env[i] = ft_strdup(environ[i]);
-		i++;
-	}
-	s->env[i] = ft_strdup("MINISHELL=trobien");
-	s->env[i + 1] = NULL;
-	s->cwd = getcwd(s->cwd,PATH_MAX);
-	s->exit_code = 0;
-	return (s);
-}
-
-int	is_tok_quoted(t_token *tok)
-{
-	if (tok->content[0] == '\''
-		&& tok->content[ft_strlen(tok->content)] == '\'')
-		return (1);
-	else
-		return (0);
-}
-
-void tokens_start(t_token **t, t_shell *s)
-{
-	typing_tokens(t);
-	check_env(t, s);
-	check_tokens(t);
-	//debug_print_tokens(tokens);
+	free_shell(s);
+	clear_history();
+	printf("Exiting Minishell, Bye !\n");
+	exit(g_exitcode);
 }
 
 int	main(void)
@@ -67,26 +31,30 @@ int	main(void)
 	t_job	*jobs;
 
 	shell = create_shell();
+	handle_signals();
 	while (1)
 	{
-		line = readline("☠️  Minishell: ");
-		if (line[0])
+		line = readline("☠️  MinisHell: ");
+		if(!line)
+			ms_signal_eof(shell);
+		tokens = ms_tokens(line,shell);
+		if(!tokens)
 		{
-			tokens = create_lst_tokens(line);
-			add_history(line);
-		}
-		else
+			free(line);
 			continue;
-		tokens_start(tokens,shell);
-		//debug_print_tokens(tokens);
-		jobs = create_job(tokens);
-		//debug_print_job(jobs);
-		if (!check_jobs(jobs))
-			execute_jobs(jobs, shell);
-		//debug_print_job(jobs);
-		free_jobs(jobs);
+		}
+		ms_debug_print_tokens(tokens);
+		ms_free_tokens(tokens);
 		free(line);
-		//exit(0);
+	//	debug_print_tokens(tokens);
+	//	jobs = create_job(tokens);
+	//	free_tokens(tokens);
+		//free(tokens);
+		// debug_print_job(jobs);
+		// if (!check_jobs(jobs, shell))
+		// 	execute_jobs(jobs, shell);
+		// free_jobs(jobs);
+		// free(line);
 	}
 	clear_history();
 }

@@ -6,7 +6,7 @@
 #    By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/07 04:36:42 by vanfossi          #+#    #+#              #
-#    Updated: 2024/12/07 19:26:02 by vanfossi         ###   ########.fr        #
+#    Updated: 2025/06/12 15:12:32 by vanfossi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SOURCES	= ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.
 			ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c \
 			ft_printf_prints.c ft_printf_prints2.c ft_printf_utils.c \
 			ft_printf.c ft_fprintf.c ft_fprintf_prints.c \
-			ft_fprintf_prints2.c ft_fprintf_utils.c get_next_line.c
+			ft_fprintf_prints2.c ft_fprintf_utils.c get_next_line.c \
+			ft_isspace.c
 
 BONUSSRCS = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c \
 			ft_lstlast.c ft_lstadd_back.c \

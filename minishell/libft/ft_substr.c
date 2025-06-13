@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 19:37:43 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/04/29 15:56:38 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:04:58 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (ft_substr_helper());
 	if (start + len > ft_strlen(s))
 		len = ft_strlen(s) - start;
-	subst = (char *)malloc(len + 1);
+	subst = (char *)malloc(sizeof(char) * (len + 1));
 	if (!subst)
 		return (0);
 	while (s[start] && ((size_t)i < len))

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:31:38 by vanfossi          #+#    #+#             */
-/*   Updated: 2024/11/10 00:40:13 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/08 18:36:18 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	en = ft_strlen(s1) - 1;
 	while (s1[en] && en > st && ft_is_char_in_set(s1[en], set))
 		en --;
-	string = malloc((en - st + 2) * sizeof(char));
+	string = (char *)malloc((en - st + 2) * sizeof(char));
 	if (!string)
 		return (0);
 	while (++i < en - st + 1)
