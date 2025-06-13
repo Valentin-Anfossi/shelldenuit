@@ -21,7 +21,7 @@ int	select_command(t_job *jobs, t_shell *s)
 		else if (ms_strcmp(jobs->cmd, "env"))
 			return (command_env(s));
 		else if (ms_strcmp(jobs->cmd, "export"))
-			return (command_export(jobs, s));
+			return (ms_command_export(jobs, s));
 		else if (ms_strcmp(jobs->cmd, "cd"))
 			return (command_cd(jobs, s));
 		else if (ms_strcmp(jobs->cmd, "unset"))

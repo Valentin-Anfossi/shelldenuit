@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:44:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 18:52:02 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:50:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char *ms_token_expand(t_token *t, t_shell *s)
 	out = ft_strdup("");
 	while(t->content[i])
 	{
-		if(t->content[i] == '$')
+		if(t->content[i] == '$' && t->content[i + 1])
 		{
 			new_out = ms_env_get(t->content, out, i, s);
 			free(out);
@@ -67,9 +67,9 @@ int ms_env_length(char *str)
 	i = 0;
 	if(str[i] == '$')
 		i ++;
-	if(ft_isdigit(str[i + 1]))
+	if(ft_isdigit(str[i]))
 		return(i+1);
-	else if(str[i + 1] == '?')
+	else if(str[i] == '?')
 		return(ft_get_intlen(g_exitcode) + 1);
 	while(ft_isalpha(str[i]) || str[i]=='_')
 		i ++;
@@ -86,16 +86,21 @@ char *ms_env_get(char *str, char* out, int i, t_shell *s)
 	i ++;
 	pos = i;
 	if(str[pos] == '$')
-		return (ft_strdup("GROPIDVA"));
-	if(str[pos] == '?')
-		return (ft_itoa(g_exitcode));
-	if(ft_isdigit(str[pos]))
-		return (ft_strdup("CIRCULEZ"));
-	while(ft_isalpha(str[pos]))
+		env = ft_strdup("GROPIDVA");
+	else if(str[pos] == '?')
+		env = ft_itoa(g_exitcode);
+	else if(ft_isdigit(str[pos]))
+		env = ft_strdup("");
+	else if(!ft_isalpha(str[pos]))
+		env = ft_strdup("$");
+	else
+	{
+		while(ft_isalpha(str[pos]))
 		pos ++;
-	var = ft_substr(str,i,pos-i);
-	env = ms_getenv(var,s);
-	free(var);
+		var = ft_substr(str,i,pos-i);
+		env = ms_getenv(var,s);
+		free(var);
+	}
 	var = ft_strjoin(out,env);
 	free(env);
 	return (var);

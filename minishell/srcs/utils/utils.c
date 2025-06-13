@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 09:01:05 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 20:03:25 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,13 @@ char	**ms_split(char *string, int c)
 		i ++;
 	if (i + 1 >= (int)ft_strlen(string))
 		return (NULL);
-	out = (char **)malloc(sizeof(char *) * 2);
+	out = (char **)malloc(sizeof(char *) * 3);
 	out[0] = (char *)malloc(i+2);
 	ft_strlcpy(out[0], string, i+1);
 	string ++;
 	string+=i;
 	out[1] = ft_strdup(string);
+	out[2] = NULL;
 
 	return (out);
 }

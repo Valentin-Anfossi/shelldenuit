@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:15:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 18:31:52 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:42:37 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ void ms_token_trim(t_token *t)
 {
 	char *tmp;
 
-	tmp = ft_strtrim(t->content,"\"\'");
+	if(t->type == SQ)
+		tmp = ft_strtrim(t->content,"\'");
+	else if(t->type == DBQ)
+		tmp = ft_strtrim(t->content,"\"");
 	free(t->content);
 	t->content = tmp;
 }

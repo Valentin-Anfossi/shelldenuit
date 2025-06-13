@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 18:31:05 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 23:31:02 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,15 @@ char 		*ms_env_get(char *str, char* out, int i, t_shell *s);
 char		**ms_env_split(char *s);
 int 		ms_env_length(char *str);
 void 		ms_rmv_spaces(t_token **t);
+
+//MS COMMANDS
+//EXPORT
+int ms_command_export(t_job *j, t_shell *s);
+int ms_export_valid(char *str, t_shell *s);
+int ms_export_add(t_shell *s, char *add_env);
+void ms_free_env(char **env);
+
+void 	ms_free_split(char **split);
 
 
 //MS DEBUG
