@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 08:50:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 11:33:40 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:01:33 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,13 @@ t_token **ms_tokens(char *line, t_shell *s)
 		return (NULL);
 	t = ms_lst_tokens(line);
 	ms_lst_types(t);
-	// ms_token_env(t);
-	// typing_tokens(t);
-	// check_env(t,s);
-	// if(!ms_tokens_check(t))
-	// {
-	// 	free_tokens(t);
-	// 	return (NULL);
-	// }
-	ms_debug_print_tokens(t);
+	ms_lst_concat(t);
+	ms_token_env(t, s);
+	if(!ms_tokens_check(t))
+	{
+		free_tokens(t);
+		return (NULL);
+	}
 	add_history(line);
 	return (t);
 }

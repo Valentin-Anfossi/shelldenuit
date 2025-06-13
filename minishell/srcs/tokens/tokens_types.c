@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:15:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 11:48:27 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:52:46 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ void ms_lst_types(t_token **t)
 
 void ms_token_trim(t_token *t)
 {
-	
+	char *tmp;
+
+	tmp = ft_strtrim(t->content,"\"\'");
+	free(t->content);
+	t->content = tmp;
 }
 
 int	ms_token_type(t_token *t)

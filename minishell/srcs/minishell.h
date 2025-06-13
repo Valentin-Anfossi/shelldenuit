@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 11:32:45 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:53:22 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,17 @@ void		ms_token_addback(t_token **lst, t_token *token);
 int			ms_is_redirpipe(char *line);
 void		ms_free_tokens(t_token **lst);
 int			ms_quotes(char *s);
+void 		ms_token_trim(t_token *t);
+void		ms_lst_concat(t_token **t);
+int			ms_token_isarg(t_token *t);
+void		ms_token_concat(t_token *t, t_token *n);
+void		ms_token_env(t_token **ts, t_shell *s);
+char		*ms_token_expand(t_token *t, t_shell *s);
+char 		*ms_env_append(char *str, char *out, int i);
+char 		*ms_env_get(char *str, char* out, int i, t_shell *s);
+char		**ms_env_split(char *s);
+int 		ms_env_length(char *str);
+
 
 //MS DEBUG
 void	ms_debug_print_tokens(t_token **tokens);

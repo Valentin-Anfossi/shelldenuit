@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 10:56:12 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:53:43 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	main(void)
 		}
 		ms_debug_print_tokens(tokens);
 		ms_free_tokens(tokens);
+		free(line);
 	//	debug_print_tokens(tokens);
 	//	jobs = create_job(tokens);
 	//	free_tokens(tokens);
