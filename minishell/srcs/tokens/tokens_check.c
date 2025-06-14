@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:17:28 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/14 16:12:22 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:28:03 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ int ms_tokens_pipcheck(t_token *cur, t_token **t)
 {
 	if(cur == *t || !cur->next || (!ms_token_isarg(cur->next) &&
 	 (cur->next->type < OUT && cur->next->type > HER)))
+	 {
 		return (1);
+	 }
 	else
 		return(0);
 }

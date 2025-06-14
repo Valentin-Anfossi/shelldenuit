@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:16:59 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:17:45 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:23:15 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_shell	*create_shell(void)
 	}
 	s->env[i] = NULL;
 	s->cwd = getcwd(s->cwd, PATH_MAX);
+	s->original_stdin = dup(STDIN_FILENO);
+	s->original_stdout = dup(STDOUT_FILENO);
 	g_exitcode = 0;
 	return (s);
 }

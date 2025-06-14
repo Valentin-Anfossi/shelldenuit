@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/14 11:10:46 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:05:59 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	main(void)
 		// debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		free_tokens(tokens);
-		// debug_print_job(jobs);
+		//debug_print_job(jobs);
 		if (!check_jobs(jobs))
 			execute_jobs(jobs, shell);
 		free_jobs(jobs);

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/14 16:05:52 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:12:18 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ int	execute_set_redirs(t_job *j)
 			out_fd = open(r->target, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 			if (out_fd < 0)
 			{
+				dup2(j->fd_infile, STDIN_FILENO);
+   				dup2(j->fd_outfile, STDOUT_FILENO);
+    			close(j->fd_infile);
+    			close(j->fd_outfile);
 				perror(r->target);
 				g_exitcode = 1;
 				return (1);
@@ -74,6 +78,10 @@ int	execute_set_redirs(t_job *j)
 			out_fd = open(r->target, O_WRONLY | O_APPEND | O_CREAT, 0777);
 			if (out_fd < 0)
 			{
+				dup2(j->fd_infile, STDIN_FILENO);
+   				dup2(j->fd_outfile, STDOUT_FILENO);
+    			close(j->fd_infile);
+    			close(j->fd_outfile);
 				perror(r->target);
 				g_exitcode = 1;
 				return (1);
@@ -86,6 +94,10 @@ int	execute_set_redirs(t_job *j)
 			in_fd = open(r->target, O_RDONLY);
 			if (in_fd < 0)
 			{
+				dup2(j->fd_infile, STDIN_FILENO);
+   				dup2(j->fd_outfile, STDOUT_FILENO);
+    			close(j->fd_infile);
+    			close(j->fd_outfile);
 				perror(r->target);
 				g_exitcode = 1;
 				return (1);
@@ -105,6 +117,8 @@ int	execute_set_redirs(t_job *j)
 	// 	dup2(out_fd,STDOUT_FILENO);
 	// close(out_fd);
 	// close(in_fd);
+	// close(j->fd_infile);
+	// close(j->fd_outfile);
 	return (0);
 }
 

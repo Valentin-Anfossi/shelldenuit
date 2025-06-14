@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/14 16:12:55 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 23:05:46 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ typedef struct s_shell
 	char	*cwd;
 	char	**env;
 	int		exit_code;
+	int		original_stdin;
+	int		original_stdout;
 	pid_t	*child_pids;
 	pid_t	mainpid;
 }	t_shell;
@@ -93,6 +95,16 @@ typedef struct s_tokenlst
 	char *line;
 	t_token **t;
 } t_tokenlst;
+
+typedef struct s_exec
+{
+	int n_jobs;
+	int (*pipes)[2];
+	pid_t *child_pids;
+	int	pid;
+	t_job *job;
+	t_shell *shell;
+} t_exec;
 
 typedef struct s_redir
 {
