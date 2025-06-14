@@ -39,9 +39,9 @@ int	is_str_exec(char *t)
 	int		i;
 
 	i = 0;
+	s = ft_strtrim(t, "\"\'");
 	if (t)
 	{
-		s = ft_strtrim(t, "\"\'");
 		while (s[i] == ' ')
 			i ++;
 		while (s[i] == '.')

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:36:54 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:26:15 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:05:52 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	execute_set_redirs(t_job *j)
 				g_exitcode = 1;
 				return (1);
 			}
-			//dup2(out_fd, STDOUT_FILENO);
-			//close(out_fd);
+			dup2(out_fd, STDOUT_FILENO);
+			close(out_fd);
 		}
 		else if (r->type == R_APPEND)
 		{
@@ -78,8 +78,8 @@ int	execute_set_redirs(t_job *j)
 				g_exitcode = 1;
 				return (1);
 			}
-			//dup2(out_fd, STDOUT_FILENO);
-			//close(out_fd);
+			dup2(out_fd, STDOUT_FILENO);
+			close(out_fd);
 		}
 		else if (r->type == R_IN)
 		{
@@ -90,8 +90,8 @@ int	execute_set_redirs(t_job *j)
 				g_exitcode = 1;
 				return (1);
 			}
-			//dup2(in_fd, STDIN_FILENO);
-			//close(in_fd);
+			dup2(in_fd, STDIN_FILENO);
+			close(in_fd);
 		}
 		else if(r->type == R_HEREDOC)
 		{
@@ -99,12 +99,12 @@ int	execute_set_redirs(t_job *j)
 		}
 		r = r->next;
 	}
-	if(in_fd)
-		dup2(in_fd,STDIN_FILENO);
-	if(out_fd)
-		dup2(out_fd,STDOUT_FILENO);
-	close(out_fd);
-	close(in_fd);
+	// if(in_fd)
+	// 	dup2(in_fd,STDIN_FILENO);
+	// if(out_fd)
+	// 	dup2(out_fd,STDOUT_FILENO);
+	// close(out_fd);
+	// close(in_fd);
 	return (0);
 }
 
@@ -139,6 +139,7 @@ void execute_closepipes(int (*pipes)[2], int n, int j)
 {
 	int i;
 	
+	(void)j;
 	if (pipes && n)
 	{
 		i = 0;
@@ -148,6 +149,7 @@ void execute_closepipes(int (*pipes)[2], int n, int j)
 			close(pipes[i][1]);
 			i ++;
 		}
+		free(pipes);
 	}
 }
 
@@ -159,14 +161,13 @@ int	execute_jobs(t_job *j, t_shell *s)
 	int		i;
 	int		h;
 	int		status;
-	int		exit_status;
 	int		(*pipes)[2];
 	pid_t	*child_pids;
 	pid_t	pid;
 
 	n_j = n_jobs(j);
 	n_p = n_j - 1;
-	if (n_j == 1 && is_str_cmd(j->cmd)) // IF ONE JOB && BUILTIN WE DONT FORK (WHY ? WE SHOULD FORK IF ITS NOT A BUILTIN BECAUSE EXECVE REPLACES THE CURRENT PROCESS, SO IT CLOSES THE SHELL WHEN ITS DONE (AND WE DONT WANT THAT), BUT IF WE FORK IT WE CANT MODIFY THE ENV VARIABLES (AND BASH DOESNT DO IT EITHER), SO, SINCE WE HAVE TO BUILTIN THE TWO COMMANDS THAT CAN MODIFIY THE ENV VARIABLES, WE CAN SIMPLY NOT FORK AND EXECUTE EVERYTHING IN THE PARENT PROCESS AND IT WORKS ca va la forme ? pti ☕ ?)
+	if (n_j == 1 && is_str_cmd(j->cmd)) 
 		return (execute_single_builtin(j, s));
 	pipes = (int (*)[2])malloc((n_p) * sizeof(int [2]));
 	if (!pipes)
@@ -189,28 +190,25 @@ int	execute_jobs(t_job *j, t_shell *s)
 		return (-1); //ERROR MALLOC
 	}
 	i = 0;
-	//IGNORE SIGNALS WHILE EXECUTE
 	handle_signals_ign();
-	while (i < n_j) // MAIN LOOP FOR FORKS
+	while (i < n_j)
 	{
 		pid = fork();
 		if (pid < 0)
 			break ;
-		if (pid == 0) //CHILD
+		if (pid == 0)
 		{
 			g_exitcode = -1;
 			handle_signals_child();
-			if (i > 0) //SI PAS 1ERE CMD ON CONNECT LA STDIN AU PIPE PRECEDENT
+			ms_exe_closepip_child(pipes, n_p, i);
+			if (i > 0)
 				dup2(pipes[i - 1][0], STDIN_FILENO);
-			if (i < (n_j - 1)) //SI PAS DERNIERE CMD ON CONNECT LE STDOUT AU PIPE
+			if (i < (n_j - 1))
 				dup2(pipes[i][1], STDOUT_FILENO);
 			if(execute_set_redirs(j))
 			{
-				execute_closepipes(pipes,n_p,i);
 				exit(g_exitcode);
 			}
-			execute_closepipes(pipes,n_p,i);
-			//ON EXECUTE
 			if (is_str_cmd(j->cmd))
 			{
 				g_exitcode = select_command(j, s);
@@ -218,37 +216,21 @@ int	execute_jobs(t_job *j, t_shell *s)
 			}
 			g_exitcode = ms_execvp(j->cmd, j->args, s);
 			if (g_exitcode)
-				g_exitcode = err_cmd_nfound(j->cmd, s);
+				g_exitcode = err_cmd_nfound(j->cmd);
 			exit(g_exitcode);
 		}
-		else //PARENT
+		else
 		{
-			child_pids[i] = pid; // ON SAVE LE PID DU CHILD
-			//kill(child_pids[i],SIGQUIT);
-			if(i > 0)
-			{
-				close(pipes[i-1][1]);
-				close(pipes[i-1][0]);
-			}
+			child_pids[i] = pid;
+			//execute_closepipes(pipes, n_p, i);
 		}
 		i ++;
 		j = j->piped_job;
 	}
 	s->child_pids = child_pids;
-	//PARENT
-	//ON CLOSE LES PIPES
 	h = 0;
-
-	/*
-	signal(SIGQUIT, SIG_IGN);
-	printf("Processus parent (PID: %d) envoie un signal SIGQUIT au processus enfant (PID: %d)\n", getpid(), pid);
-    sleep(1); // Attendre un peu pour s'assurer que le processus enfant est prêt
-    kill(pid, SIGQUIT); // Envoyer le signal SIGQUIT au processus enfant
-    wait(NULL); // Attendre que le processus enfant se termine
-	*/
-	
 	execute_closepipes(pipes, n_p, i);
-	while (h < i) //ON WAIT TOUT LES CHILDS
+	while (h < i)
 	{
 		waitpid(child_pids[h], &status, WUNTRACED);
 		if(WIFSIGNALED(status))
@@ -268,4 +250,18 @@ int	execute_jobs(t_job *j, t_shell *s)
 	handle_signals();
 	free(child_pids);
 	return (0);
+}
+void ms_exe_closepip_child(int (*pipes)[2], int n, int j)
+{
+	int i;
+
+	i = 0;
+	while(i < n)
+	{
+		if(i != j-1)
+			close(pipes[i][0]);
+		if(i != j)
+			close(pipes[i][1]);
+		i ++;
+	}
 }

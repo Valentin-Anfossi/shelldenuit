@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:20:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 23:42:18 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 15:44:41 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,20 @@ int ms_command_export(t_job *j, t_shell *s)
     int check;
 
     if (!j->args[1]) 
-	{
-        ms_print_exported_vars(s);
-        return 0;
-    }
+        return (ms_print_exported_vars(s));
     while (j->args[i]) 
 	{
-        check = ms_check_export(s, j->args[i]);
+        check = ms_check_export(j->args[i]);
         if (check == 1) 
 		{
             ms_export_error(j->args[i]);
             status = 1;
         }
         else if (check == 0) 
+		{
             if (ms_export_valid(j->args[i], s) != 0)
-                status = 1;
+				status = 1;
+		}
 		else if(check == 2)
 			status = 0;
 		i++;
@@ -65,7 +64,6 @@ int ms_export_valid(char *str, t_shell *s)
     }
     return ms_export_add(s, str);
 }
-
 int ms_export_add(t_shell *s, char *add_env)
 {
     int count;
@@ -75,7 +73,9 @@ int ms_export_add(t_shell *s, char *add_env)
 	count = 0;
 	i = 0;
     while (s->env[count])
-        count++;
+	{
+        count++;	
+	}
 	new_env = (char **)malloc(sizeof(char *) * (count + 2));
     while (i < count) 
 	{
@@ -88,7 +88,6 @@ int ms_export_add(t_shell *s, char *add_env)
     s->env = new_env;
     return 0;
 }
-
 void ms_free_env(char **env)
 {
 	int i = 0;
@@ -97,11 +96,9 @@ void ms_free_env(char **env)
 	free(env[i++]);
     free(env);
 }
-// 0=OK 1=invalid name 2=do nothing
-int ms_check_export(t_shell *s, char *str)
+int ms_check_export(char *str)
 {
 	int i;
-	int ret;
 
 	i = 0;
 	if(!str || !str[0])
@@ -126,13 +123,11 @@ int ms_export_error(char *str)
 	ft_putstr_fd("': not a valid identifier\n",STDERR_FILENO);
 	return (1);
 }
-	
 int ms_print_exported_vars(t_shell *s)
 {
+	(void)s;
 	return (0);
 }
-
-
 // int ms_command_export(t_job *j, t_shell *s)
 // {
 // 	int check;

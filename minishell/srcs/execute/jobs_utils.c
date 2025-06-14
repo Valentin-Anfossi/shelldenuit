@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:28:18 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:26:26 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 10:59:58 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_job	*malloc_job(int toks)
 }
 
 //Prints errors, return 1 if an error is present
-int	check_jobs(t_job *jobs, t_shell *s)
+int	check_jobs(t_job *jobs)
 {
 	t_job	*j;
 	int		re;

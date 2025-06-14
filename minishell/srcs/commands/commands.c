@@ -25,7 +25,7 @@ int	select_command(t_job *jobs, t_shell *s)
 		else if (ms_strcmp(jobs->cmd, "cd"))
 			return (command_cd(jobs, s));
 		else if (ms_strcmp(jobs->cmd, "unset"))
-			return (command_unset(jobs, s));
+			return (ms_command_unset(jobs, s));
 		else if (ms_strcmp(jobs->cmd, "pwd"))
 			return (command_pwd());
 		else if (ms_strcmp(jobs->cmd, "exit"))

@@ -6,13 +6,13 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:16:56 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:23:33 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:00:20 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include  "../minishell.h"
 
-int	err_exp_ident(char *str, t_shell *shell)
+int	err_exp_ident(char *str)
 {
 	ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
@@ -21,7 +21,7 @@ int	err_exp_ident(char *str, t_shell *shell)
 	return (g_exitcode);
 }
 
-int	err_cmd_nfound(char *str, t_shell *shell)
+int	err_cmd_nfound(char *str)
 {
 	if(ft_strlen(str) == 0)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:44:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 19:50:10 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:04:27 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ char *ms_env_get(char *str, char* out, int i, t_shell *s)
 {
 	int pos;
 	char *var;
-	char *trim;
 	char *env;
 	
 	i ++;

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:17:28 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 18:42:20 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:12:22 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int ms_tokens_check(t_token **t)
 		}
 		else if(cur->type == PIP || cur->type == INV)
 		{
-			if(cur == *t || !cur->next || !ms_token_isarg(cur->next))
+			if(ms_tokens_pipcheck(cur,t))
 				return(ms_error_syntax(cur));
 			cur = cur->next;
 		}
@@ -39,6 +39,15 @@ int ms_tokens_check(t_token **t)
 			return(ms_error_syntax(cur));
 	}
 	return (1);
+}
+
+int ms_tokens_pipcheck(t_token *cur, t_token **t)
+{
+	if(cur == *t || !cur->next || (!ms_token_isarg(cur->next) &&
+	 (cur->next->type < OUT && cur->next->type > HER)))
+		return (1);
+	else
+		return(0);
 }
 int ms_error_syntax(t_token *t)
 {

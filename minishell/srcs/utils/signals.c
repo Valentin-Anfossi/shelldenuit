@@ -6,25 +6,25 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:49:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:23:37 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:02:11 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void signal_sigsegv(int sig)
-{
-	(void)sig;
-	ft_printf("Segue fault\n");
-	kill(-1,SIGSEGV);
-	exit(SIGSEGV);
-}
+// static void signal_sigsegv(int sig)
+// {
+// 	(void)sig;
+// 	ft_printf("Segue fault\n");
+// 	kill(-1,SIGSEGV);
+// 	exit(SIGSEGV);
+// }
 
-static void signal_sigabrt(int sig)
-{	
-	(void)sig;
-	ft_printf("abort\n");
-}
+// static void signal_sigabrt(int sig)
+// {	
+// 	(void)sig;
+// 	ft_printf("abort\n");
+// }
 
 static void signal_sigint(int sig)
 {
@@ -37,7 +37,7 @@ static void signal_sigint(int sig)
 
 void signal_sigquit(int sig)
 {
-	printf("Minishell exit : babye !");
+	printf("Minishell exit : babye ! (%d)",sig);
 	exit(g_exitcode);
 }
 

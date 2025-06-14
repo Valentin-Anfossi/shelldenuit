@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:25:18 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:14:56 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ms_charraylen(char **ar)
 	return (i);
 }
 
-int	is_cd_valid(t_job *j, t_shell *s)
+int	is_cd_valid(t_job *j)
 {
 	if (ms_charraylen(j->args) > 2)
 	{
@@ -36,7 +36,7 @@ int	is_cd_valid(t_job *j, t_shell *s)
 		return (1);
 }
 
-void	cd_error(t_shell *s, char *path)
+void	cd_error(char *path)
 {
 	if (errno == EACCES)
 	{
@@ -82,8 +82,6 @@ int	cd_home(t_job *j, t_shell *s)
 {
 	if (!j->args[1])
 	{
-		ms_setenv("OLDPWD", s->cwd, s);
-		ms_setenv("PWD", ms_getenv("HOME", s), s);
 		free(s->cwd);
 		s->cwd = ms_getenv("HOME", s);
 		chdir(s->cwd);
@@ -96,7 +94,9 @@ int	cd_home(t_job *j, t_shell *s)
 // A FINIR
 int	command_cd(t_job *j, t_shell *s)
 {
-	if (!is_cd_valid(j, s))
+	char *new_pwd;
+	
+	if (!is_cd_valid(j))
 		return (1);
 	if (!j->args[1])
 		return (cd_home(j, s));
@@ -104,15 +104,15 @@ int	command_cd(t_job *j, t_shell *s)
 		return (cd_previous(s));
 	if (chdir(j->args[1]) == -1)
 	{
-		cd_error(s, j->args[1]);
+		cd_error(j->args[1]);
 		return (1);
 	}
 	ms_setenv("OLDPWD", s->cwd, s);
-	s->cwd = getcwd(s->cwd, PATH_MAX);
+	free(s->cwd);
+	s->cwd = getcwd(NULL, PATH_MAX);
 	ms_setenv("PWD", s->cwd, s);
 	return (0);
 }
-
 int	command_pwd(void)
 {
 	char	*buff;

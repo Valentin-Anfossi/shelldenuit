@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 23:31:02 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:12:55 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,16 +149,28 @@ char 		*ms_env_get(char *str, char* out, int i, t_shell *s);
 char		**ms_env_split(char *s);
 int 		ms_env_length(char *str);
 void 		ms_rmv_spaces(t_token **t);
+int			ms_error_syntax(t_token *t);
+int 		ms_tokens_check(t_token **t);
+int			ms_token_type(t_token *t);
+int 		ms_tokens_pipcheck(t_token *cur, t_token **t);
+
 
 //MS COMMANDS
 //EXPORT
-int ms_command_export(t_job *j, t_shell *s);
-int ms_export_valid(char *str, t_shell *s);
-int ms_export_add(t_shell *s, char *add_env);
-void ms_free_env(char **env);
+int			ms_command_export(t_job *j, t_shell *s);
+int			ms_export_valid(char *str, t_shell *s);
+int			ms_export_add(t_shell *s, char *add_env);
+void		ms_free_env(char **env);
+int			ms_check_export(char *str);;
+int			ms_export_error(char *str);
+int			ms_print_exported_vars(t_shell *s);
+void		ms_free_split(char **split);
 
-void 	ms_free_split(char **split);
-
+//UNSET
+void ms_remove_env(t_shell *s, int index);
+int ms_unset_env(t_shell *s, char *str);
+int ms_command_unset(t_job *j, t_shell *s);
+int ms_is_valid_var_name(char *str);
 
 //MS DEBUG
 void	ms_debug_print_tokens(t_token **tokens);
@@ -188,7 +200,7 @@ t_job	**create_lst_job(t_token **tokens);
 t_job	*create_job(t_token **tokens);
 t_job	*malloc_job(int toks);
 int		get_redir_type(t_token *t);
-int		check_jobs(t_job *jobs, t_shell *s);
+int		check_jobs(t_job *jobs);
 void	free_jobs(t_job *jobs);
 void	execute_fork(t_shell *s, t_job *j, int *tuyau);
 
@@ -267,10 +279,10 @@ int		execute_jobs(t_job *jobs, t_shell *shell);
 void	execute_prog(t_job *j, t_shell *s);
 
 //COMMANDS : STATUS
-int command_status(t_shell *s);
+int command_status();
 
 //ERRORS
-int		err_exp_ident(char *str, t_shell *shell);
-int		err_cmd_nfound(char *str, t_shell *shell);
+int	err_exp_ident(char *str);
+int	err_cmd_nfound(char *str);
 int 	is_permited(char *path);
 int		is_file(char *path);

@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 20:03:25 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:15:32 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,34 +258,27 @@ int	ms_setenv(char *env, char *str, t_shell *s)
 			free(s->env[i]);
 			tmp = ft_strjoin(split[0], "=");
 			s->env[i] = ft_strjoin(tmp, str);
-			while(split[j++])
-				free(split[j]);
 			free(tmp);
-			free(split);
+			ms_free_split(split);
 			return (1);
 		}
+		ms_free_split(split);
 		i ++;
 	}
 	return (0);
 }
 
-int ms_isstrinstr(char *s, char *tofind)
+void ms_free_split(char **split)
 {
 	int i;
-	int j;
-
-	if(!s || !tofind)
-		return (0);
-	while(s[i])
+	
+	if(!split || !*split)
+		return;
+	i = 0;
+	while(split[i])
 	{
-		while (s[i] == tofind[j])
-		{
-			i++;
-			j++;
-		}
-		if(j == ft_strlen(tofind) - 1)
-			return (1);
+		free(split[i]);
 		i ++;
 	}
-	return (0);
+	free(split);
 }
