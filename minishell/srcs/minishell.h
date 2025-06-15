@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/14 23:05:46 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/15 03:02:06 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,9 @@ int 		ms_tokens_check(t_token **t);
 int			ms_token_type(t_token *t);
 int 		ms_tokens_pipcheck(t_token *cur, t_token **t);
 
+//MS EXECUTE
+t_exec		*ms_exec_create(t_job *job, t_shell *shell);
+int			(*ms_create_pipes(int n))[2];
 
 //MS COMMANDS
 //EXPORT
