@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 22:11:44 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:26:31 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/23 03:37:40 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,7 @@ int ms_execvp(char *file, char **argv,t_shell *s)
 			{
 				free(path);
 				free_dirs(dirs);
-				//printf("hello\n");
-				return (errno);
+				return (1);
 			}
 			free_dirs(dirs);
 			free(path);
@@ -101,8 +100,9 @@ int ms_execvp(char *file, char **argv,t_shell *s)
 		free(path);
 		i ++;
 	}
+	//printf("hello\n");
 	i = 0;
 	free_dirs(dirs);
-	return (g_exitcode);
+	return (1);
 }
 

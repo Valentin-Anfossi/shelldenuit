@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:44:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/14 17:01:15 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/24 08:21:23 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char *ms_token_expand(t_token *t, t_shell *s)
 	out = ft_strdup("");
 	while(t->content[i])
 	{
-		if(t->content[i] == '$' && t->content[i + 1])
+		if(t->content[i] == '$' && (t->content[i+1] || t->next))
 		{
 			new_out = ms_env_get(t->content, out, i, s);
 			free(out);
@@ -84,8 +84,8 @@ char *ms_env_get(char *str, char* out, int i, t_shell *s)
 	
 	i ++;
 	pos = i;
-	if(str[pos] == '$')
-		env = ft_strdup("GROPIDVA");
+	if(str[pos] == NULL)
+		env = ft_strdup("");
 	else if(str[pos] == '?')
 		env = ft_itoa(g_exitcode);
 	else if(ft_isdigit(str[pos]))

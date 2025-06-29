@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:11:05 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:26:23 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:30:33 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,13 @@ t_job	*create_job(t_token **tokens)
 		{
 			if (is_tok_arg(t->next)) // IS_TOK_ARG probleme car check is_tok_cmd fait foirer (path et cmd commencent par ./)
 				t = add_to_job_redir(t, j);
-			else if(t->next)
-			{
-				// add_next_tok(t, j)
-				printf("Minishell: syntax error near unexpected token'%s'",t->next->content);
-				// printf("error token suivant\n");
-				break ;
-			}
+			// else if(t->next)
+			// {
+			// 	// add_next_tok(t, j)
+			// 	printf("Minishell: syntax error near unexpected token'%s'",t->next->content);
+			// 	// printf("error token suivant\n");
+			// 	break ;
+			// }
 		}
 		else if (!j->cmd && ft_strlen(t->content) > 0 && t->type != SPC)
 		{

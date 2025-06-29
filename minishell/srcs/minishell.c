@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/19 07:09:09 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/29 10:55:27 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void ms_signal_eof(t_shell *s)
 {
 	free_shell(s);
 	clear_history();
-	printf("Exiting Minishell, Bye !\n");
+	//printf("Exiting Minishell, Bye !\n");
 	exit(g_exitcode);
 }
 
@@ -35,24 +35,30 @@ int	main(void)
 	g_exitcode = 0;
 	while (1)
 	{
-		line = readline("☠️  MinisHell: ");
+		// if(isatty(fileno(stdin)))
+			line = readline("☠️  MinisHell: ");
+		// else
+		// {
+		// 	line = get_next_line(fileno(stdin));
+		// }
 		if(!line)
 			ms_signal_eof(shell);
+		// if(ms_strcmp(line,"echo hi >         ./outfiles/outfile01 bye"))
+		// 	printf("wooo");
 		tokens = ms_tokens(line,shell);
 		if(!tokens)
 		{
 			free(line);
 			continue;
 		}
-		//ms_debug_print_tokens(tokens);
 		// ms_free_tokens(tokens);
 		free(line);
-		// debug_print_tokens(tokens);
+		// ms_debug_print_tokens(tokens);
 		jobs = create_job(tokens);
 		free_tokens(tokens);
-		debug_print_job(jobs);
+		//debug_print_job(jobs);
 		// if (!check_jobs(jobs))
-			ms_execute_jobs(jobs, shell);
+		ms_execute_jobs(jobs, shell);
 		free_jobs(jobs);
 	}
 	clear_history();
