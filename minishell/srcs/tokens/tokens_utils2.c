@@ -27,8 +27,6 @@ int	is_tok_arg(t_token *t)
 	}
 	if (!is_tok_redir(t) && !is_tok_pipe(t)) // is_tok_cmd vraiment utile ?????
 		return (1);
-	else if(t->type > 0 && t->type < 3)
-		return (1);
 	else
 		return (0);
 }
@@ -87,7 +85,7 @@ int	is_tok_pipe(t_token *t)
 		return (0);
 }
 
-int combiendetoks(t_token **t)
+int job_arg_count(t_token **t)
 {
 	int i;
 	t_token *temp;
@@ -96,6 +94,8 @@ int combiendetoks(t_token **t)
 	temp = *t;
 	while (temp)
 	{
+		if (temp->type == PIP)
+			break;
 		temp = temp->next;
 		i ++;
 	}

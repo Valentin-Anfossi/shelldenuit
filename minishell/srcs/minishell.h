@@ -167,8 +167,14 @@ int			ms_token_type(t_token *t);
 int 		ms_tokens_pipcheck(t_token *cur, t_token **t);
 
 //MS EXECUTE
+t_job		*create_job(int toks);
+t_job		*ms_job(t_token **tokens);
+int			set_job(t_job *j, t_token **tok);
+void 		redir_heredoc(t_redir *r, int *fd);
 t_exec		*ms_exec_create(t_job *job, t_shell *shell);
 int			(*ms_create_pipes(int n))[2];
+int			ms_set_redirs(t_job *j);
+int ms_execute_single(t_job *j, t_shell *s);
 
 //MS COMMANDS
 //EXPORT
@@ -212,7 +218,6 @@ void	check_env(t_token **tokens, t_shell *shell);
 
 //JOBS
 t_job	**create_lst_job(t_token **tokens);
-t_job	*create_job(t_token **tokens);
 t_job	*malloc_job(int toks);
 int		get_redir_type(t_token *t);
 int		check_jobs(t_job *jobs);
@@ -225,7 +230,7 @@ int			is_builtin(char *cmd);
 int			n_jobs(t_job *j);
 void		wait_all(t_shell* s, t_job *j);
 char 		*find_cmd(char *path, t_shell *s, t_job *j);
-
+void	execute_reset_redirs(t_job *j);
 //SIGNALS
 void		signal_sigquit(int sig);
 void	 	signal_parent_sigaction(void);
@@ -249,7 +254,7 @@ int		is_str_cmd(char *t);
 int 	startswith(char *s, char *start);
 int		is_folder(char *path);
 char	**ms_fix_args(t_job *job);
-int 	combiendetoks(t_token **t);
+int 	job_arg_count(t_token **t);
 char	*ms_pathup(char *path);
 int		check_redirs(t_job *jobs);
 int		is_executable(char *path);

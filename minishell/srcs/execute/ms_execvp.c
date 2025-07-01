@@ -103,6 +103,7 @@ int ms_execvp(char *file, char **argv,t_shell *s)
 	}
 	i = 0;
 	free_dirs(dirs);
+	printf("command not found");
 	return (g_exitcode);
 }
 

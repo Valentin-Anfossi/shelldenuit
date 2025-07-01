@@ -31,7 +31,7 @@ int	command_echo(t_job *j)
 	n = 0;
 	if (ms_charraylen(j->args) < 2)
 		return (0);
-	command_echo_skip(j, &i, &n);
+	//command_echo_skip(j, &i, &n);
 	while (j->args[i])
 	{
 		if (ms_strcmp(j->args[i], "-n"))

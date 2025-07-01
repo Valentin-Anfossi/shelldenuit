@@ -14,22 +14,25 @@
 
 int	select_command(t_job *jobs, t_shell *s)
 {
-	if (jobs->cmd)
+	t_job *j;
+
+	j = jobs;
+	if (j->cmd)
 	{
-		if (ms_strcmp(jobs->cmd, "echo"))
-			return (command_echo(jobs));
-		else if (ms_strcmp(jobs->cmd, "env"))
+		if (ms_strcmp(j->cmd, "echo"))
+			return (command_echo(j));
+		else if (ms_strcmp(j->cmd, "env"))
 			return (command_env(s));
-		else if (ms_strcmp(jobs->cmd, "export"))
-			return (ms_command_export(jobs, s));
-		else if (ms_strcmp(jobs->cmd, "cd"))
-			return (command_cd(jobs, s));
-		else if (ms_strcmp(jobs->cmd, "unset"))
-			return (ms_command_unset(jobs, s));
-		else if (ms_strcmp(jobs->cmd, "pwd"))
+		else if (ms_strcmp(j->cmd, "export"))
+			return (ms_command_export(j, s));
+		else if (ms_strcmp(j->cmd, "cd"))
+			return (command_cd(j, s));
+		else if (ms_strcmp(j->cmd, "unset"))
+			return (ms_command_unset(j, s));
+		else if (ms_strcmp(j->cmd, "pwd"))
 			return (command_pwd());
-		else if (ms_strcmp(jobs->cmd, "exit"))
-			return (command_exit(s, jobs), 0);
+		else if (ms_strcmp(j->cmd, "exit"))
+			return (command_exit(s, j), 0);
 	}
 	return (1);
 }

@@ -47,12 +47,12 @@ int	main(void)
 		//ms_debug_print_tokens(tokens);
 		// ms_free_tokens(tokens);
 		free(line);
-		// debug_print_tokens(tokens);
-		jobs = create_job(tokens);
+		ms_debug_print_tokens(tokens);
+		jobs = ms_job(tokens);
 		free_tokens(tokens);
-		//debug_print_job(jobs);
-		if (!check_jobs(jobs))
-			ms_execute_jobs(jobs, shell);
+		debug_print_job(jobs);
+//		if (!check_jobs(jobs))
+		ms_execute_jobs(jobs, shell);
 		free_jobs(jobs);
 	}
 	clear_history();

@@ -12,135 +12,11 @@
 
 #include "../minishell.h"
 
-void redir_heredoc(t_redir *r, int *fd)
-{
-	char *nline;
 
-	*fd = open(".tmp", O_RDWR | O_CREAT | O_TRUNC, 0755);
-	if(*fd < 0)
-		exit(1);
-	close(*fd);
-	while(1)
-	{
-		*fd = open(".tmp", O_APPEND | O_RDWR);
-		nline = readline("> ");
-		if(!nline)
-		{
-			printf("☠️  MinisHell: warning: here-document delimited by end of file (wanted '%s')\n",r->target);
-			break;
-		}
-		if(ms_strcmp(r->target,nline))
-			break;
-		ft_putstr_fd(nline,*fd);
-		ft_putstr_fd("\n",*fd);
-	}
-	close(*fd);
-	*fd = open(".tmp", O_RDONLY);
-	dup2(*fd, STDIN_FILENO);
-	unlink(".tmp");
-	close(*fd);
-}
-
-int	execute_set_redirs(t_job *j)
-{
-	t_redir	*r;
-	int		out_fd;
-	int		in_fd;
-
-	j->fd_outfile = dup(STDOUT_FILENO);
-	j->fd_infile = dup(STDIN_FILENO);
-	if (j->fd_outfile < 0 || j->fd_infile < 0)
-	{
-		perror("dup");
-		exit(1);
-	}
-	r = j->redir;
-	while (r)
-	{
-		if (r->type == R_OUT)
-		{
-			out_fd = open(r->target, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-			if (out_fd < 0)
-			{
-				dup2(j->fd_infile, STDIN_FILENO);
-   				dup2(j->fd_outfile, STDOUT_FILENO);
-    			close(j->fd_infile);
-    			close(j->fd_outfile);
-				perror(r->target);
-				g_exitcode = 1;
-				return (1);
-			}
-			dup2(out_fd, STDOUT_FILENO);
-			close(out_fd);
-		}
-		else if (r->type == R_APPEND)
-		{
-			out_fd = open(r->target, O_WRONLY | O_APPEND | O_CREAT, 0777);
-			if (out_fd < 0)
-			{
-				dup2(j->fd_infile, STDIN_FILENO);
-   				dup2(j->fd_outfile, STDOUT_FILENO);
-    			close(j->fd_infile);
-    			close(j->fd_outfile);
-				perror(r->target);
-				g_exitcode = 1;
-				return (1);
-			}
-			dup2(out_fd, STDOUT_FILENO);
-			close(out_fd);
-		}
-		else if (r->type == R_IN)
-		{
-			in_fd = open(r->target, O_RDONLY);
-			if (in_fd < 0)
-			{
-				dup2(j->fd_infile, STDIN_FILENO);
-   				dup2(j->fd_outfile, STDOUT_FILENO);
-    			close(j->fd_infile);
-    			close(j->fd_outfile);
-				perror(r->target);
-				g_exitcode = 1;
-				return (1);
-			}
-			dup2(in_fd, STDIN_FILENO);
-			close(in_fd);
-		}
-		else if(r->type == R_HEREDOC)
-		{
-			redir_heredoc(r,&in_fd);
-		}
-		r = r->next;
-	}
-	// if(in_fd)
-	// 	dup2(in_fd,STDIN_FILENO);
-	// if(out_fd)
-	// 	dup2(out_fd,STDOUT_FILENO);
-	// close(out_fd);
-	// close(in_fd);
-	// close(j->fd_infile);
-	// close(j->fd_outfile);
-	return (0);
-}
-
-void	execute_reset_redirs(t_job *j)
-{
-	if (dup2(j->fd_outfile, STDOUT_FILENO) < 0)
-	{
-		perror("stdout restore");
-		exit(1);
-	}
-	close(j->fd_outfile);
-	if (dup2(j->fd_infile, STDIN_FILENO) < 0)
-	{
-		perror("stdin restore");
-		exit(1);
-	}
-	close(j->fd_infile);
-}
 
 int	execute_single_builtin(t_job *j, t_shell *s)
 {
-	if(execute_set_redirs(j))
+	if(ms_set_redirs(j))
 		return (g_exitcode);
 	//ms_fix_args(j);
 	g_exitcode = select_command(j, s);
@@ -167,7 +43,7 @@ void execute_closepipes(int (*pipes)[2], int n, int j)
 	}
 }
 
-
+/*
 int	execute_jobs(t_job *j, t_shell *s)
 {
 	int		n_j;
@@ -264,7 +140,7 @@ int	execute_jobs(t_job *j, t_shell *s)
 	handle_signals();
 	free(child_pids);
 	return (0);
-}
+}*/
 void ms_exe_closepip_child(int (*pipes)[2], int n, int j)
 {
 	int i;
