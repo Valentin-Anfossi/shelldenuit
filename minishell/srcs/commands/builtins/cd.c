@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/14 13:14:56 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/06/29 11:09:43 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,13 @@ int	cd_home(t_job *j, t_shell *s)
 {
 	if (!j->args[1])
 	{
+		ms_setenv("OLDPWD", s->cwd, s);
 		free(s->cwd);
 		s->cwd = ms_getenv("HOME", s);
 		chdir(s->cwd);
+		free(s->cwd);
+		s->cwd = getcwd(NULL, PATH_MAX);
+		ms_setenv("PWD", s->cwd, s);
 		return (0);
 	}
 	else
@@ -99,7 +103,7 @@ int	command_cd(t_job *j, t_shell *s)
 	if (!is_cd_valid(j))
 		return (1);
 	if (!j->args[1])
-		return (cd_home(j, s));
+		return(cd_home(j, s));
 	if (ms_strcmp(j->args[1], "-"))
 		return (cd_previous(s));
 	if (chdir(j->args[1]) == -1)

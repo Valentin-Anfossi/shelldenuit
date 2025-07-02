@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:09:39 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/24 09:27:11 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/02 01:56:49 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int	command_echo(t_job *j)
 			i ++;
 			continue ;
 		}
-		printf("%s", j->args[i]);
+		ft_putstr_fd(j->args[i],STDOUT_FILENO);
 		if (j->args[i + 1])
-			printf(" ");
+			ft_putchar_fd(' ',STDOUT_FILENO);
 		i ++;
 	}
 	if (!n)
-		printf("\n");
+		ft_putchar_fd('\n',STDOUT_FILENO);
 	return (0);
 }
