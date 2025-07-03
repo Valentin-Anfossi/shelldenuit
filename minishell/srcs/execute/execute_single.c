@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 19:54:18 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/02 01:55:45 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/03 03:19:24 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,6 @@ int	ms_execute_single(t_job *j, t_shell *s, t_exec *ex)
 	//ms_fix_args(j);
 	g_exitcode = select_command(j, s);
 	ms_exec_resetredir(j);
+	ms_free_ex(ex);
 	return (g_exitcode);
 }

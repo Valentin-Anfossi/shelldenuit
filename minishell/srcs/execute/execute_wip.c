@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 19:12:48 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/02 01:56:01 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/03 03:20:03 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,20 @@ int ms_execute_jobs(t_job *job, t_shell *sh)
 			else
 				g_exitcode = status;
 			h ++;
-			//printf("EXIT : %d\n",g_exitcode);
 		}
     }
-
-    // Nettoyage
-    //free(ex->child_pids);
-    //free(ex->pipes);
-    //free(ex);
-
-    // Restaurer les signaux
+	ms_free_ex(ex);
     handle_signals();
 
     return (0);
 }
 
+void ms_free_ex(t_exec *ex)
+{
+	free(ex->pipes);
+	free(ex->child_pids);
+	free(ex);
+}
 
 void	ms_pips_closeall(int(*pipes)[2], int n)
 {
@@ -281,7 +280,6 @@ t_exec *ms_exec_create(t_job *job, t_shell *shell)
 	ex->child_pids = (pid_t *)malloc(ex->n_jobs * sizeof(pid_t));
 	ex->job = job;
 	ex->shell = shell;
-	ex->child_pids = (pid_t *)malloc(sizeof(pid_t) * ex->n_jobs);
 	return (ex);
 }
 

@@ -14,7 +14,7 @@ OUT_DEBUG = $(BUILD_DIR)/outDebug
 all: $(NAME)
 # -fsanitize=address,undefined
 $(NAME): $(SRCS) $(LIBFT)
-	@gcc -g -Wall -Wextra -I./libft $^ -L./libft -lft -lreadline -o $@
+	@gcc -g -Wall -Wextra -I./libft $^ -L./libft -lft -lreadline -fsanitize=address,undefined -o $@
 	@echo "compilation reussie !"
 
 $(LIBFT):
