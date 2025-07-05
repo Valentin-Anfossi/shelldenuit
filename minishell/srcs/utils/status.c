@@ -6,14 +6,14 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 03:18:15 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/14 11:02:28 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:20:47 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"	
 
-int command_status()
+int	command_status(void)
 {
-	printf("Exit status : %d\n",g_exitcode);
+	printf("Exit status : %d\n", g_exitcode);
 	return (0);
 }

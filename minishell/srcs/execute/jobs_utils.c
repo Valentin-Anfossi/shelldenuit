@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:28:18 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/04 19:45:04 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 14:53:07 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,35 +29,40 @@ t_job	*malloc_job(int toks)
 	return (job);
 }
 
+t_job	*free_jobs_helper(t_job *jobs)
+{
+	int		i;
+	t_redir	*r;
+	t_job	*j;
+
+	i = 0;
+	while (jobs->redir)
+	{
+		r = jobs->redir->next;
+		free(jobs->redir->target);
+		free(jobs->redir);
+		jobs->redir = r;
+	}
+	while (jobs->args[i] != NULL)
+	{
+		free(jobs->args[i]);
+		i ++;
+	}
+	if (jobs->cmd)
+		free(jobs->cmd);
+	free(jobs->args);
+	j = jobs->piped_job;
+	free(jobs);
+	return (j);
+}
+
 //Free all the jurbs
 void	free_jobs(t_job *jobs)
 {
-	t_redir	*r;
-	t_job	*j;
-	int		i;
-
 	while (jobs)
 	{
-		i = 0;
-		while (jobs->redir)
-		{
-			r = jobs->redir->next;
-			free(jobs->redir->target);
-			free(jobs->redir);
-			jobs->redir = r;
-		}
-		while (jobs->args[i] != NULL)
-		{
-			free(jobs->args[i]);
-			i ++;
-		}
-		if(jobs->cmd)
-			free(jobs->cmd);
-		free(jobs->args);
-		j = jobs->piped_job;
-		free(jobs);
-		jobs = j;
+		jobs = free_jobs_helper(jobs);
 	}
-	if(jobs)
+	if (jobs)
 		free(jobs);
 }

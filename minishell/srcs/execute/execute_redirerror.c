@@ -6,19 +6,19 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 01:56:43 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/05 02:15:08 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:21:30 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ms_redir_error(char *str, int *out_fd, int *in_fd)
+int	ms_redir_error(char *str, int *out_fd, int *in_fd)
 {
-	if(*out_fd != -1)
+	if (*out_fd != -1)
 		close(*out_fd);
-	if(*in_fd != -1)
+	if (*in_fd != -1)
 		close(*in_fd);
-	if(ft_strlen(str) == 0)
+	if (ft_strlen(str) == 0)
 		return (0);
 	if (is_file(str) && !is_permited(str))
 	{

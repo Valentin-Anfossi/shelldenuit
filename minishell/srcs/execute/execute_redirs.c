@@ -6,13 +6,13 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 19:44:20 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/05 02:24:32 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:21:39 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ms_execute_redir(t_job *j, t_exec *ex, int i)
+int	ms_execute_redir(t_job *j, t_exec *ex, int i)
 {
 	j->fd_infile = dup(STDIN_FILENO);
 	j->fd_outfile = dup(STDOUT_FILENO);
@@ -24,35 +24,41 @@ int ms_execute_redir(t_job *j, t_exec *ex, int i)
 	{
 		dup2(ex->pipes[i][1], STDOUT_FILENO);
 	}
-	if(j->redir)
+	if (j->redir)
 	{
-		if(ms_execute_fileredir(j))
+		if (ms_execute_fileredir(j))
 		{
-			return(1);
+			return (1);
 		}
 	}
 	return (0);
 }
 
-void redir_heredoc(t_redir *r, int *fd)
+void	heredoc_helper(char *str)
 {
-	char *nline;
+	printf("☠️  MinisHell: warning: here-document delimited");
+	printf(" by end of file (wanted '%s')\n", str);
+}
+
+void	redir_heredoc(t_redir *r, int *fd)
+{
+	char	*nline;
 
 	*fd = open(".tmp", O_RDWR | O_CREAT | O_TRUNC, 0755);
-	if(*fd < 0)
+	if (*fd < 0)
 		exit(1);
 	close(*fd);
-	while(1)
+	while (1)
 	{
 		*fd = open(".tmp", O_APPEND | O_RDWR);
 		nline = readline("> ");
-		if(!nline)
+		if (!nline)
 		{
-			printf("☠️  MinisHell: warning: here-document delimited by end of file (wanted '%s')\n",r->target);
-			break;
+			heredoc_helper(r->target);
+			break ;
 		}
-		if(ms_strcmp(r->target,nline))
-			break;
+		if (ms_strcmp(r->target, nline))
+			break ;
 		ft_putstr_fd(nline,*fd);
 		ft_putstr_fd("\n",*fd);
 	}

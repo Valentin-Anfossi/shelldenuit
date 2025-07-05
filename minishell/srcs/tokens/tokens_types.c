@@ -6,80 +6,80 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:15:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 19:42:37 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:23:23 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ms_lst_types(t_token **t)
+void	ms_lst_types(t_token **t)
 {
-	t_token *cur;
+	t_token	*cur;
 
-	if(!*t)
+	if (!*t)
 		return ;
 	cur = *t;
-	while(cur)
+	while (cur)
 	{
 		cur->type = ms_token_type(cur);
-		if(cur->type >= 1 && cur->type <= 2)
+		if (cur->type >= 1 && cur->type <= 2)
 			ms_token_trim(cur);
 		cur = cur->next;
 	}
 	return ;
 }
 
-void ms_token_trim(t_token *t)
+void	ms_token_trim(t_token *t)
 {
-	char *tmp;
+	char	*tmp;
 
-	if(t->type == SQ)
-		tmp = ft_strtrim(t->content,"\'");
-	else if(t->type == DBQ)
-		tmp = ft_strtrim(t->content,"\"");
+	if (t->type == SQ)
+		tmp = ft_strtrim(t->content, "\'");
+	else if (t->type == DBQ)
+		tmp = ft_strtrim(t->content, "\"");
 	free(t->content);
 	t->content = tmp;
 }
 
 int	ms_token_type(t_token *t)
 {
-	char *s;
+	char	*s;
 
 	s = t->content;
-	if(ms_strcmp(s," "))
+	if (ms_strcmp(s, " "))
 		return (SPC);
-	else if(ms_strcmp(s,">"))
+	else if (ms_strcmp(s, ">"))
 		return (OUT);
-	else if(ms_strcmp(s,">>"))
+	else if (ms_strcmp(s, ">>"))
 		return (APP);
-	else if(ms_strcmp(s,"<"))
+	else if (ms_strcmp(s, "<"))
 		return (IN);
-	else if(ms_strcmp(s,"<<"))
+	else if (ms_strcmp(s, "<<"))
 		return (HER);
-	else if(ms_strcmp(s,"|"))
+	else if (ms_strcmp(s, "|"))
 		return (PIP);
-	else if(ms_strcmp(s,"||") || ms_strcmp(s,"&&") || ms_strcmp(s,"<>"))
+	else if (ms_strcmp(s, "||") || ms_strcmp(s, "&&") || ms_strcmp(s, "<>"))
 		return (INV);
-	else if(ms_strcmp(s,"<<<"))
+	else if (ms_strcmp(s, "<<<"))
 		return (HERS);
-	else if(ms_quotes(s) == 1)
+	else if (ms_quotes(s) == 1)
 		return (SQ);
-	else if(ms_quotes(s) == 2)
+	else if (ms_quotes(s) == 2)
 		return (DBQ);
 	else
-		return (ARG);	
+		return (ARG);
 }
 
 int	ms_quotes(char *s)
 {
-	int len;
+	int	len;
 
-	if(!s)
+	if (!s)
 		return (0);
 	len = ft_strlen(s);
-	if(s[0] == '\'' && s[len-1] == '\'')
+	if (s[0] == '\'' && s[len - 1] == '\'')
 		return (1);
-	else if(s[0] == '"' && s[len-1] == '"')
+	else if (s[0] == '"' && s[len - 1] == '"')
 		return (2);
 	else
 		return (0);

@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   tokens_utils3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/12 15:09:46 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/05 18:25:43 by vanfossi         ###   ########.fr       */
+/*   Created: 2025/07/05 17:40:47 by vanfossi          #+#    #+#             */
+/*   Updated: 2025/07/05 17:41:01 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isspace(char c)
+#include "../minishell.h"
+
+int	combiendetoks(t_token **t)
 {
-	if (c == ' ' || c == '\t' || c == '\f' || c == '\r' || c == '\n'
-		|| c == '\v')
-		return (1);
-	else
-		return (0);
+	int		i;
+	t_token	*temp;
+
+	i = 0;
+	temp = *t;
+	while (temp)
+	{
+		temp = temp->next;
+		i ++;
+	}
+	return (i);
 }

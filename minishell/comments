@@ -228,46 +228,181 @@
 
 //mais jpense faut faire le notre avec nos variables non ? (c pas precise mais ca ferait sens)
 
-void	test_redir(t_job *job)
-{
-	int		fd;
-	char	**argv;
-	char	**env;
+// void	test_redir(t_job *job)
+// {
+// 	int		fd;
+// 	char	**argv;
+// 	char	**env;
 
-	// Pour les rights faut mettre le code CHMOD a la fin
-	fd = open("output",O_WRONLY | O_CREAT ,0755);
-	argv = NULL;
-	env = NULL;
-	//on redirige STDOUT dans le fd
-	dup2(fd, STDOUT_FILENO);
-	fd = open("infile",O_RDONLY);
-	// isatty (entrée utilisateur ou d,un pipe/fichier/script.), ttyname, ttyslot, ioctl,
-	//on le ferme paske plus besoin
-	close(fd);
-	ft_printf("hello ?\n");
-	execve("ls",argv,env);
-	exit(EXIT_FAILURE);
-	//Ca redirect bien "hello ?" et le ls dans le fichier output !! :o magie ! 🪄
-}
+// 	// Pour les rights faut mettre le code CHMOD a la fin
+// 	fd = open("output",O_WRONLY | O_CREAT ,0755);
+// 	argv = NULL;
+// 	env = NULL;
+// 	//on redirige STDOUT dans le fd
+// 	dup2(fd, STDOUT_FILENO);
+// 	fd = open("infile",O_RDONLY);
+// 	// isatty (entrée utilisateur ou d,un pipe/fichier/script.), ttyname, ttyslot, ioctl,
+// 	//on le ferme paske plus besoin
+// 	close(fd);
+// 	ft_printf("hello ?\n");
+// 	execve("ls",argv,env);
+// 	exit(EXIT_FAILURE);
+// 	//Ca redirect bien "hello ?" et le ls dans le fichier output !! :o magie ! 🪄
+// }
 
-    if (out_fd != -1) 
-	{
-        if (dup2(out_fd, STDOUT_FILENO) == -1) {
-            perror("dup2");
-            close(out_fd);
-            if (in_fd != -1) 
-				close(in_fd);
-            return (-1);
-        }
-        close(out_fd); // Fermer le descripteur original après dup2
-    }
-    if (in_fd != -1) {
-        if (dup2(in_fd, STDIN_FILENO) == -1) {
-            perror("dup2");
-            if (out_fd != -1) 
-				close(out_fd);
-            close(in_fd);
-            return (-1);
-        }
-        close(in_fd); // Fermer le descripteur original après dup2
-    }
+//     if (out_fd != -1) 
+// 	{
+//         if (dup2(out_fd, STDOUT_FILENO) == -1) {
+//             perror("dup2");
+//             close(out_fd);
+//             if (in_fd != -1) 
+// 				close(in_fd);
+//             return (-1);
+//         }
+//         close(out_fd); // Fermer le descripteur original après dup2
+//     }
+//     if (in_fd != -1) {
+//         if (dup2(in_fd, STDIN_FILENO) == -1) {
+//             perror("dup2");
+//             if (out_fd != -1) 
+// 				close(out_fd);
+//             close(in_fd);
+//             return (-1);
+//         }
+//         close(in_fd); // Fermer le descripteur original après dup2
+//     }
+
+// int	ms_execvp(char *file, char **argv, t_shell *s)
+// {
+// 	char	*path;
+// 	char	*tmp;
+// 	char	**dirs;
+// 	int		i;
+
+// 	i = 0;
+// 	if (ft_strchr(file, '/'))
+// 		if (execve(file, argv, s->env) == -1)
+// 			return (errno);
+// 	if (!argv)
+// 		return (0);
+// 	path = ms_getenv("PATH", s);
+// 	if (!path)
+// 	{
+// 		printf("Minishell : error: $PATH doesn't exist.");
+// 		return (127);
+// 	}
+// 	dirs = ft_split(path, ':');
+// 	free(path);
+// 	while (dirs[i])
+// 	{
+// 		tmp = ft_strjoin("/", file);
+// 		path = ft_strjoin(dirs[i],tmp);
+// 		free(tmp);
+// 		if (is_executable(path))
+// 		{
+// 			if (execve(path, argv, s->env) == -1)
+// 			{
+// 				free(path);
+// 				free_dirs(dirs);
+// 				return (1);
+// 			}
+// 			free_dirs(dirs);
+// 			free(path);
+// 			return (1);
+// 		}
+// 		free(path);
+// 		i ++;
+// 	}
+// 	i = 0;
+// 	free_dirs(dirs);
+// 	return (1);
+// }
+
+// void	debug_print_job(t_job *jobs)
+// {
+// 	t_job	*job;
+// 	t_redir	*redir;
+// 	int		i;
+
+// 	i = 0;
+// 	job = jobs;
+// 	if (!job)
+// 	{
+// 		ft_printf("No jobs");
+// 		return ;
+// 	}
+// 	while (job)
+// 	{
+// 		redir = job->redir;
+// 		i = 0;
+// 		if (job->error != 0)
+// 			ft_printf("ERROR\n");
+// 		if (job->cmd)
+// 			ft_printf("CMD : %s\n", job->cmd);
+// 		if (job->redir)
+// 		{
+// 			while (redir)
+// 			{
+// 				ft_printf("REDIRTYPE :%d REDIRTARGET: %s\n", redir->type, redir->target);
+// 				redir = redir->next;
+// 			}
+// 		}
+// 		while (job->args[i])
+// 		{
+// 			ft_printf("ARG %d : %s ; ", i, job->args[i]);
+// 			i++;
+// 		}
+// 		if (job->piped_job == NULL)
+// 			break ;
+// 		else
+// 		{
+// 			job = job->piped_job;
+// 			ft_printf("\n");
+// 		}
+// 	}
+// 	ft_printf("\n");
+// }
+
+// char	*ms_getenv(char *key, t_shell *s)
+// {
+// 	int		i;
+// 	char	**actual;
+// 	char	*out;
+// 	int		match;
+
+// 	out = NULL;
+// 	i = 0;
+// 	while (s->env[i])
+// 	{
+// 		actual = ms_split(s->env[i], '=');
+// 		match = 0;
+// 		if (actual)
+// 		{
+// 			match = ms_strcmp(actual[0], key);
+// 			if (match)
+// 				out = ft_strdup(actual[1]);
+// 			free(actual[0]);
+// 			free(actual[1]);
+// 			free(actual);
+// 			if (match)
+// 				break ;
+// 		}
+		
+		// if (actual && ms_strcmp(actual[0], key))
+		// {
+		// 	out = ft_strdup(actual[1]);
+		// 	free(actual[0]);
+		// 	free(actual[1]);
+		// 	free(actual);
+		// 	break ;
+		// }
+		// else if (actual)
+		// {
+		// 	free(actual[0]);
+		// 	free(actual[1]);
+		// 	free(actual);
+		// }
+	// 	i++;
+	// }
+	// return (out);
+// }

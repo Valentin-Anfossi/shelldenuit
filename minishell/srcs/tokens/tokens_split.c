@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 10:16:35 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 17:51:06 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:22:09 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,12 @@ void	ms_token_split(char *line, int start, int end, t_token **tokens)
 			i ++;
 	}
 }
+
 int	ms_is_redirpipe(char *line)
 {
 	if (*line == '>' && *(line + 1) == '>')
 		return (2);
-	else if(*line == '<' && *(line + 1) == '<' && *(line + 2) == '<')
+	else if (*line == '<' && *(line + 1) == '<' && *(line + 2) == '<')
 		return (3);
 	else if (*line == '<' && *(line + 1) == '<')
 		return (2);
@@ -50,7 +51,7 @@ int	ms_is_redirpipe(char *line)
 		return (1);
 	else if (*line == '<')
 		return (1);
-	else if (*line == '|' && *(line+1) == '|')
+	else if (*line == '|' && *(line + 1) == '|')
 		return (2);
 	else if (*line == '&' && *(line + 1) == '&')
 		return (2);

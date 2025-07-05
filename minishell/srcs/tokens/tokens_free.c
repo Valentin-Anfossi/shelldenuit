@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 10:56:45 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/04 01:42:06 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 17:36:12 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	ms_free_tokens(t_token **lst)
 {
-	t_token *prev;
-	t_token *cur;
-	
-	if(!*lst)
+	t_token	*prev;
+	t_token	*cur;
+
+	if (!*lst)
 	{
 		free(lst);
 		return ;
 	}
 	cur = *lst;
 	prev = cur;
-	while(cur)
+	while (cur)
 	{
-		if(cur->content)
+		if (cur->content)
 			free(cur->content);
 		prev = cur;
 		cur = cur->next;

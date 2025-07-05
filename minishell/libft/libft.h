@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:36 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 15:12:22 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:27:05 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ char	*get_rest(char *line);
 
 // lespetitstrucsenplus
 
-int	ft_isspace(char c);
-
+int		ft_isspace(char c);
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 17:16:56 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/24 04:59:31 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 17:43:00 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "../minishell.h"
+#include "../minishell.h"
 
 int	err_exp_ident(char *str)
 {
@@ -21,9 +21,24 @@ int	err_exp_ident(char *str)
 	return (g_exitcode);
 }
 
+void	err_normimerde(char *str)
+{
+	if (is_str_exec(str) && is_file(str) == 0)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	}
+	else
+	{
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	}
+}
+
 int	err_cmd_nfound(char *str)
 {
-	if(ft_strlen(str) == 0)
+	if (ft_strlen(str) == 0)
 		return (0);
 	if (is_str_exec(str) && is_folder(str) >= 0)
 	{
@@ -37,17 +52,7 @@ int	err_cmd_nfound(char *str)
 	}
 	else
 	{
-		if (is_str_exec(str) && is_file(str) == 0)
-		{
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(str, STDERR_FILENO);
-			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		}
-		else
-		{
-			ft_putstr_fd(str, STDERR_FILENO);
-			ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		}
+		err_normimerde(str);
 		g_exitcode = 127;
 	}
 	return (g_exitcode);

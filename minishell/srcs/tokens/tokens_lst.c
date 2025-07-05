@@ -6,15 +6,15 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 08:50:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/05 02:12:37 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:23:53 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_token **ms_tokens(char *line, t_shell *s)
+t_token	**ms_tokens(char *line, t_shell *s)
 {
-	t_token **t;
+	t_token	**t;
 
 	if (ft_strlen(line) == 0)
 		return (NULL);
@@ -23,7 +23,7 @@ t_token **ms_tokens(char *line, t_shell *s)
 	ms_token_env(t, s);
 	ms_lst_concat(t);
 	ms_rmv_spaces(t);
-	if(!ms_tokens_check(t))
+	if (!ms_tokens_check(t))
 	{
 		free_tokens(t);
 		return (NULL);
@@ -32,41 +32,43 @@ t_token **ms_tokens(char *line, t_shell *s)
 	return (t);
 }
 
-void ms_rmv_spaces(t_token **t)
+void	ms_rmv_spaces(t_token **t)
 {
-    t_token *cur = *t;
-    t_token *prev = NULL;
-    t_token *to_free;
+	t_token	*cur;
+	t_token	*prev;
+	t_token	*to_free;
 
-    while (cur)
-    {
-        if (cur->type == SPC)
-        {
-            to_free = cur;
-            if (prev == NULL)
-                *t = cur->next;
-            else
-                prev->next = cur->next;
-            cur = cur->next;
-            free(to_free->content);
-            free(to_free);
-        }
-        else
-        {
-            prev = cur;
-            cur = cur->next;
-        }
-    }
+	cur = *t;
+	prev = NULL;
+	while (cur)
+	{
+		if (cur->type == SPC)
+		{
+			to_free = cur;
+			if (prev == NULL)
+				*t = cur->next;
+			else
+				prev->next = cur->next;
+			cur = cur->next;
+			free(to_free->content);
+			free(to_free);
+		}
+		else
+		{
+			prev = cur;
+			cur = cur->next;
+		}
+	}
 }
 
 t_token	**ms_lst_tokens(char *line)
 {
-	t_tokenlst *tlst;
-	t_token	**tokens;
+	t_tokenlst	*tlst;
+	t_token		**tokens;
 
 	tokens = (t_token **)malloc(sizeof(t_token *));
 	*tokens = NULL;
-	tlst = ms_create_tlst(line,tokens);
+	tlst = ms_create_tlst(line, tokens);
 	while (line[tlst->start] && ft_isspace(line[tlst->start]))
 		tlst->start ++;
 	tlst->end = tlst->start;
@@ -76,7 +78,8 @@ t_token	**ms_lst_tokens(char *line)
 			ms_lst_doubles(tlst);
 		else if (line[tlst->end] == '\'' && !tlst->in_doubles)
 			ms_lst_singles(tlst);
-		else if (ft_isspace(tlst->line[tlst->end]) && !tlst->in_doubles && !tlst->in_singles)
+		else if (ft_isspace(tlst->line[tlst->end])
+			&& !tlst->in_doubles && !tlst->in_singles)
 			ms_lst_spaces(tlst);
 		tlst->end++;
 	}

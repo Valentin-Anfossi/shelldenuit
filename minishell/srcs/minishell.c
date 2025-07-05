@@ -6,15 +6,15 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:10 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/04 03:25:50 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:26:15 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_exitcode;
+int	g_exitcode;
 
-void ms_signal_eof(t_shell *s)
+void	ms_signal_eof(t_shell *s)
 {
 	free_shell(s);
 	clear_history();
@@ -34,14 +34,13 @@ int	main(void)
 	while (1)
 	{
 		line = readline("☠️  MinisHell: ");
-		if(!line)
+		if (!line)
 			ms_signal_eof(shell);
-		tokens = ms_tokens(line,shell);
-		// ms_debug_print_tokens(tokens);
-		if(!tokens)
+		tokens = ms_tokens(line, shell);
+		if (!tokens)
 		{
 			free(line);
-			continue;
+			continue ;
 		}
 		free(line);
 		jobs = create_job(tokens);

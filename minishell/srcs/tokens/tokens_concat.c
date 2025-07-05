@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:54:36 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/13 16:44:38 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:24:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,32 @@
 
 void	ms_lst_concat(t_token **t)
 {
-	t_token *cur;
+	t_token	*cur;
 
 	cur = *t;
-	while(cur)
+	while (cur)
 	{
-		if(ms_token_isarg(cur) && cur->next)
+		if (ms_token_isarg(cur) && cur->next)
 		{
-			if(ms_token_isarg(cur->next))
+			if (ms_token_isarg(cur->next))
 			{
-				ms_token_concat(cur,cur->next);
+				ms_token_concat(cur, cur->next);
 			}
 			else
 				cur = cur->next;
 		}
 		else
-			cur = cur->next;		
+			cur = cur->next;
 	}
 }
 
-int		ms_token_isarg(t_token *t)
+int	ms_token_isarg(t_token *t)
 {
-	if(!t)
+	if (!t)
 		return (0);
-	if(t->type == ARG)
+	if (t->type == ARG)
 		return (1);
-	else if(t->type == SQ || t->type == DBQ)
+	else if (t->type == SQ || t->type == DBQ)
 		return (1);
 	else
 		return (0);
@@ -47,8 +47,8 @@ int		ms_token_isarg(t_token *t)
 
 void	ms_token_concat(t_token *t, t_token *n)
 {
-	char *tmp;
-	
+	char	*tmp;
+
 	tmp = ft_strjoin(t->content, n->content);
 	free(t->content);
 	t->content = tmp;

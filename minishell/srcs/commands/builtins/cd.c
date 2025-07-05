@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/05 02:34:46 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 13:21:28 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	command_cd(t_job *j, t_shell *s)
 	if (!is_cd_valid(j))
 		return (1);
 	if (!j->args[1])
-		return(cd_home(j, s));
+		return (cd_home(j, s));
 	if (ms_strcmp(j->args[1], "-"))
 		return (cd_previous(s));
 	if (chdir(j->args[1]) == -1)
@@ -102,4 +102,3 @@ int	command_cd(t_job *j, t_shell *s)
 	ms_setenv("PWD", s->cwd, s);
 	return (0);
 }
-

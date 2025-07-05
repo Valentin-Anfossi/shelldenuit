@@ -6,39 +6,38 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 05:47:06 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/12 19:23:29 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 17:43:56 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void free_tokens(t_token **t)
+void	free_tokens(t_token **t)
 {
-	t_token *temp;
-	t_token *prev;
-	
-	temp = *t;
+	t_token	*temp;
+	t_token	*prev;
 
-	while(temp)
+	temp = *t;
+	while (temp)
 	{
 		free(temp->content);
 		prev = temp;
 		temp = temp->next;
 		free(prev);
 	}
-	if(temp)
+	if (temp)
 	{
 		free(temp);
 	}
 	free(t);
 }
 
-void free_all(t_job *j, t_shell *s, t_token **t)
+void	free_all(t_job *j, t_shell *s, t_token **t)
 {
-	if(j)
-		free_jobs(j);		
-	if(s)
+	if (j)
+		free_jobs(j);
+	if (s)
 		free_shell(s);
-	if(t)
+	if (t)
 		free_tokens(t);
 }
