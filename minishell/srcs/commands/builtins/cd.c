@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/05 13:21:28 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 19:07:39 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	cd_previous(t_shell *s)
 	s->cwd = tmp_old;
 	chdir(tmp_old);
 	free(tmp);
-	free(tmp_old);
 	return (0);
 }
 
