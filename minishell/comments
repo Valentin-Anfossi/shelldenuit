@@ -249,3 +249,25 @@ void	test_redir(t_job *job)
 	exit(EXIT_FAILURE);
 	//Ca redirect bien "hello ?" et le ls dans le fichier output !! :o magie ! 🪄
 }
+
+    if (out_fd != -1) 
+	{
+        if (dup2(out_fd, STDOUT_FILENO) == -1) {
+            perror("dup2");
+            close(out_fd);
+            if (in_fd != -1) 
+				close(in_fd);
+            return (-1);
+        }
+        close(out_fd); // Fermer le descripteur original après dup2
+    }
+    if (in_fd != -1) {
+        if (dup2(in_fd, STDIN_FILENO) == -1) {
+            perror("dup2");
+            if (out_fd != -1) 
+				close(out_fd);
+            close(in_fd);
+            return (-1);
+        }
+        close(in_fd); // Fermer le descripteur original après dup2
+    }

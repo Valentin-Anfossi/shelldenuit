@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 09:20:37 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/03 03:19:39 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 02:46:48 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ typedef struct s_token
 
 //MS HEADER
 
-//MS TOKENS
+//// MS TOKENS
 t_token 	**ms_tokens(char *line, t_shell *s);
 t_token		**ms_lst_tokens(char *line);
 void		ms_lst_types(t_token **t);
@@ -165,16 +165,34 @@ int			ms_error_syntax(t_token *t);
 int 		ms_tokens_check(t_token **t);
 int			ms_token_type(t_token *t);
 int 		ms_tokens_pipcheck(t_token *cur, t_token **t);
+t_token 	*create_job_helper(t_token *t, t_job *j);
 
-//MS EXECUTE
+//// MS EXECUTE
 t_exec		*ms_exec_create(t_job *job, t_shell *shell);
 int			(*ms_create_pipes(int n))[2];
 int			ms_execute_single(t_job *j, t_shell *s, t_exec *ex);
-int 		ms_redir_error(char *str);
-int 		ms_execute_fileredir(t_job *j);
 void		ms_free_ex(t_exec *ex);
+void 		ms_waitjobs(t_exec *ex, int i);
+int 		ms_execute_child(t_job *j, t_exec *ex, int i);
 
-//MS COMMANDS
+// REDIRS
+int 		ms_execute_redir(t_job *j, t_exec *ex, int i);
+int 		ms_execute_fileredir(t_job *j);
+int 		ms_redir_heredoc(t_redir *r, int *fd);
+int 		ms_redir_error(char *str, int *out_fd, int *in_fd);
+int			ms_redir_apply(int *out_fd, int *in_fd);
+void		ms_exec_resetredir(t_job *j);
+
+// PIPES
+void		ms_pips_closeall(int(*pipes)[2], int n);
+void 		ms_pips_close(int(*pipes)[2], int n, int j);
+
+// JOBS
+int 		ms_count_jobs(t_job *job);
+int 		ms_execute_jobs(t_job *job, t_shell *sh);
+
+//// MS COMMANDS
+
 //EXPORT
 int			ms_command_export(t_job *j, t_shell *s);
 int			ms_export_valid(char *str, t_shell *s);
@@ -191,12 +209,30 @@ int ms_unset_env(t_shell *s, char *str);
 int ms_command_unset(t_job *j, t_shell *s);
 int ms_is_valid_var_name(char *str);
 
+//CD
+int	is_cd_valid(t_job *j);
+void	cd_error(char *path);
+int	cd_previous(t_shell *s);
+int	cd_home(t_job *j, t_shell *s);
+int	command_cd(t_job *j, t_shell *s);
+
+//ECHO
+void	command_echo_skip(t_job *j, int *i, int *n);
+int		command_echo(t_job *j);
+
+//ENV
+int		command_env(t_shell *shell);
+
+//EXIT
+void	command_exit_helper(char *str);
+void	command_exit(t_shell *s, t_job *j);
+
+
 //MS DEBUG
 void	ms_debug_print_tokens(t_token **tokens);
 
 //TOKENS
 t_token	**create_lst_tokens(char *line);
-t_token	*malloc_token(void);
 void	create_token(char *line, int start, int end, t_token **tokens);
 void	split_token(char *line, int start, int end, t_token **tokens);
 int		check_redirection_pipe(char *line);
@@ -207,8 +243,6 @@ int		is_tok_cmd(t_token *t);
 int		is_tok_pipe(t_token *t);
 t_token	*token_last(t_token *lst);
 void	token_add_back(t_token **lst, t_token *token);
-void	check_tokens(t_token **tokens);
-void	typing_tokens(t_token **tokens);
 
 //EXPAND
 char	*expand_token_env(char *s, t_shell *shell);
@@ -219,7 +253,6 @@ t_job	**create_lst_job(t_token **tokens);
 t_job	*create_job(t_token **tokens);
 t_job	*malloc_job(int toks);
 int		get_redir_type(t_token *t);
-int		check_jobs(t_job *jobs);
 void	free_jobs(t_job *jobs);
 void	execute_fork(t_shell *s, t_job *j, int *tuyau);
 
@@ -267,14 +300,9 @@ t_shell		*create_shell(void);
 //COMMANDS
 int	select_command(t_job *jobs, t_shell *s);
 
-//COMMANDS: CD
-int		command_cd(t_job *j, t_shell *s);
-
 //COMMANDS: PWD
 int	command_pwd(void);
 
-//COMMANDS: ECHO
-int		command_echo(t_job *j);
 
 //COMMANDS: EXPORT
 int		command_export(t_job *j, t_shell *s);

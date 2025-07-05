@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens_utils.c                                     :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 05:15:50 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/04 01:43:16 by vanfossi         ###   ########.fr       */
+/*   Created: 2025/07/05 02:34:16 by vanfossi          #+#    #+#             */
+/*   Updated: 2025/07/05 02:44:04 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-
-int	get_redir_type(t_token *t)
+int	command_pwd(void)
 {
-	if (ms_strcmp(t->content, "<"))
-		return (R_IN);
-	else if (ms_strcmp(t->content, ">"))
-		return (R_OUT);
-	else if (ms_strcmp(t->content, ">>"))
-		return (R_APPEND);
-	else if (ms_strcmp(t->content, "<<"))
-		return (R_HEREDOC);
-	else
-		return (0);
+	char	*buff;
+
+	buff = getcwd(NULL, PATH_MAX);
+	ft_printf("%s\n", buff);
+	free(buff);
+	return (0);
 }
-
-
-void	ms_lstdelone(t_token *lst, void (*del)(void *))
-{
-	del(lst->content);
-	free(lst);
-}
-

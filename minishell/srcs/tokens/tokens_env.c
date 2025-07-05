@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 11:44:07 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/24 08:21:23 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 03:08:52 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char *ms_token_expand(t_token *t, t_shell *s)
 	
 	i = 0;
 	out = ft_strdup("");
-	while(t->content[i])
+	while(t->content && t->content[i])
 	{
 		if(t->content[i] == '$' && (t->content[i+1] || t->next))
 		{
@@ -49,6 +49,8 @@ char *ms_token_expand(t_token *t, t_shell *s)
 			free(out);
 			out = new_out;
 			i += ms_env_length(t->content + i);
+			if (i > (int)ft_strlen(t->content))
+				break;
 		}
 		else
 		{
@@ -84,7 +86,7 @@ char *ms_env_get(char *str, char* out, int i, t_shell *s)
 	
 	i ++;
 	pos = i;
-	if(str[pos] == NULL)
+	if(!str[pos])
 		env = ft_strdup("");
 	else if(str[pos] == '?')
 		env = ft_itoa(g_exitcode);

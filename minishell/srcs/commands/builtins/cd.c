@@ -6,23 +6,11 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 14:23:30 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/29 11:09:43 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 02:34:46 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-int	ms_charraylen(char **ar)
-{
-	int	i;
-
-	i = 0;
-	if (!ar)
-		return (0);
-	while (ar[i])
-		i++;
-	return (i);
-}
 
 int	is_cd_valid(t_job *j)
 {
@@ -95,11 +83,8 @@ int	cd_home(t_job *j, t_shell *s)
 		return (1);
 }
 
-// A FINIR
 int	command_cd(t_job *j, t_shell *s)
 {
-	char *new_pwd;
-	
 	if (!is_cd_valid(j))
 		return (1);
 	if (!j->args[1])
@@ -117,12 +102,4 @@ int	command_cd(t_job *j, t_shell *s)
 	ms_setenv("PWD", s->cwd, s);
 	return (0);
 }
-int	command_pwd(void)
-{
-	char	*buff;
 
-	buff = getcwd(NULL, PATH_MAX);
-	ft_printf("%s\n", buff);
-	free(buff);
-	return (0);
-}

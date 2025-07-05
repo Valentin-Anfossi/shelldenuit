@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:32:34 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/06/14 13:15:32 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/05 02:35:08 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,12 +246,10 @@ int	ms_setenv(char *env, char *str, t_shell *s)
 	char	**split;
 	char	*tmp;
 	int		i;
-	int		j;
 
 	i = 0;
 	while (s->env[i])
 	{
-		j = 0;
 		split = ft_split(s->env[i], '=');
 		if (ms_strcmp(split[0], env))
 		{
@@ -281,4 +279,15 @@ void ms_free_split(char **split)
 		i ++;
 	}
 	free(split);
+}
+int	ms_charraylen(char **ar)
+{
+	int	i;
+
+	i = 0;
+	if (!ar)
+		return (0);
+	while (ar[i])
+		i++;
+	return (i);
 }
