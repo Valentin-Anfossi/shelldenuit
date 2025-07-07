@@ -6,11 +6,21 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:17:28 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/05 18:22:15 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/08 00:43:34 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ms_tokens_merdinette(t_token *cur)
+{
+	if (cur->next->type >= 3 && cur->next->type <= 6)
+		return (1);
+	else if (cur->next == NULL || !ms_token_isarg(cur->next))
+		return (1);
+	else
+		return (0);
+}
 
 int	ms_tokens_check(t_token **t)
 {
@@ -23,7 +33,7 @@ int	ms_tokens_check(t_token **t)
 		{
 			if (!cur->next)
 				return (ms_error_syntax(cur->next));
-			if (cur->next == NULL || !ms_token_isarg(cur->next))
+			if (ms_tokens_merdinette(cur))
 				return (ms_error_syntax(cur));
 			cur = cur->next->next;
 		}
