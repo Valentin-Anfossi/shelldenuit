@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 14:54:43 by vanfossi          #+#    #+#             */
-/*   Updated: 2025/07/05 18:26:53 by vanfossi         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:46:10 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ t_job	*create_job(t_token **tokens)
 
 	j = malloc_job(combiendetoks(tokens)+1);
 	t = *tokens;
-	while (ms_strcmp(t->content, " "))
+	while (t && ms_strcmp(t->content, " "))
+	{
 		t = t->next;
+	}
 	while (t)
 	{
 		t = create_job_helper(t, j);
