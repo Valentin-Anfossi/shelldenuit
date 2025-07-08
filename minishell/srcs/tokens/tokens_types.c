@@ -15,7 +15,7 @@
 void	ms_lst_types(t_token **t)
 {
 	t_token	*cur;
-
+		
 	if (!*t)
 		return ;
 	cur = *t;

@@ -17,6 +17,7 @@ int	g_exitcode;
 void	ms_signal_eof(t_shell *s)
 {
 	free_shell(s);
+	ft_putstr_fd("exit\n", STDERR_FILENO);
 	clear_history();
 	exit(g_exitcode);
 }
